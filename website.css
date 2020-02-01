@@ -94,3 +94,13 @@ canvas {
 #update-container p {
 	font-size: 10px;
 }
+
+@media only screen and (max-width: 1200px) {
+	.container h1 {
+		font-size: 32px;
+	}
+
+	.container p {
+		font-size: 16px;
+	}
+}
