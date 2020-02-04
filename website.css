@@ -27,6 +27,14 @@ canvas {
 	font-size: 20px;
 }
 
+#mobile-warning {
+	display: none;
+	width: 54%;
+	height: 10%;
+	top: 10%;
+	left: 23%;
+}
+
 #disclaimer {
 	font-size: 10px;
 }
@@ -36,7 +44,6 @@ canvas {
 	height: 54%;
 	top: 23%;
 	left: 23%;
-	background: transparent;
 }
 
 #info-container {
@@ -101,6 +108,13 @@ canvas {
 	}
 
 	.container p {
-		font-size: 16px;
+		font-size: 14px;
+	}
+}
+
+@media only screen and (max-width: 768px) {
+	#mobile-warning {
+		display: block;
+		color: red;
 	}
 }
