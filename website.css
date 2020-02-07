@@ -112,7 +112,7 @@ canvas {
 	}
 }
 
-@media only screen and (max-width: 768px) {
+@media (pointer: none), (pointer:coarse) {
 	#mobile-warning {
 		display: block;
 		color: red;
