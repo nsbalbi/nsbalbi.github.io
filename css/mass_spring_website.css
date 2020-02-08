@@ -1,0 +1,67 @@
+html, body {
+	margin: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	color: white;
+}
+
+canvas {
+	background-color: black;
+}
+
+.slidercontainer {
+	width: 100%;
+	display: flex;
+	justify-content: space-around;
+	flex-wrap: wrap;
+	position: absolute;
+}
+
+h1 {
+	width: 24.5%;
+	height: 25px;
+	text-align: center;
+	font-size: 16px;
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 2px;
+}
+
+#ODE {
+	width: 100%;
+	font-size: 24px;
+	margin: 5px;
+}
+
+.slider {
+	-webkit-appearance: none; 
+	appearance: none;
+	width: 24.5%; 
+	height: 25px; 
+	background: #494646; 
+	outline: none; 
+}
+
+.slider::-webkit-slider-thumb {
+	-webkit-appearance: none; 
+	appearance: none;
+	width: 25px; 
+	height: 25px; 
+	background: #660007; 
+	cursor: pointer; 
+}
+
+#return-button {
+	position: absolute;
+	width: 10%;
+	height: 5%;
+	bottom: 3%;
+	left: 1%;
+	background: transparent;
+}
+
+#return-button a {
+	color: white;
+	font-family: 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;
+	font-size: 18px;
+}

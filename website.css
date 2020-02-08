@@ -57,10 +57,10 @@ canvas {
 #link-container {
 	position: absolute;
 	display: none;
+	float: right;
 	height: 100%;
 	width: 57%;
 	margin: 0;
-	float: right;
 	top: 0;
 	left: 43%;
 }
