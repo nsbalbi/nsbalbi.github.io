@@ -200,7 +200,7 @@ function animate() {
 }
 
 var circleArray = [];
-var circleRadius = canvas.height/15; // Default circle radius
+var circleRadius = canvas.height/13; // Default circle radius
 var colors = ['#175676','#BA324F','#D62839','#4BA3C3']; // Possible circle colors
 var numCircles = images.length; // Number of circles
 
