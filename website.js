@@ -163,8 +163,8 @@ function checkHover() {
 // Displays info panel corresponding to hovered over circle
 function infoDisplayOn() {
     document.getElementById('main-container').style.display = 'none';
-    document.getElementById('info-container').style.display = 'block';
-    document.getElementById('link-container').style.display = 'block';
+    document.getElementById('info-container').style.display = 'flex';
+    document.getElementById('link-container').style.display = 'flex';
     infoDisplays[displayedID].style.display = 'flex';
     infoLinks[displayedID].style.display = 'block';
     // Changes position of info panel to left or right of screen depending on circle position
@@ -180,7 +180,7 @@ function infoDisplayOn() {
 
 // Turns of info display
 function infoDisplayOff() {
-    document.getElementById('main-container').style.display = 'block';
+    document.getElementById('main-container').style.display = 'flex';
     document.getElementById('info-container').style.display = 'none';
     document.getElementById('link-container').style.display = 'none';
     infoDisplays[displayedID].style.display = 'none';  
