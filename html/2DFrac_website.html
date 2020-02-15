@@ -3,15 +3,18 @@
 
 <head>
 	<meta charset="ISO-8859-1">
-	<title>Nicholas Sbalbi | 2D Fractal Tree</title>
+	<title>2D Fractal Tree | Nicholas Sbalbi</title>
 	<link href="../css/default_black.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
 	<canvas></canvas>
-	<div id="slider-container">
-		<h1>Angle</h1>
-		<input type="range" min="90" max="175" value="160" class="slider" id="theta-slider" step="5">
+	<div id="interactivity-container">
+		<div id="slider-container">
+			<h1>Angle</h1>
+			<input type="range" min="90" max="175" value="160" class="slider" id="theta-slider" step="5">
+		</div>
+		<button id="reset-button" class="interactivity-button" onclick="reset();">Reset</button>
 	</div>
 	<div id="return-button">
 		<a href="../index.html">Return</a>

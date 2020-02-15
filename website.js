@@ -18,6 +18,7 @@ images.push(document.getElementById("2D-DLA-crop-img"));
 images.push(document.getElementById("2D-fractal-tree-crop-img"));
 images.push(document.getElementById("about-crop-img"));
 images.push(document.getElementById("mass-spring-crop-img"));
+images.push(document.getElementById("1D-fourier-crop-img"));
 
 var infoDisplays = [];
 infoDisplays.push(document.getElementById('3D-fractal-tree'));
@@ -26,6 +27,7 @@ infoDisplays.push(document.getElementById('2D-DLA'));
 infoDisplays.push(document.getElementById('2D-fractal-tree'));
 infoDisplays.push(document.getElementById('about'));
 infoDisplays.push(document.getElementById('mass-spring'));
+infoDisplays.push(document.getElementById('1D-fourier'));
 
 var infoLinks = [];
 infoLinks.push(document.getElementById('3D-fractal-tree-link'));
@@ -34,6 +36,7 @@ infoLinks.push(document.getElementById('2D-DLA-link'));
 infoLinks.push(document.getElementById('2D-fractal-tree-link'));
 infoLinks.push(document.getElementById('about-blank-link'));
 infoLinks.push(document.getElementById('mass-spring-link'));
+infoLinks.push(document.getElementById('1D-fourier-link'));
 
 var cursor = [undefined, undefined]; // Stores cursor coordinates
 var displayedID = undefined; // Stores ID of "circle" currently dispayed

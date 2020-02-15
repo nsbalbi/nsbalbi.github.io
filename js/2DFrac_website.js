@@ -38,6 +38,17 @@ function distBetween(x1, y1, x2, y2) {
     return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
 }
 
+function reset() {
+    c.clearRect(0, 0, innerWidth, innerHeight);
+    pointArray = [];
+    pointArray.push(new Point(0, 0, -1, true, 'white'));
+    pointArray.push(new Point(0, -200, 0, false, 'white'));
+    for (var i = 0; i < pointArray.length; i++) {
+        pointArray[i].draw();
+    }
+    iterationCount = 0;
+}
+
 // Creates another iteration of points
 function iterate() {
     // Records number of current points
