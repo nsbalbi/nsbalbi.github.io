@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="ISO-8859-1">
+	<title>2D Fourier Series | Nicholas Sbalbi</title>
+	<link href="../css/default_black.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+	<canvas></canvas>
+	<div id="interactivity-container">
+		<div class="slider-container">
+			<h1>Number of Circles: 5</h1>
+			<input type="range" min="1" max="25" value="5" class="slider" id="num-circles-slider" step="1">
+		</div>
+		<button id="random-button" class="interactivity-button" onclick="reset(randCircles());">Random</button>
+		<button id="preset-1-button" class="interactivity-button" onclick="reset(preset_1());">Preset 1</button>
+		<button id="preset-2-button" class="interactivity-button" onclick="reset(preset_2());">Preset 2</button>
+	</div>
+	<div id="return-button">
+		<a href="../index.html">Return</a>
+	</div>
+	<script src="../js/fourier2D_website.js" type="text/javascript"></script>
+</body>
+
+</html>

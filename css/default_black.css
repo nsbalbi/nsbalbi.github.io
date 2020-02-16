@@ -43,16 +43,16 @@ canvas {
 	font-size: 18px;
 }
 
-#slider-container {
+.slider-container {
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-end;
-	width: 25%;
+	width: 20%;
 	height: 10%;
 	margin: 0 10px;
 }
 
-#slider-container h1 {
+.slider-container h1 {
 	color: white;
 	font-family: 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;
 	font-size: 18px;

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="ISO-8859-1">
+	<title>Chaos Game</title>
+	<link href="../css/default_black.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+	<canvas></canvas>
+	<div id="interactivity-container">
+		<div id="num-ref-point-slider-container" class="slider-container">
+			<h1>Number of Reference Points: 3</h1>
+			<input type="range" min="3" max="8" value="3" class="slider" id="num-ref-point-slider" step="1">
+		</div>
+		<div id="rule-slider-container" class="slider-container">
+			<h1>Rule: Normal</h1>
+			<input type="range" min="0" max="4" value="0" class="slider" id="rule-slider" step="1">
+		</div>
+		<div id="dist-slider-container" class="slider-container">
+			<h1>Step Size Ratio: 0.5</h1>
+			<input type="range" min="0" max="0.9" value="0.5" class="slider" id="dist-slider" step="0.1">
+		</div>
+		<div id="random-slider-container" class="slider-container">
+			<h1>Random Reference Points?:  False</h1>
+			<input type="range" min="0" max="1" value="0" class="slider" id="random-slider" step="1">
+		</div>
+		<button id="reset-button" class="interactivity-button" onclick="reset();">Refresh</button>
+	</div>
+	<div id="return-button">
+		<a href="../index.html">Return</a>
+	</div>
+	<script src="../js/chaos_website.js" type="text/javascript"></script>
+</body>
+
+</html>
