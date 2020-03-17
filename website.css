@@ -26,8 +26,31 @@ canvas {
 	font-weight: normal;
 }
 
+.container h2 {
+	margin: 0;
+	font-size: 24px;
+	font-weight: normal;
+}
+
 .container p {
 	font-size: 20px;
+}
+
+button {
+	color: white;
+	font-family: 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;
+	font-size: 18px;
+	background-color: black;
+	height: 50%;
+	margin: 5px 10px;
+	outline: none;
+}
+
+#category-select-container {
+	width: 180px;
+	height: 100px;
+	left: 5px;
+	top: 5px;
 }
 
 #mobile-warning {

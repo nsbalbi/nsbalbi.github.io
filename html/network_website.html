@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="ISO-8859-1">
+	<title>Random Networks | Nicholas Sbalbi</title>
+	<link href="../css/default_black.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+	<canvas></canvas>
+	<div id="interactivity-container">
+		<div id="color-slider-container" class="slider-container">
+			<h1>Color Scheme</h1>
+			<input type="range" min="0" max="4" value="0" class="slider" id="color-slider" step="1">
+		</div>
+		<div id="num-nodes-slider-container" class="slider-container">
+			<h1>Number of Nodes: 100</h1>
+			<input type="range" min="10" max="1000" value="100" class="slider" id="num-nodes-slider" step="10">
+		</div>
+		<div id="boundary-slider-container" class="slider-container">
+			<h1>Min Distance Between Nodes: 50</h1>
+			<input type="range" min="10" max="50" value="50" class="slider" id="boundary-slider" step="5">
+		</div>
+		<div id="preference-max-container" class="slider-container">
+			<h1>Max Edge Formation Distance: 6</h1>
+			<input type="range" min="2" max="10" value="6" class="slider" id="preference-max-slider" step="1">
+		</div>
+		<button id="refresh-button" class="interactivity-button" onclick="refresh()">Refresh</button>
+	</div>
+	<div id="return-button">
+		<a href="../index.html">Return</a>
+	</div>
+	<script src="../js/network_website.js" type="text/javascript"></script>
+</body>
+
+</html>

@@ -21,6 +21,8 @@ images.push(document.getElementById("mass-spring-crop-img"));
 images.push(document.getElementById("1D-fourier-crop-img"));
 images.push(document.getElementById("2D-fourier-crop-img"));
 images.push(document.getElementById("chaos-game-crop-img"));
+images.push(document.getElementById("random-walkers-crop-img"));
+images.push(document.getElementById("network-crop-img"));
 
 var infoDisplays = [];
 infoDisplays.push(document.getElementById('3D-fractal-tree'));
@@ -32,6 +34,8 @@ infoDisplays.push(document.getElementById('mass-spring'));
 infoDisplays.push(document.getElementById('1D-fourier'));
 infoDisplays.push(document.getElementById('2D-fourier'));
 infoDisplays.push(document.getElementById('chaos-game'));
+infoDisplays.push(document.getElementById('random-walkers'));
+infoDisplays.push(document.getElementById('network'));
 
 var infoLinks = [];
 infoLinks.push(document.getElementById('3D-fractal-tree-link'));
@@ -43,18 +47,23 @@ infoLinks.push(document.getElementById('mass-spring-link'));
 infoLinks.push(document.getElementById('1D-fourier-link'));
 infoLinks.push(document.getElementById('2D-fourier-link'));
 infoLinks.push(document.getElementById('chaos-game-link'));
+infoLinks.push(document.getElementById('random-walkers-link'));
+infoLinks.push(document.getElementById('network-link'));
 
 var cursor = [undefined, undefined]; // Stores cursor coordinates
 var displayedID = undefined; // Stores ID of "circle" currently dispayed
 var paused = false; // Stores animation pause state
+var currentCategory = 0;
 
 // Cicle object
-function Circle(position, velocity, radius, color, source) {
+function Circle(position, velocity, radius, color, source, category) {
     this.position = position; // Circle position vector
     this.velocity = velocity; // Circle velocity vector
     this.radius = radius; // Circle radius
     this.color = color; // Circle base color
     this.source = source; // Circle image source
+    this.category = category; // Circle project category
+    this.moveType = category; // Circle movement type ()
 
     // Draws circle on canvas
     this.draw = function() {
@@ -70,15 +79,14 @@ function Circle(position, velocity, radius, color, source) {
         this.draw();
         
         // Updates position and velocity if the animation isn't paused
-        if (!paused) {
+        if (!paused && this.moveType !== 1) {
             // Checks for collision between circles
             for (let i = 0; i < circleArray.length; i++) {
-                if (this === circleArray[i]) continue;
+                if (this === circleArray[i] || this.moveType === 2) continue;
                 // Resolves the collision between circles if they have collided
                 if (distBetween(this.position, circleArray[i].position) - this.radius * 2 < 0) {
                     resolveCollision(this, circleArray[i]);
                 }
-
             }
 
             // Checks for wall collision, if so flips velocity
@@ -93,6 +101,14 @@ function Circle(position, velocity, radius, color, source) {
             // Increments position by velocity
             this.position[0] += this.velocity[0];
             this.position[1] += this.velocity[1];
+        }
+
+        if (this.moveType === 1) {
+            if (this.position[1] < 2*canvas.height) {
+                this.velocity[1] += 0.2;
+                this.position[0] += this.velocity[0];
+                this.position[1] += this.velocity[1];
+            }
         }
     }
 }
@@ -172,10 +188,18 @@ function checkHover() {
 // Displays info panel corresponding to hovered over circle
 function infoDisplayOn() {
     document.getElementById('main-container').style.display = 'none';
+    document.getElementById('update-container').style.display = 'none';
+    document.getElementById('category-select-container').style.display = 'none';
     document.getElementById('info-container').style.display = 'flex';
     document.getElementById('link-container').style.display = 'flex';
     infoDisplays[displayedID].style.display = 'flex';
     infoLinks[displayedID].style.display = 'block';
+    for (var i = 0; i < infoDisplays.length; i++) {
+        if (i !== displayedID) {
+            infoDisplays[i].style.display = 'none';  
+            infoLinks[i].style.display = 'none';  
+        }
+    }
     // Changes position of info panel to left or right of screen depending on circle position
     if (circleArray[displayedID].position[0] < canvas.width/2) {
         document.getElementById('info-container').style.left = '57%';
@@ -190,11 +214,43 @@ function infoDisplayOn() {
 // Turns of info display
 function infoDisplayOff() {
     document.getElementById('main-container').style.display = 'flex';
+    document.getElementById('update-container').style.display = 'flex';
+    document.getElementById('category-select-container').style.display = 'flex';
     document.getElementById('info-container').style.display = 'none';
     document.getElementById('link-container').style.display = 'none';
-    infoDisplays[displayedID].style.display = 'none';  
-    infoLinks[displayedID].style.display = 'none';  
+    for (var i = 0; i < infoDisplays.length; i++) {
+        infoDisplays[i].style.display = 'none';  
+        infoLinks[i].style.display = 'none';  
+    }
     displayedID = undefined;
+}
+
+// Category Switch
+function categorySwitch(category) {
+    if (category === currentCategory) {
+        return;
+    }
+    currentCategory = category;
+    for (var i = 0; i < circleArray.length; i++) {
+        if (circleArray[i].category !== category) {
+            circleArray[i].moveType = 1;
+        }
+        else {
+            circleArray[i].moveType = 2;
+            circleArray[i].position = [canvas.width/2,canvas.height/2];
+            circleArray[i].velocity = [(Math.random()+1)*(2*Math.round(Math.random())-1),(Math.random()+1)*(2*Math.round(Math.random())-1)]
+        }
+    }
+    window.setTimeout(reCollide, 10000);
+}
+
+// Re-enables collision
+function reCollide() {
+    for (var i = 0; i < circleArray.length; i++) {
+        if (circleArray[i].moveType === 2) {
+            circleArray[i].moveType = 0;
+        }
+    }
 }
 
 // Animation loop
@@ -211,7 +267,8 @@ function animate() {
 var circleArray = [];
 var circleRadius = canvas.height/13; // Default circle radius
 var colors = ['#175676','#BA324F','#D62839','#4BA3C3']; // Possible circle colors
-var numCircles = images.length; // Number of circles
+var numCircles = 11; // Number of circles
+var numMath = 9; // Number of math projects
 
 // Creates and defines a circle for each project
 for (var i = 0; i < numCircles; i++){
@@ -224,7 +281,12 @@ for (var i = 0; i < numCircles; i++){
             j = -1;
         }
     }
-    circleArray.push(new Circle(randPos, randVel, circleRadius, randColor, images[i]));
+    if (i < numMath) {
+        circleArray.push(new Circle(randPos, randVel, circleRadius, randColor, images[i], 0));
+    }
+    else {
+        circleArray.push(new Circle([canvas.width*2, canvas.height*2], [0,0], circleRadius, randColor, images[i], 1));
+    }
 }
 
 // Begins animation loop

@@ -26,6 +26,7 @@ canvas {
 	background-color: black;
 	height: 50%;
 	margin: 0 10px;
+	outline: none;
 }
 
 #return-button {
@@ -75,4 +76,22 @@ canvas {
 	height: 25px;
 	background: #660007; 
 	cursor: pointer; 
+}
+
+@media (pointer: none), (pointer:coarse) {
+	#interactivity-container {
+		flex-direction: column;
+	}
+	.slider-container h1 {
+		font-size: 12px;
+	}
+}
+
+@media only screen and (max-width: 800px){
+	#interactivity-container {
+		flex-direction: column;
+	}
+	.slider-container h1 {
+		font-size: 12px;
+	}
 }

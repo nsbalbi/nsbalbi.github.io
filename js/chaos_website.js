@@ -90,9 +90,6 @@ ruleSlider.oninput = function() {
 
 distSlider.oninput = function() {
     distVar = this.value;
-    if (this.value == 0) {
-        distVar = 1/3;
-    }
     distSlider.parentElement.children[0].innerHTML = "Step Size Ratio: " + distVar;
 }
 
