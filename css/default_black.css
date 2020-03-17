@@ -85,6 +85,9 @@ canvas {
 	.slider-container h1 {
 		font-size: 12px;
 	}
+	.slider-container {
+		width: 60%;
+	}
 }
 
 @media only screen and (max-width: 800px){
@@ -93,5 +96,8 @@ canvas {
 	}
 	.slider-container h1 {
 		font-size: 12px;
+	}
+	.slider-container {
+		width: 60%;
 	}
 }

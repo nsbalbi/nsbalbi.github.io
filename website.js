@@ -241,7 +241,7 @@ function categorySwitch(category) {
             circleArray[i].velocity = [(Math.random()+1)*(2*Math.round(Math.random())-1),(Math.random()+1)*(2*Math.round(Math.random())-1)]
         }
     }
-    window.setTimeout(reCollide, 10000);
+    window.setTimeout(reCollide, 3000);
 }
 
 // Re-enables collision
