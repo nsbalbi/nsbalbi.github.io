@@ -21,6 +21,7 @@ images.push(document.getElementById("mass-spring-crop-img"));
 images.push(document.getElementById("1D-fourier-crop-img"));
 images.push(document.getElementById("2D-fourier-crop-img"));
 images.push(document.getElementById("chaos-game-crop-img"));
+images.push(document.getElementById("network-spread-crop-img"));
 images.push(document.getElementById("random-walkers-crop-img"));
 images.push(document.getElementById("network-crop-img"));
 
@@ -34,6 +35,7 @@ infoDisplays.push(document.getElementById('mass-spring'));
 infoDisplays.push(document.getElementById('1D-fourier'));
 infoDisplays.push(document.getElementById('2D-fourier'));
 infoDisplays.push(document.getElementById('chaos-game'));
+infoDisplays.push(document.getElementById('network-spread'));
 infoDisplays.push(document.getElementById('random-walkers'));
 infoDisplays.push(document.getElementById('network'));
 
@@ -47,6 +49,7 @@ infoLinks.push(document.getElementById('mass-spring-link'));
 infoLinks.push(document.getElementById('1D-fourier-link'));
 infoLinks.push(document.getElementById('2D-fourier-link'));
 infoLinks.push(document.getElementById('chaos-game-link'));
+infoLinks.push(document.getElementById('network-spread-link'));
 infoLinks.push(document.getElementById('random-walkers-link'));
 infoLinks.push(document.getElementById('network-link'));
 
@@ -267,8 +270,8 @@ function animate() {
 var circleArray = [];
 var circleRadius = canvas.height/13; // Default circle radius
 var colors = ['#175676','#BA324F','#D62839','#4BA3C3']; // Possible circle colors
-var numCircles = 11; // Number of circles
-var numMath = 9; // Number of math projects
+var numCircles = 12; // Number of circles
+var numMath = 10; // Number of math projects
 
 // Creates and defines a circle for each project
 for (var i = 0; i < numCircles; i++){
