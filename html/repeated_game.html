@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="ISO-8859-1">
+	<title>Repeated Games</title>
+	<link href="../css/repeated_game.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+	<canvas></canvas>
+	<div id="interactivity-container" class="container">
+		<div id="control-pannel-container" class="container">
+			<div id="heading-container" class="container">
+				<h1 id="mutate-text" class="heading">Mutate</h1>
+				<h1 id="initial-prop-text" class="heading">Initial Proportion</h1>
+			</div>
+			<div id="ALLC-container" class="slider-container">
+				<button id="ALLC-button" class="interactivity-button" onclick="mutate(1)">ALLC</button>
+				<input type="range" min="0" max="4" value="2" class="slider" id="ALLC-slider" step="1">
+				<h1 id="ALLC-slider-text">2</h1>
+			</div>
+			<div id="ALLD-container" class="slider-container">
+				<button id="ALLD-button" class="interactivity-button" onclick="mutate(2)">ALLD</button>
+				<input type="range" min="0" max="4" value="2" class="slider" id="ALLD-slider" step="1">
+				<h1 id="ALLD-slider-text">2</h1>
+			</div>
+			<div id="TFT-container" class="slider-container">
+				<button id="TFT-button" class="interactivity-button" onclick="mutate(3)">TFT</button>
+				<input type="range" min="0" max="4" value="2" class="slider" id="TFT-slider" step="1">
+				<h1 id="TFT-slider-text">2</h1>
+			</div>
+			<div id="WSLSC-container" class="slider-container">
+				<button id="WSLSC-button" class="interactivity-button" onclick="mutate(4)">WSLSC</button>
+				<input type="range" min="0" max="4" value="2" class="slider" id="WSLSC-slider" step="1">
+				<h1 id="WSLSC-slider-text">2</h1>
+			</div>
+			<div id="WSLSD-container" class="slider-container">
+				<button id="WSLSD-button" class="interactivity-button" onclick="mutate(5)">WSLSD</button>
+				<input type="range" min="0" max="4" value="2" class="slider" id="WSLSD-slider" step="1">
+				<h1 id="WSLSD-slider-text">2</h1>
+			</div>
+			<div id="kill-slider-container" class="slider-container">
+				<h1>Kill Percent: </h1>
+				<input type="range" min="0" max="99" value="50" class="slider" id="kill-slider" step="1">
+				<h1>50</h1>
+			</div>
+			<div class="slider-container">
+				<h1>Temptation: </h1>
+				<input type="range" min="-10" max="10" value="0" class="slider" id="temptation-slider" step="1">
+				<h1>0</h1>
+			</div>
+			<div class="slider-container">
+				<h1>Reward: </h1>
+				<input type="range" min="-10" max="10" value="-1" class="slider" id="reward-slider" step="1">
+				<h1>-1</h1>
+			</div>
+			<div class="slider-container">
+				<h1>Punishment: </h1>
+				<input type="range" min="-10" max="10" value="-2" class="slider" id="punishment-slider" step="1">
+				<h1>-2</h1>
+			</div>
+			<div class="slider-container">
+				<h1>Sucker: </h1>
+				<input type="range" min="-10" max="10" value="-3" class="slider" id="sucker-slider" step="1">
+				<h1>-3</h1>
+			</div>
+		</div>
+		<div id="reset-container" class="container">
+			<button id="reset-button" class="interactivity-button" onclick="reset();">Reset</button>
+		</div>
+	</div>
+	<img id="payoff-matrix-img" src="../Images/Prisoner's Dilemma Payoff Matrix.png" style="display: none;" height="100" width="100">
+	<script src="../js/repeated_game.js" type="text/javascript"></script>
+</body>
+
+</html>

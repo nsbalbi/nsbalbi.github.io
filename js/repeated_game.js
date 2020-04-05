@@ -1,0 +1,553 @@
+let canvas = document.querySelector('canvas');
+let c = canvas.getContext('2d');
+
+let payoffMatrixImg = document.getElementById("payoff-matrix-img");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let ALLDSlider = document.getElementById("ALLD-slider");
+let ALLCSlider = document.getElementById("ALLC-slider");
+let TFTSlider = document.getElementById("TFT-slider");
+let WSLSCSlider = document.getElementById("WSLSC-slider");
+let WSLSDSlider = document.getElementById("WSLSD-slider");
+let killSlider = document.getElementById("kill-slider");
+let temptationSlider = document.getElementById("temptation-slider");
+let rewardSlider = document.getElementById("reward-slider");
+let punishmentSlider = document.getElementById("punishment-slider");
+let suckerSlider = document.getElementById("sucker-slider");
+
+// Create Object with Draw and Update Functions Here
+function Player(x, y, type) {
+    this.type = type;
+    this.score = 0;
+    this.x = x;
+    this.y = y;
+    this.radius = 8;
+    this.scoredState = false;
+    this.connectedTo = undefined;
+    this.nextPlay = -1; // Player's strategy for upcoming game
+    this.lastPlay = -1; // Player's strategy from last game
+    this.lastFaced = -1; // Strategy the player last faced
+    this.lastScore = undefined;
+
+    this.draw = function() {
+        c.beginPath();
+        c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+        // Change color depending on state
+        if (this.type === 1) {
+            c.strokeStyle = "green";
+        }
+        else if (this.type === 2) {
+            c.strokeStyle = "red";
+        }
+        else if (this.type === 3) {
+            c.strokeStyle = "orange";
+        }
+        else if (this.type === 4) {
+            c.strokeStyle = "blue";
+        }
+        else if (this.type === 5) {
+            c.strokeStyle = "purple";
+        }
+        c.stroke();
+    }
+
+    this.drawScore = function() {
+        c.font = "12px Helvetica";
+        c.fillText(""+this.score,this.x-this.radius/2,this.y+this.radius/4);
+    }
+
+    this.drawConnection = function() {
+        if (this.connectedTo !== undefined) {
+            c.beginPath();
+            c.moveTo(this.x, this.y);
+            c.lineTo(this.connectedTo.x, this.connectedTo.y);
+            c.strokeStyle = "black";
+            c.stroke();
+        }
+    }
+
+    this.updateScore = function() {
+        if (this.scoredState === true) {
+            return;
+        }
+        let p1 = this;
+        let p2 = this.connectedTo;
+        if (p1.nextPlay === 1 && p2.nextPlay === 1) {
+            p1.score += reward;
+            p2.score += reward;
+            p1.lastScore = reward;
+            p2.lastScore = reward;
+        }
+        else if (p1.nextPlay === 1 && p2.nextPlay === 2) {
+            p1.score += sucker;
+            p2.score += temptation;
+            p1.lastScore = sucker;
+            p2.lastScore = temptation;
+        }
+        else if (p1.nextPlay === 2 && p2.nextPlay === 1) {
+            p1.score += temptation;
+            p2.score += sucker;
+            p1.lastScore = temptation;
+            p2.lastScore = sucker;
+        }
+        else {
+            p1.score += punishment;
+            p2.score += punishment;
+            p1.lastScore = punishment;
+            p2.lastScore = punishment;
+        }
+        p1.lastFaced = p2.nextPlay;
+        p2.lastFaced = p1.nextPlay;
+        this.scoredState = true;
+        this.connectedTo.scoredState = true;
+    }
+
+    this.updateStrategy = function() {
+        if (this.type === 1) { // ALLC
+            this.nextPlay = 1;
+        }
+        if (this.type === 2) { // ALLD
+            this.nextPlay = 2;
+        }
+        if (this.type === 3) { // TFT (Initial Coop)
+            if (this.lastFaced === -1) {
+                this.nextPlay = 1;
+            }
+            else {
+                this.nextPlay = this.lastFaced;
+            }
+        }
+        if (this.type === 4) { // WSLS (Initial Coop)
+            if (this.lastScore === temptation | this.lastScore === reward) {
+                this.nextPlay = this.lastPlay;
+            }
+            else {
+                if (this.lastPlay === 1) {
+                    this.nextPlay = 2;
+                }
+                else {
+                    this.nextPlay = 1;
+                }
+            }
+        }
+        if (this.type === 5) { // WSLS (Initial Defect)
+            if (this.lastScore === temptation | this.lastScore === reward) {
+                this.nextPlay = this.lastPlay;
+            }
+            else {
+                if (this.lastPlay === 2) {
+                    this.nextPlay = 1;
+                }
+                else {
+                    this.nextPlay = 2;
+                }
+            }
+        }
+        this.lastPlay = this.nextPlay;
+    }
+}
+
+/* window.addEventListener('click', 
+    function(event) {
+        iterate();
+}) */
+
+window.addEventListener('keydown',
+    function(event) {
+        if (event.keyCode === 32) {
+            play();
+        }
+        else if (event.keyCode === 13) {
+            nextGen();
+        }
+        else if (event.keyCode === 39 | event.keyCode === 73) {
+            iterate();
+        }
+        else if (event.keyCode === 82) {
+            reset();
+        }
+})
+
+ALLCSlider.oninput = function() {
+    propALLC = parseInt(this.value);
+    ALLCSlider.parentElement.children[2].innerHTML = propALLC;
+}
+ALLDSlider.oninput = function() {
+    propALLD = parseInt(this.value);
+    ALLDSlider.parentElement.children[2].innerHTML = propALLD;
+}
+TFTSlider.oninput = function() {
+    propTFT = parseInt(this.value);
+    TFTSlider.parentElement.children[2].innerHTML = propTFT;
+}
+WSLSCSlider.oninput = function() {
+    propWSLSC = parseInt(this.value);
+    WSLSCSlider.parentElement.children[2].innerHTML = propWSLSC;
+}
+WSLSDSlider.oninput = function() {
+    propWSLSD = parseInt(this.value);
+    WSLSDSlider.parentElement.children[2].innerHTML = propWSLSD;
+}
+
+killSlider.oninput = function() {
+    killPercent = parseInt(this.value)/100;
+    killSlider.parentElement.children[2].innerHTML = Math.round(killPercent*100);
+}
+
+temptationSlider.oninput = function() {
+    temptation = parseInt(this.value);
+    temptationSlider.parentElement.children[2].innerHTML = temptation;
+}
+rewardSlider.oninput = function() {
+    reward = parseInt(this.value);
+    rewardSlider.parentElement.children[2].innerHTML = reward;
+}
+punishmentSlider.oninput = function() {
+    punishment = parseInt(this.value);
+    punishmentSlider.parentElement.children[2].innerHTML = punishment;
+}
+suckerSlider.oninput = function() {
+    sucker = parseInt(this.value);
+    suckerSlider.parentElement.children[2].innerHTML = sucker;
+}
+ 
+// Hepler function that generates a node recursively given boundary
+function generatePlayer(type) {
+    // Generates random coordinates
+    var x = Math.random()*(canvas.width-playerWindowDefault-playerWindowRight)+playerWindowDefault;
+    var y = Math.random()*(canvas.height-2*playerWindowDefault)+playerWindowDefault;
+    // Creates node
+    var newPlayer = new Player(x, y, type);
+    // Repeats this function until a node meeting the boundary limit is found
+    for (var i = 0; i < players.length; i++) {
+        if (Math.abs(newPlayer.x - players[i].x) < playerBoundary && Math.abs(newPlayer.y - players[i].y) < playerBoundary) {
+            newPlayer = generatePlayer(type);
+        }
+    }
+    // Returns the successfully placed node
+    return newPlayer;
+}
+
+// Draws everything
+function drawAll() {
+    c.clearRect(0, 0, innerWidth, innerHeight);
+    for (var i = 0; i < players.length; i++) {
+        players[i].draw();
+        players[i].drawConnection();
+    }
+    drawGraph();
+    drawMatrixImg();
+}
+
+// Draws payoff matrix image
+function drawMatrixImg() {
+    c.drawImage(payoffMatrixImg, graphWindowLeft, spacing, canvas.width/3-spacing, canvas.height*9/24);
+}
+
+// Draws graph
+function drawGraph() {
+    let graphScaleY = (graphWindowTop-graphWindowBottom)/numPlayers;
+    let graphScaleX = (graphWindowRight-graphWindowLeft)/(iterations);
+    c.strokeStyle = "black";
+    c.beginPath();
+    c.moveTo(graphWindowLeft,graphWindowTop);
+    c.lineTo(graphWindowLeft,graphWindowBottom);
+    c.lineTo(graphWindowRight,graphWindowBottom);
+    c.stroke();
+    if (iterations === 0) {
+        return;
+    }
+    c.strokeStyle = "green";
+    c.beginPath();
+    c.moveTo(graphWindowLeft,graphWindowBottom+graphScaleY*p1Record[0]);
+    for (var i = 1; i < p1Record.length; i++) {
+        c.lineTo(graphWindowLeft+graphScaleX*i,graphWindowBottom+graphScaleY*p1Record[i]);
+    }
+    c.stroke();
+    c.strokeStyle = "red";
+    c.beginPath();
+    c.moveTo(graphWindowLeft,graphWindowBottom+graphScaleY*p2Record[0]);
+    for (var i = 1; i < p2Record.length; i++) {
+        c.lineTo(graphWindowLeft+graphScaleX*i,graphWindowBottom+graphScaleY*p2Record[i]);
+    }
+    c.stroke();
+    c.strokeStyle = "orange";
+    c.beginPath();
+    c.moveTo(graphWindowLeft,graphWindowBottom+graphScaleY*p3Record[0]);
+    for (var i = 1; i < p3Record.length; i++) {
+        c.lineTo(graphWindowLeft+graphScaleX*i,graphWindowBottom+graphScaleY*p3Record[i]);
+    }
+    c.stroke();
+    c.strokeStyle = "blue";
+    c.beginPath();
+    c.moveTo(graphWindowLeft,graphWindowBottom+graphScaleY*p4Record[0]);
+    for (var i = 1; i < p4Record.length; i++) {
+        c.lineTo(graphWindowLeft+graphScaleX*i,graphWindowBottom+graphScaleY*p4Record[i]);
+    }
+    c.stroke();
+    c.strokeStyle = "purple";
+    c.beginPath();
+    c.moveTo(graphWindowLeft,graphWindowBottom+graphScaleY*p5Record[0]);
+    for (var i = 1; i < p5Record.length; i++) {
+        c.lineTo(graphWindowLeft+graphScaleX*i,graphWindowBottom+graphScaleY*p5Record[i]);
+    }
+    c.stroke();
+}
+
+// Draws scores on players
+function drawAllScore() {
+    for (var i = 0; i < players.length; i++) {
+        players[i].drawScore();
+    }
+}
+
+// Shuffles array
+function shuffle(array) {
+    array.sort(() => Math.random() - 0.5);
+}
+
+// Resets player internal values
+function resetPlayers() {
+    for (var i = 0; i < players.length; i++) {
+        players[i].score = 0;
+        players[i].nextPlay = -1;
+        players[i].lastPlay = -1; 
+        players[i].lastFaced = -1; 
+        players[i].lastScore = undefined;
+    }
+}   
+
+// Counts players by type, records
+function countPlayerTypes() {
+    count = new Array(numTypes).fill(0);
+    for (var i = 0; i < numPlayers; i++) {
+        count[players[i].type-1]++;
+    }
+    p1Record.push(count[0]);
+    p2Record.push(count[1]);
+    p3Record.push(count[2]);
+    p4Record.push(count[3]);
+    p5Record.push(count[4]);
+    //console.log("Defectors: "+defectors+" Cooperators: "+cooperators);
+}
+
+// Generates connections between players
+function connect() {
+    for (var i = 0; i < players.length; i++) {
+        while (players[i].connectedTo === undefined) {
+            var opponent = players[Math.floor(players.length*Math.random())];
+            if (opponent.connectedTo === undefined && opponent !== players[i]) {
+                players[i].connectedTo = opponent;
+                opponent.connectedTo = players[i];
+                if (!iterating) {
+                    players[i].drawConnection();
+                }
+            }
+        }
+    }
+}
+ 
+// Connects players if unconnected and then runs one play of PD
+function play() {
+    drawAll();
+    if (players[0].connectedTo === undefined) {
+        connect();
+    }
+    for (var i = 0; i < players.length; i++) {
+        players[i].updateStrategy();
+    }
+    for (var i = 0; i < players.length; i++) {
+        players[i].updateScore();
+    }
+    for (var i = 0; i < players.length; i++) {
+        players[i].scoredState = false;
+    }
+    drawAllScore();
+}
+
+// Logs generation, kills weak, repopulates
+function nextGen() {
+    for (var i = 0; i < players.length; i++) {
+        players[i].connectedTo = undefined;
+    }
+    iterations++;
+    players.sort(compare);
+    // Kill
+    for (var i = 0; i < killNum; i++) {
+        players.shift();
+    }
+    // Repopulate
+    shuffle(players);
+    // AS OF NOW RANDOM PLAYERS REPOPULATE FIRST, MAY WANT TO CHANGE TO HIGHEST SCORE FIRST
+    while (players.length < numPlayers) {
+        for (var j = 0; j < surviveNum; j++) {
+            if (players.length < numPlayers) {
+                players.push(generatePlayer(players[j].type));
+            }
+        }
+    }
+    resetPlayers();
+    countPlayerTypes();
+    drawAll();
+}
+
+// Ensures that players with same scores are sorted randomly before killing
+function compare(a,b) {
+    let scoreDif = a.score - b.score;
+    if (scoreDif !== 0) {
+        return scoreDif;
+    }
+    else {
+        return Math.random() - 0.5;
+    }
+}
+
+// Removes player from player list
+function removeObj(obj) {
+    var index;
+    for (var i = 0; i < players.length; i++) {
+        if (players[i] === obj) {
+            index = i;
+        }
+    }
+    return players.splice(index,1);
+}
+
+function mutate(type) {
+    var randID = Math.floor(Math.random()*players.length);
+    players[randID].type = type;
+    drawAll();
+}
+
+// Runs through one generation (consisting of 25 plays)
+function iterate() {
+    iterating = true;
+    for (var i = 0; i < 25; i++) {
+        play();
+    }
+    nextGen();
+    iterating = false;
+}
+
+function reset() {
+    players = [];
+    iterations = 0;
+    p1Record = [];
+    p2Record = [];
+    p3Record = [];
+    p4Record = [];
+    p5Record = [];
+
+    killNum = Math.floor(killPercent*numPlayers);
+    surviveNum = numPlayers - killNum;
+
+    var propSum = propALLD+propALLC+propTFT+propWSLSC+propWSLSD;
+    var numALLC = Math.round(propALLC/propSum*numPlayers);
+    var numALLD = Math.round(propALLD/propSum*numPlayers);
+    var numTFT = Math.round(propTFT/propSum*numPlayers);
+    var numWSLSC = Math.round(propWSLSC/propSum*numPlayers);
+    var numWSLSD = Math.round(propWSLSD/propSum*numPlayers);
+
+    var typeNums = [numALLC,numALLD,numTFT,numWSLSC,numWSLSD];
+    var typesChosen = [];
+    for (var i = 0; i < 5; i++) {
+        if (typeNums[i] !== 0) {
+            typesChosen.push(i+1);
+        }
+    }
+    shuffle(typesChosen);
+
+    for (var i = 0; i < numALLC; i++) {
+        players.push(generatePlayer(1));
+    }
+    for (var i = 0; i < numALLD; i++) {
+        players.push(generatePlayer(2));
+    }
+    for (var i = 0; i < numTFT; i++) {
+        players.push(generatePlayer(3));
+    }
+    for (var i = 0; i < numWSLSC; i++) {
+        players.push(generatePlayer(4));
+    }
+    for (var i = 0; i < numWSLSD; i++) {
+        players.push(generatePlayer(5));
+    }
+
+    // Adds extra players if rounding cuts off from reaching numPlayers
+    while (players.length < numPlayers) {
+        players.push(generatePlayer(typesChosen[0]));
+    }
+
+    // Removes any players over total number, randomly
+    shuffle(players);
+    while (players.length > numPlayers) {
+        players.pop();
+    }
+
+    countPlayerTypes();
+    drawAll();
+}
+
+// Spacing Variables
+let spacing = canvas.height/12;
+let playerWindowDefault = spacing;
+let playerWindowRight = 2*canvas.width/3+spacing/2;
+let graphWindowLeft = 2*canvas.width/3+spacing/2;
+let graphWindowTop = canvas.height/2+spacing/2;
+let graphWindowRight = canvas.width-spacing;
+let graphWindowBottom = canvas.height-spacing;
+let playerBoundary = 20;
+
+// Gamestate Variables
+let numPlayers = 100;
+let numTypes = 5;
+var killPercent = 0.50; // Between 0 and 1
+var killNum = Math.floor(killPercent*numPlayers);
+var surviveNum = numPlayers - killNum;
+
+let iterating = false;
+
+// Interactivity Variables
+let propALLD = 2;
+let propALLC = 2;
+let propTFT = 2;
+let propWSLSC = 2;
+let propWSLSD = 2;
+
+// Payoff Variables
+// T > R > P > S
+var temptation = 0;
+var reward = -1;
+var punishment = -2;
+var sucker = -3;
+
+// Initialization variables
+var players = [];
+var iterations = 0;
+var p1Record = [];
+var p2Record = [];
+var p3Record = [];
+var p4Record = [];
+var p5Record = [];
+
+for (var i = 0; i < 20; i++) {
+    players.push(generatePlayer(1));
+}
+for (var i = 0; i < 20; i++) {
+    players.push(generatePlayer(2));
+}
+for (var i = 0; i < 20; i++) {
+    players.push(generatePlayer(3));
+}
+for (var i = 0; i < 20; i++) {
+    players.push(generatePlayer(4));
+}
+for (var i = 0; i < 20; i++) {
+    players.push(generatePlayer(5));
+}
+
+countPlayerTypes();
+
+drawAll();
