@@ -8,9 +8,12 @@ canvas.height = window.innerHeight;
 
 let ALLDSlider = document.getElementById("ALLD-slider");
 let ALLCSlider = document.getElementById("ALLC-slider");
-let TFTSlider = document.getElementById("TFT-slider");
+let TFTCSlider = document.getElementById("TFTC-slider");
+let TFTDSlider = document.getElementById("TFTD-slider");
 let WSLSCSlider = document.getElementById("WSLSC-slider");
 let WSLSDSlider = document.getElementById("WSLSD-slider");
+let TRGCSlider = document.getElementById("TRGC-slider");
+let TRGDSlider = document.getElementById("TRGD-slider");
 let killSlider = document.getElementById("kill-slider");
 let temptationSlider = document.getElementById("temptation-slider");
 let rewardSlider = document.getElementById("reward-slider");
@@ -49,6 +52,15 @@ function Player(x, y, type) {
         }
         else if (this.type === 5) {
             c.strokeStyle = "purple";
+        }
+        else if (this.type === 6) {
+            c.strokeStyle = "palevioletred";
+        }
+        else if (this.type === 7) {
+            c.strokeStyle = "turquoise";
+        }
+        else if (this.type === 8) {
+            c.strokeStyle = "brown";
         }
         c.stroke();
     }
@@ -111,7 +123,7 @@ function Player(x, y, type) {
         if (this.type === 2) { // ALLD
             this.nextPlay = 2;
         }
-        if (this.type === 3) { // TFT (Initial Coop)
+        if (this.type === 3) { // TFTC (Initial Coop)
             if (this.lastFaced === -1) {
                 this.nextPlay = 1;
             }
@@ -143,6 +155,30 @@ function Player(x, y, type) {
                 else {
                     this.nextPlay = 2;
                 }
+            }
+        }
+        if (this.type === 6) { // TFTD (Initial Defect)
+            if (this.lastFaced === -1) {
+                this.nextPlay = 2;
+            }
+            else {
+                this.nextPlay = this.lastFaced;
+            }
+        }
+        if (this.type === 7) { // TRGC (Initial Cooperate)
+            if (this.lastFaced === 2 || this.lastPlay === 2) {
+                this.nextPlay = 2;
+            }
+            else {
+                this.nextPlay = 1;
+            }
+        }
+        if (this.type === 8) { // TRGD (Initial Defect)
+            if (this.lastFaced === 1 || this.lastPlay === 1) {
+                this.nextPlay = 1;
+            }
+            else {
+                this.nextPlay = 2;
             }
         }
         this.lastPlay = this.nextPlay;
@@ -178,9 +214,9 @@ ALLDSlider.oninput = function() {
     propALLD = parseInt(this.value);
     ALLDSlider.parentElement.children[2].innerHTML = propALLD;
 }
-TFTSlider.oninput = function() {
-    propTFT = parseInt(this.value);
-    TFTSlider.parentElement.children[2].innerHTML = propTFT;
+TFTCSlider.oninput = function() {
+    propTFTC = parseInt(this.value);
+    TFTCSlider.parentElement.children[2].innerHTML = propTFTC;
 }
 WSLSCSlider.oninput = function() {
     propWSLSC = parseInt(this.value);
@@ -189,6 +225,18 @@ WSLSCSlider.oninput = function() {
 WSLSDSlider.oninput = function() {
     propWSLSD = parseInt(this.value);
     WSLSDSlider.parentElement.children[2].innerHTML = propWSLSD;
+}
+TFTDSlider.oninput = function() {
+    propTFTD = parseInt(this.value);
+    TFTDSlider.parentElement.children[2].innerHTML = propTFTD;
+}
+TRGCSlider.oninput = function() {
+    propTRGC = parseInt(this.value);
+    TRGCSlider.parentElement.children[2].innerHTML = propTRGC;
+}
+TRGDSlider.oninput = function() {
+    propTRGD = parseInt(this.value);
+    TRGDSlider.parentElement.children[2].innerHTML = propTRGD;
 }
 
 killSlider.oninput = function() {
@@ -294,6 +342,27 @@ function drawGraph() {
         c.lineTo(graphWindowLeft+graphScaleX*i,graphWindowBottom+graphScaleY*p5Record[i]);
     }
     c.stroke();
+    c.strokeStyle = "palevioletred";
+    c.beginPath();
+    c.moveTo(graphWindowLeft,graphWindowBottom+graphScaleY*p6Record[0]);
+    for (var i = 1; i < p6Record.length; i++) {
+        c.lineTo(graphWindowLeft+graphScaleX*i,graphWindowBottom+graphScaleY*p6Record[i]);
+    }
+    c.stroke();
+    c.strokeStyle = "turquoise";
+    c.beginPath();
+    c.moveTo(graphWindowLeft,graphWindowBottom+graphScaleY*p7Record[0]);
+    for (var i = 1; i < p7Record.length; i++) {
+        c.lineTo(graphWindowLeft+graphScaleX*i,graphWindowBottom+graphScaleY*p7Record[i]);
+    }
+    c.stroke();
+    c.strokeStyle = "brown";
+    c.beginPath();
+    c.moveTo(graphWindowLeft,graphWindowBottom+graphScaleY*p8Record[0]);
+    for (var i = 1; i < p8Record.length; i++) {
+        c.lineTo(graphWindowLeft+graphScaleX*i,graphWindowBottom+graphScaleY*p8Record[i]);
+    }
+    c.stroke();
 }
 
 // Draws scores on players
@@ -330,6 +399,9 @@ function countPlayerTypes() {
     p3Record.push(count[2]);
     p4Record.push(count[3]);
     p5Record.push(count[4]);
+    p6Record.push(count[5]);
+    p7Record.push(count[6]);
+    p8Record.push(count[7]);
     //console.log("Defectors: "+defectors+" Cooperators: "+cooperators);
 }
 
@@ -439,18 +511,24 @@ function reset() {
     p3Record = [];
     p4Record = [];
     p5Record = [];
+    p6Record = [];
+    p7Record = [];
+    p8Record = [];
 
     killNum = Math.floor(killPercent*numPlayers);
     surviveNum = numPlayers - killNum;
 
-    var propSum = propALLD+propALLC+propTFT+propWSLSC+propWSLSD;
+    var propSum = propALLD+propALLC+propTFTC+propWSLSC+propWSLSD+propTFTD+propTRGC+propTRGD;
     var numALLC = Math.round(propALLC/propSum*numPlayers);
     var numALLD = Math.round(propALLD/propSum*numPlayers);
-    var numTFT = Math.round(propTFT/propSum*numPlayers);
+    var numTFTC = Math.round(propTFTC/propSum*numPlayers);
     var numWSLSC = Math.round(propWSLSC/propSum*numPlayers);
     var numWSLSD = Math.round(propWSLSD/propSum*numPlayers);
+    var numTFTD = Math.round(propTFTD/propSum*numPlayers);
+    var numTRGC = Math.round(propTRGC/propSum*numPlayers);
+    var numTRGD = Math.round(propTRGD/propSum*numPlayers);
 
-    var typeNums = [numALLC,numALLD,numTFT,numWSLSC,numWSLSD];
+    var typeNums = [numALLC,numALLD,numTFTC,numWSLSC,numWSLSD,numTFTD,numTRGC,numTRGD];
     var typesChosen = [];
     for (var i = 0; i < 5; i++) {
         if (typeNums[i] !== 0) {
@@ -465,7 +543,7 @@ function reset() {
     for (var i = 0; i < numALLD; i++) {
         players.push(generatePlayer(2));
     }
-    for (var i = 0; i < numTFT; i++) {
+    for (var i = 0; i < numTFTC; i++) {
         players.push(generatePlayer(3));
     }
     for (var i = 0; i < numWSLSC; i++) {
@@ -473,6 +551,15 @@ function reset() {
     }
     for (var i = 0; i < numWSLSD; i++) {
         players.push(generatePlayer(5));
+    }
+    for (var i = 0; i < numTFTD; i++) {
+        players.push(generatePlayer(6));
+    }
+    for (var i = 0; i < numTRGC; i++) {
+        players.push(generatePlayer(7));
+    }
+    for (var i = 0; i < numTRGD; i++) {
+        players.push(generatePlayer(8));
     }
 
     // Adds extra players if rounding cuts off from reaching numPlayers
@@ -502,7 +589,7 @@ let playerBoundary = 20;
 
 // Gamestate Variables
 let numPlayers = 100;
-let numTypes = 5;
+let numTypes = 8;
 var killPercent = 0.50; // Between 0 and 1
 var killNum = Math.floor(killPercent*numPlayers);
 var surviveNum = numPlayers - killNum;
@@ -512,9 +599,12 @@ let iterating = false;
 // Interactivity Variables
 let propALLD = 2;
 let propALLC = 2;
-let propTFT = 2;
+let propTFTC = 2;
 let propWSLSC = 2;
 let propWSLSD = 2;
+let propTFTD = 2;
+let propTRGC = 2;
+let propTRGD = 2;
 
 // Payoff Variables
 // T > R > P > S
@@ -531,23 +621,8 @@ var p2Record = [];
 var p3Record = [];
 var p4Record = [];
 var p5Record = [];
+var p6Record = [];
+var p7Record = [];
+var p8Record = [];
 
-for (var i = 0; i < 20; i++) {
-    players.push(generatePlayer(1));
-}
-for (var i = 0; i < 20; i++) {
-    players.push(generatePlayer(2));
-}
-for (var i = 0; i < 20; i++) {
-    players.push(generatePlayer(3));
-}
-for (var i = 0; i < 20; i++) {
-    players.push(generatePlayer(4));
-}
-for (var i = 0; i < 20; i++) {
-    players.push(generatePlayer(5));
-}
-
-countPlayerTypes();
-
-drawAll();
+reset();

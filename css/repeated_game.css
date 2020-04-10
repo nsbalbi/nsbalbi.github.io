@@ -28,7 +28,6 @@ canvas {
 #control-pannel-container {
 	width: 91.66%;
 	height: auto;
-	border: 1px solid black;
 }
 
 #heading-container {
@@ -53,6 +52,7 @@ canvas {
 	font-size: 18px;
 	background-color: white;
 	height: 50%;
+	min-height: 25px;
 }
 
 .slider-container button {
@@ -71,7 +71,7 @@ canvas {
 .slider-container h1, .heading {
 	font-family: 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;
 	font-size: 18px;
-	margin: 15px 0;
+	margin: 8px 0;
 }
 
 .slider {
@@ -95,9 +95,15 @@ canvas {
 #ALLD-button { background-color: red; }
 #ALLC-slider::-webkit-slider-thumb { background: green; }
 #ALLC-button { background-color: green; }
-#TFT-slider::-webkit-slider-thumb { background: orange; }
-#TFT-button { background-color: orange; }
+#TFTC-slider::-webkit-slider-thumb { background: orange; }
+#TFTC-button { background-color: orange; }
 #WSLSC-slider::-webkit-slider-thumb { background: blue; }
 #WSLSC-button { background-color: blue; }
 #WSLSD-slider::-webkit-slider-thumb { background: purple; }
 #WSLSD-button { background-color: purple; }
+#TFTD-slider::-webkit-slider-thumb { background: palevioletred; }
+#TFTD-button { background-color: palevioletred; }
+#TRGC-slider::-webkit-slider-thumb { background: turquoise; }
+#TRGC-button { background-color: turquoise; }
+#TRGD-slider::-webkit-slider-thumb { background: brown; }
+#TRGD-button { background-color: brown; }
