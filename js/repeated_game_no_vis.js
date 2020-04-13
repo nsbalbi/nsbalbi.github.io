@@ -21,64 +21,15 @@ let punishmentSlider = document.getElementById("punishment-slider");
 let suckerSlider = document.getElementById("sucker-slider");
 
 // Create Object with Draw and Update Functions Here
-function Player(x, y, type) {
+function Player(type) {
     this.type = type;
     this.score = 0;
-    this.x = x;
-    this.y = y;
-    this.radius = 8;
     this.scoredState = false;
     this.connectedTo = undefined;
     this.nextPlay = -1; // Player's strategy for upcoming game
     this.lastPlay = -1; // Player's strategy from last game
     this.lastFaced = -1; // Strategy the player last faced
     this.lastScore = undefined;
-
-    this.draw = function() {
-        c.beginPath();
-        c.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-        // Change color depending on state
-        if (this.type === 1) {
-            c.strokeStyle = "green";
-        }
-        else if (this.type === 2) {
-            c.strokeStyle = "red";
-        }
-        else if (this.type === 3) {
-            c.strokeStyle = "orange";
-        }
-        else if (this.type === 4) {
-            c.strokeStyle = "blue";
-        }
-        else if (this.type === 5) {
-            c.strokeStyle = "purple";
-        }
-        else if (this.type === 6) {
-            c.strokeStyle = "palevioletred";
-        }
-        else if (this.type === 7) {
-            c.strokeStyle = "turquoise";
-        }
-        else if (this.type === 8) {
-            c.strokeStyle = "brown";
-        }
-        c.stroke();
-    }
-
-    this.drawScore = function() {
-        c.font = "12px Helvetica";
-        c.fillText(""+this.score,this.x-this.radius/2,this.y+this.radius/4);
-    }
-
-    this.drawConnection = function() {
-        if (this.connectedTo !== undefined) {
-            c.beginPath();
-            c.moveTo(this.x, this.y);
-            c.lineTo(this.connectedTo.x, this.connectedTo.y);
-            c.strokeStyle = "black";
-            c.stroke();
-        }
-    }
 
     this.updateScore = function() {
         if (this.scoredState === true) {
@@ -261,30 +212,14 @@ suckerSlider.oninput = function() {
     suckerSlider.parentElement.children[2].innerHTML = sucker;
 }
  
-// Hepler function that generates a node recursively given boundary
 function generatePlayer(type) {
-    // Generates random coordinates
-    var x = Math.random()*(canvas.width-playerWindowDefault-playerWindowRight)+playerWindowDefault;
-    var y = Math.random()*(canvas.height-2*playerWindowDefault)+playerWindowDefault;
-    // Creates node
-    var newPlayer = new Player(x, y, type);
-    // Repeats this function until a node meeting the boundary limit is found
-    for (var i = 0; i < players.length; i++) {
-        if (Math.abs(newPlayer.x - players[i].x) < playerBoundary && Math.abs(newPlayer.y - players[i].y) < playerBoundary) {
-            newPlayer = generatePlayer(type);
-        }
-    }
-    // Returns the successfully placed node
+    var newPlayer = new Player(type);
     return newPlayer;
 }
 
 // Draws everything
 function drawAll() {
     c.clearRect(0, 0, innerWidth, innerHeight);
-    for (var i = 0; i < players.length; i++) {
-        players[i].draw();
-        players[i].drawConnection();
-    }
     drawGraph();
     drawMatrixImg();
 }
@@ -365,13 +300,6 @@ function drawGraph() {
     c.stroke();
 }
 
-// Draws scores on players
-function drawAllScore() {
-    for (var i = 0; i < players.length; i++) {
-        players[i].drawScore();
-    }
-}
-
 // Shuffles array
 function shuffle(array) {
     array.sort(() => Math.random() - 0.5);
@@ -413,9 +341,6 @@ function connect() {
             if (opponent.connectedTo === undefined && opponent !== players[i]) {
                 players[i].connectedTo = opponent;
                 opponent.connectedTo = players[i];
-                if (!iterating) {
-                    players[i].drawConnection();
-                }
             }
         }
     }
@@ -436,7 +361,6 @@ function play() {
     for (var i = 0; i < players.length; i++) {
         players[i].scoredState = false;
     }
-    drawAllScore();
 }
 
 // Logs generation, kills weak, repopulates
@@ -580,7 +504,7 @@ function reset() {
 // Spacing Variables
 let spacing = canvas.height/12;
 let playerWindowDefault = spacing;
-let playerWindowRight = 2*canvas.width/3+spacing/2;
+let playerWindowRight = 2*canvas.width/2+spacing/2;
 let graphWindowLeft = 2*canvas.width/3+spacing/2;
 let graphWindowTop = canvas.height/2+spacing/2;
 let graphWindowRight = canvas.width-spacing;
@@ -588,7 +512,7 @@ let graphWindowBottom = canvas.height-spacing;
 let playerBoundary = 20;
 
 // Gamestate Variables
-let numPlayers = 100;
+let numPlayers = 1000;
 let numTypes = 8;
 var killPercent = 0.50; // Between 0 and 1
 var killNum = Math.floor(killPercent*numPlayers);
@@ -626,3 +550,39 @@ var p7Record = [];
 var p8Record = [];
 
 reset();
+
+var test_text = "test";
+
+var textFile = null,
+makeTextFile = function (text) {
+    var data = new Blob([text], {type: 'text/plain'});
+
+    // If we are replacing a previously generated file we need to
+    // manually revoke the object URL to avoid memory leaks.
+    if (textFile !== null) {
+        window.URL.revokeObjectURL(textFile);
+    }
+
+    textFile = window.URL.createObjectURL(data);
+
+    // returns a URL you can use as a href
+    return textFile;
+};
+
+let download_button = document.getElementById('download-button');
+let file_name_input = document.getElementById('file-name-input'); 
+
+download_button.addEventListener('click', function () {
+    var link = document.createElement('a');
+    link.setAttribute('download', file_name_input.value+'.txt');
+    //link.href = makeTextFile('ALLC '+p1Record.toString()+'\nALLD '+p2Record.toString()+'\nTFTC '+p3Record.toString()+'\nTFTD '+p6Record.toString()+'\nWSLSC '+p4Record.toString()+'\nWSLSD '+p5Record.toString()+'\nTRGC '+p7Record.toString()+'\nTRGD '+p8Record.toString());
+    link.href = makeTextFile(''+p1Record.toString()+'\n'+p2Record.toString()+'\n'+p3Record.toString()+'\n'+p6Record.toString()+'\n'+p4Record.toString()+'\n'+p5Record.toString()+'\n'+p7Record.toString()+'\n'+p8Record.toString());
+    document.body.appendChild(link);
+
+    // wait for the link to be added to the document
+    window.requestAnimationFrame(function () {
+        var event = new MouseEvent('click');
+        link.dispatchEvent(event);
+        document.body.removeChild(link);
+    });
+}, false);
