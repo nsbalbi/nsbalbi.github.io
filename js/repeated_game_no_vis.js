@@ -585,4 +585,9 @@ download_button.addEventListener('click', function () {
         link.dispatchEvent(event);
         document.body.removeChild(link);
     });
+
+    if (file_name_input.value.slice(-2,-1)==="_") {
+        let num = parseInt(file_name_input.value.slice(-1))+1
+        file_name_input.value = file_name_input.value.slice(0,-1)+num;
+    }
 }, false);
