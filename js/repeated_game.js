@@ -1,4 +1,4 @@
-let canvas = document.querySelector('canvas');
+var canvas = document.querySelector('canvas');
 let c = canvas.getContext('2d');
 
 let payoffMatrixImg = document.getElementById("payoff-matrix-img");
@@ -204,6 +204,24 @@ window.addEventListener('keydown',
         else if (event.keyCode === 82) {
             reset();
         }
+})
+
+// Handle window resize
+window.addEventListener('resize',
+    function(event) {
+        canvas = document.querySelector('canvas');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        // Reset spacing variables
+        spacing = canvas.height/12;
+        playerWindowDefault = spacing;
+        playerWindowRight = 2*canvas.width/3+spacing/2;
+        graphWindowLeft = 2*canvas.width/3+spacing/2;
+        graphWindowTop = canvas.height/2+spacing/2;
+        graphWindowRight = canvas.width-spacing;
+        graphWindowBottom = canvas.height-spacing;
+        reset();
+        drawAll();
 })
 
 ALLCSlider.oninput = function() {
@@ -578,13 +596,13 @@ function reset() {
 }
 
 // Spacing Variables
-let spacing = canvas.height/12;
-let playerWindowDefault = spacing;
-let playerWindowRight = 2*canvas.width/3+spacing/2;
-let graphWindowLeft = 2*canvas.width/3+spacing/2;
-let graphWindowTop = canvas.height/2+spacing/2;
-let graphWindowRight = canvas.width-spacing;
-let graphWindowBottom = canvas.height-spacing;
+var spacing = canvas.height/12;
+var playerWindowDefault = spacing;
+var playerWindowRight = 2*canvas.width/3+spacing/2;
+var graphWindowLeft = 2*canvas.width/3+spacing/2;
+var graphWindowTop = canvas.height/2+spacing/2;
+var graphWindowRight = canvas.width-spacing;
+var graphWindowBottom = canvas.height-spacing;
 let playerBoundary = 20;
 
 // Gamestate Variables

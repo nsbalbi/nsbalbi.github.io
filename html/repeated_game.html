@@ -12,73 +12,130 @@
 	<div id="interactivity-container" class="container">
 		<div id="control-pannel-container" class="container">
 			<div id="heading-container" class="container">
-				<h1 id="mutate-text" class="heading">Mutate</h1>
-				<h1 id="initial-prop-text" class="heading">Initial Proportion</h1>
+				<div class="h1-tooltip" id="mutate-tooltip">
+					<h1 id="mutate-text" class="heading">Mutate</h1>
+					<span class="tooltip-text">Press button to mutate a single member into that strategy</span>
+				</div>
+				<div class="h1-tooltip" id="initial-prop-tooltip">
+					<h1 id="initial-prop-text" class="heading">Initial Proportion</h1>
+					<span class="tooltip-text">Adjust ratio of initial population strategies</span>
+				</div>
 			</div>
 			<div id="ALLC-container" class="slider-container">
-				<button id="ALLC-button" class="interactivity-button" onclick="mutate(1)">ALLC</button>
-				<input type="range" min="0" max="100" value="2" class="slider" id="ALLC-slider" step="1">
+				<button id="ALLC-button" class="interactivity-button" onclick="mutate(1)">ALLC
+					<div class="button-tooltip">
+						<span class="tooltip-text"><u>Always Cooperate:</u><br>Cooperates every round</span>
+					</div>
+				</button>
+				<input type="range" min="0" max="10" value="2" class="slider" id="ALLC-slider" step="1">
 				<h1 id="ALLC-slider-text">2</h1>
 			</div>
 			<div id="ALLD-container" class="slider-container">
-				<button id="ALLD-button" class="interactivity-button" onclick="mutate(2)">ALLD</button>
-				<input type="range" min="0" max="100" value="2" class="slider" id="ALLD-slider" step="1">
+				<button id="ALLD-button" class="interactivity-button" onclick="mutate(2)">ALLD
+					<div class="button-tooltip">
+						<span class="tooltip-text"><u>Always Defect:</u><br>Defects every round</span>
+					</div>
+				</button>
+				<input type="range" min="0" max="10" value="2" class="slider" id="ALLD-slider" step="1">
 				<h1 id="ALLD-slider-text">2</h1>
 			</div>
 			<div id="TFTC-container" class="slider-container">
-				<button id="TFTC-button" class="interactivity-button" onclick="mutate(3)">TFTC</button>
-				<input type="range" min="0" max="100" value="0" class="slider" id="TFTC-slider" step="1">
+				<button id="TFTC-button" class="interactivity-button" onclick="mutate(3)">TFTC
+					<div class="button-tooltip">
+						<span class="tooltip-text"><u>Tit-for-Tat (C):</u><br>Plays action opponent played previous round. Initially cooperates.</span>
+					</div>
+				</button>
+				<input type="range" min="0" max="10" value="0" class="slider" id="TFTC-slider" step="1">
 				<h1 id="TFTC-slider-text">0</h1>
 			</div>
 			<div id="TFTD-container" class="slider-container">
-				<button id="TFTD-button" class="interactivity-button" onclick="mutate(6)">TFTD</button>
-				<input type="range" min="0" max="100" value="0" class="slider" id="TFTD-slider" step="1">
+				<button id="TFTD-button" class="interactivity-button" onclick="mutate(6)">TFTD
+					<div class="button-tooltip">
+						<span class="tooltip-text"><u>Tit-for-Tat (D):</u><br>Plays action opponent played previous round. Initially defects.</span>
+					</div>
+				</button>
+				<input type="range" min="0" max="10" value="0" class="slider" id="TFTD-slider" step="1">
 				<h1 id="TFTD-slider-text">0</h1>
 			</div>
 			<div id="WSLSC-container" class="slider-container">
-				<button id="WSLSC-button" class="interactivity-button" onclick="mutate(4)">WSLSC</button>
-				<input type="range" min="0" max="100" value="0" class="slider" id="WSLSC-slider" step="1">
+				<button id="WSLSC-button" class="interactivity-button" onclick="mutate(4)">WSLSC
+					<div class="button-tooltip">
+						<span class="tooltip-text"><u>Win-Stay Lost-Shift (C):</u><br>Switches strategies if revieves punishment or sucker. Initially cooperates.</span>
+					</div>
+				</button>
+				<input type="range" min="0" max="10" value="0" class="slider" id="WSLSC-slider" step="1">
 				<h1 id="WSLSC-slider-text">0</h1>
 			</div>
 			<div id="WSLSD-container" class="slider-container">
-				<button id="WSLSD-button" class="interactivity-button" onclick="mutate(5)">WSLSD</button>
-				<input type="range" min="0" max="100" value="0" class="slider" id="WSLSD-slider" step="1">
+				<button id="WSLSD-button" class="interactivity-button" onclick="mutate(5)">WSLSD
+					<div class="button-tooltip">
+						<span class="tooltip-text"><u>Win-Stay Lost-Shift (D):</u><br>Switches strategies if revieves punishment or sucker. Initially defects.</span>
+					</div>
+				</button>
+				<input type="range" min="0" max="10" value="0" class="slider" id="WSLSD-slider" step="1">
 				<h1 id="WSLSD-slider-text">0</h1>
 			</div>
 			<div id="TRGC-container" class="slider-container">
-				<button id="TRGC-button" class="interactivity-button" onclick="mutate(7)">TRGC</button>
-				<input type="range" min="0" max="100" value="0" class="slider" id="TRGC-slider" step="1">
+				<button id="TRGC-button" class="interactivity-button" onclick="mutate(7)">TRGC
+					<div class="button-tooltip">
+						<span class="tooltip-text"><u>Grim Trigger (C):</u><br>Initially always cooperates, permanently switches to defect if opponent defects.</span>
+					</div>
+				</button>
+				<input type="range" min="0" max="10" value="0" class="slider" id="TRGC-slider" step="1">
 				<h1 id="TRGC-slider-text">0</h1>
 			</div>
 			<div id="TRGD-container" class="slider-container">
-				<button id="TRGD-button" class="interactivity-button" onclick="mutate(8)">TRGD</button>
-				<input type="range" min="0" max="100" value="0" class="slider" id="TRGD-slider" step="1">
+				<button id="TRGD-button" class="interactivity-button" onclick="mutate(8)">TRGD
+					<div class="button-tooltip">
+						<span class="tooltip-text"><u>Grim Trigger (D):</u><br>Initially always defects, permanently switches to cooperate if opponent cooperates.</span>
+					</div>
+				</button>
+				<input type="range" min="0" max="10" value="0" class="slider" id="TRGD-slider" step="1">
 				<h1 id="TRGD-slider-text">0</h1>
 			</div>
 			<div id="kill-slider-container" class="slider-container">
-				<h1>Kill Percent: </h1>
+				<div class="h1-tooltip">
+					<h1>Kill Percent:</h1>
+					<span class="tooltip-text">Percentage of population eliminated each generation</span>
+				</div>
 				<input type="range" min="0" max="99" value="50" class="slider" id="kill-slider" step="1">
 				<h1>50</h1>
 			</div>
 			<div class="slider-container">
-				<h1>Temptation: </h1>
+				<div class="h1-tooltip">
+					<h1>Temptation:</h1>
+					<span class="tooltip-text">Payoff for defecting when facing cooperate</span>
+				</div>
 				<input type="range" min="-10" max="10" value="0" class="slider" id="temptation-slider" step="1">
 				<h1>0</h1>
 			</div>
 			<div class="slider-container">
-				<h1>Reward: </h1>
+				<div class="h1-tooltip">
+					<h1>Reward:</h1>
+					<span class="tooltip-text">Payoff for cooperating when facing cooperate</span>
+				</div>
 				<input type="range" min="-10" max="10" value="-1" class="slider" id="reward-slider" step="1">
 				<h1>-1</h1>
 			</div>
 			<div class="slider-container">
-				<h1>Punishment: </h1>
+				<div class="h1-tooltip">
+					<h1>Punishment:</h1>
+					<span class="tooltip-text">Payoff for defecting when facing defecting</span>
+				</div>
 				<input type="range" min="-10" max="10" value="-2" class="slider" id="punishment-slider" step="1">
 				<h1>-2</h1>
 			</div>
 			<div class="slider-container">
-				<h1>Sucker: </h1>
+				<div class="h1-tooltip">
+					<h1>Sucker:</h1>
+					<span class="tooltip-text">Payoff for cooperating when facing defect</span>
+				</div>
 				<input type="range" min="-10" max="10" value="-3" class="slider" id="sucker-slider" step="1">
 				<h1>-3</h1>
+			</div>
+			<div class="h1-tooltip" id="controls-tooltip">
+				<h1 id="controls-text">Hover for Controls</h1>
+				<span class="tooltip-text">Right-Arrow: Iterate over one generation (25 plays)<br>Space: Manually play one round<br>Enter: Manually end a generation<br>R: Reset shortcut<br>Click away from buttons/sliders before pressing keys</span>
 			</div>
 		</div>
 		<div id="reset-container" class="container">
