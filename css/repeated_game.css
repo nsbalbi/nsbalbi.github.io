@@ -61,12 +61,6 @@ canvas {
 	height: 60%;
 }
 
-#download-container {
-	position: absolute;
-	left: 8.33%;
-	top: 8.33%;
-}
-
 .slider-container {
 	display: flex;
 	justify-content: space-evenly;
@@ -187,3 +181,18 @@ canvas {
 #TRGC-button { background-color: turquoise; }
 #TRGD-slider::-webkit-slider-thumb { background: brown; }
 #TRGD-button { background-color: brown; }
+
+#return-button {
+	position: absolute;
+	width: 10%;
+	height: 75%;
+	top: 3%;
+	left: 1%;
+	background: transparent;
+}
+
+#return-button a {
+	color: black;
+	font-family: 'Gill Sans', 'Gill Sans MT', 'Trebuchet MS', sans-serif;
+	font-size: 18px;
+}
