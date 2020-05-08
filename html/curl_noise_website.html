@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="ISO-8859-1">
+	<title>Curl Noise | Nicholas Sbalbi</title>
+	<link href="../css/default_black.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+	<canvas></canvas>
+	<div id="interactivity-container">
+		<div class="slider-container">
+			<h1>Border Size: 0</h1>
+			<input type="range" min="-100" max="100" value="0" class="slider" id="border-slider" step="10">
+		</div>
+		<div class="slider-container">
+			<h1>Particle Spacing: 25</h1>
+			<input type="range" min="10" max="50" value="25" class="slider" id="spacing-slider" step="5">
+		</div>
+		<div class="slider-container">
+			<h1>Noise Scaling: 500</h1>
+			<input type="range" min="10" max="1000" value="500" class="slider" id="scaling-slider" step="10">
+		</div>
+		<div class="slider-container">
+			<h1>Start Type: Random</h1>
+			<input type="range" min="1" max="4" value="4" class="slider" id="start-slider" step="1">
+		</div>
+		<div class="slider-container">
+			<h1>Sim Type: Normal</h1>
+			<input type="range" min="1" max="3" value="1" class="slider" id="simType-slider" step="1">
+		</div>
+		<button id="reset-button" class="interactivity-button" onclick="reset();">Reset</button>
+	</div>
+	<div id="return-button">
+		<a href="../index.html">Return</a>
+	</div>
+	<script src="../js/perlin.js" type="text/javascript"></script>
+	<script src="../js/curl_noise_website.js" type="text/javascript"></script>
+</body>
+
+</html>

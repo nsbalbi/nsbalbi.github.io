@@ -10,57 +10,25 @@ var c = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+// Project name list
+var names = ["3D-fractal-tree","strange-attractor","2D-DLA","2D-fractal-tree","about","mass-spring","1D-fourier","2D-fourier","chaos-game","network-spread","repeated-games","curl-noise","random-walkers","network"];
+
 // Store website elements for future reference
 var images = [];
 // Math models
-images.push(document.getElementById("3D-fractal-tree-crop-img"));
-images.push(document.getElementById("strange-attractor-crop-img"));
-images.push(document.getElementById("2D-DLA-crop-img"));
-images.push(document.getElementById("2D-fractal-tree-crop-img"));
-images.push(document.getElementById("about-crop-img"));
-images.push(document.getElementById("mass-spring-crop-img"));
-images.push(document.getElementById("1D-fourier-crop-img"));
-images.push(document.getElementById("2D-fourier-crop-img"));
-images.push(document.getElementById("chaos-game-crop-img"));
-images.push(document.getElementById("network-spread-crop-img"));
-images.push(document.getElementById("repeated-games-crop-img"));
-// Generative art
-images.push(document.getElementById("random-walkers-crop-img"));
-images.push(document.getElementById("network-crop-img"));
+for (var i = 0; i < names.length; i++) {
+    images.push(document.getElementById(names[i]+"-crop-img"));
+}
 
 var infoDisplays = [];
-// Math models
-infoDisplays.push(document.getElementById('3D-fractal-tree'));
-infoDisplays.push(document.getElementById('strange-attractor'));
-infoDisplays.push(document.getElementById('2D-DLA'));
-infoDisplays.push(document.getElementById('2D-fractal-tree'));
-infoDisplays.push(document.getElementById('about'));
-infoDisplays.push(document.getElementById('mass-spring'));
-infoDisplays.push(document.getElementById('1D-fourier'));
-infoDisplays.push(document.getElementById('2D-fourier'));
-infoDisplays.push(document.getElementById('chaos-game'));
-infoDisplays.push(document.getElementById('network-spread'));
-infoDisplays.push(document.getElementById('repeated-games'));
-// Generative art
-infoDisplays.push(document.getElementById('random-walkers'));
-infoDisplays.push(document.getElementById('network'));
+for (var i = 0; i < names.length; i++) {
+    infoDisplays.push(document.getElementById(names[i]));
+}
 
 var infoLinks = [];
-// Math models
-infoLinks.push(document.getElementById('3D-fractal-tree-link'));
-infoLinks.push(document.getElementById('strange-attractor-link'));
-infoLinks.push(document.getElementById('2D-DLA-link'));
-infoLinks.push(document.getElementById('2D-fractal-tree-link'));
-infoLinks.push(document.getElementById('about-blank-link'));
-infoLinks.push(document.getElementById('mass-spring-link'));
-infoLinks.push(document.getElementById('1D-fourier-link'));
-infoLinks.push(document.getElementById('2D-fourier-link'));
-infoLinks.push(document.getElementById('chaos-game-link'));
-infoLinks.push(document.getElementById('network-spread-link'));
-infoLinks.push(document.getElementById('repeated-games-link'));
-// Generative art
-infoLinks.push(document.getElementById('random-walkers-link'));
-infoLinks.push(document.getElementById('network-link'));
+for (var i = 0; i < names.length; i++) {
+    infoLinks.push(document.getElementById(names[i]+"-link"));
+}
 
 var cursor = [undefined, undefined]; // Stores cursor coordinates
 var displayedID = undefined; // Stores ID of "circle" currently dispayed
@@ -131,6 +99,15 @@ window.addEventListener('mousemove',
         cursor[0] = event.x;
         cursor[1] = event.y;
         checkHover();
+})
+
+// Resets canvas on window resize
+window.addEventListener('resize',
+    function(event) {
+        canvas = document.querySelector('canvas');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        reset();
 })
 
 // Helper function that returns the distance between two positon vectors
@@ -265,6 +242,30 @@ function reCollide() {
     }
 }
 
+// Main reset/init function
+function reset() {
+    circleArray = [];
+    circleRadius = canvas.height/13;
+    // Creates and defines a circle for each project
+    for (var i = 0; i < numCircles; i++){
+        var randPos = [(canvas.width-2*circleRadius)*Math.random()+circleRadius, (canvas.height-2*circleRadius)*Math.random()+circleRadius];
+        var randVel = [(Math.random()+1)*(2*Math.round(Math.random())-1),(Math.random()+1)*(2*Math.round(Math.random())-1)];
+        var randColor = colors[Math.floor(colors.length*Math.random())];
+        for (var j = 0; j < circleArray.length; j++) {
+            if (distBetween(randPos, circleArray[j].position) < circleRadius*2) {
+                var randPos = [(canvas.width-2*circleRadius)*Math.random()+circleRadius, (canvas.height-2*circleRadius)*Math.random()+circleRadius];
+                j = -1;
+            }
+        }
+        if (i < numMath) {
+            circleArray.push(new Circle(randPos, randVel, circleRadius, randColor, images[i], 0));
+        }
+        else {
+            circleArray.push(new Circle([canvas.width*2, canvas.height*2], [0,0], circleRadius, randColor, images[i], 1));
+        }
+    }
+}
+
 // Animation loop
 function animate() {
     requestAnimationFrame(animate);
@@ -278,28 +279,11 @@ function animate() {
 
 var circleArray = [];
 var circleRadius = canvas.height/13; // Default circle radius
-var colors = ['#175676','#BA324F','#D62839','#4BA3C3']; // Possible circle colors
-var numCircles = 13; // Number of circles
-var numMath = 11; // Number of math projects
+let colors = ['#175676','#BA324F','#D62839','#4BA3C3']; // Possible circle colors
+let numCircles = 14; // Number of circles
+let numMath = 12; // Number of math projects
 
-// Creates and defines a circle for each project
-for (var i = 0; i < numCircles; i++){
-    var randPos = [(canvas.width-2*circleRadius)*Math.random()+circleRadius, (canvas.height-2*circleRadius)*Math.random()+circleRadius];
-    var randVel = [(Math.random()+1)*(2*Math.round(Math.random())-1),(Math.random()+1)*(2*Math.round(Math.random())-1)];
-    var randColor = colors[Math.floor(colors.length*Math.random())];
-    for (var j = 0; j < circleArray.length; j++) {
-        if (distBetween(randPos, circleArray[j].position) < circleRadius*2) {
-            var randPos = [(canvas.width-2*circleRadius)*Math.random()+circleRadius, (canvas.height-2*circleRadius)*Math.random()+circleRadius];
-            j = -1;
-        }
-    }
-    if (i < numMath) {
-        circleArray.push(new Circle(randPos, randVel, circleRadius, randColor, images[i], 0));
-    }
-    else {
-        circleArray.push(new Circle([canvas.width*2, canvas.height*2], [0,0], circleRadius, randColor, images[i], 1));
-    }
-}
-
+// Initialize animation
+reset();
 // Begins animation loop
 animate();
