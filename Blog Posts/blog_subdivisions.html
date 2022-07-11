@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="ISO-8859-1">
+  <title>Subdivisions - Nicholas Sbalbi</title>
+  <link href="../CSS/blog.css" rel="stylesheet" type="text/css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/stackoverflow-light.min.css">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body id="body">
+  <div class="arrow-container" id="home-button">
+    <span class="arrow-left" id="home-arrow"></span>
+  </div>
+  <div class="main" id="main">
+    <div class="title">
+      <h1>Subdivisions</h1>
+      <h3>Posted: 7/9/2022, Updated: 7/9/2022</h3>
+      <img class="badge" src="https://img.shields.io/badge/Made%20with-Processing-blue"><img class="badge" src="https://img.shields.io/badge/Made%20with-Java-orange"><img class="badge" src="https://img.shields.io/badge/Complexity-%E2%98%85%E2%98%85%E2%98%85%E2%98%85%E2%98%86-brightgreen">
+    </div>
+    <div class="content">
+      <p>I've always wanted to get around to making some blog posts/tutorials. It was <a href="https://bleuje.github.io/about/" target="_blank">Etienne Jacob's tutorials</a> that introduced me to
+        Processing (I previously used HTML Canvas) and inspired me to start posting on Twitter. Now with a few years of Processing under my belt, I seems a good a time as any to give it a shot!</p> 
+      <p>My main goal with these posts is not necessarily to provide instructions, but to introduce a range of topics across math, science, and coding. Through these introductions, I hope to 
+        arouse curiousity, provide inspiration, and maybe even teach you a thing or two.</p>
+      <p>For this inaugural post, we'll be taking a look at <b>subdivisions</b>. The name is pretty self-explainatory; we'll be taking an object (in this case a square) and dividing it into 
+        multiple pieces. Of course to make things more interesting, we'll then be dividing those pieces into more pieces, and so on. I chose this topic since it covers a number of concepts including
+        self-referential classes, looping techniques, and the dreaded <i>recursion</i>. Let's get started! Oh and FYI, we'll end up with something like this:
+      <div class="video-container"><video class="video" autoplay muted loop><source src="../Assets/Subdivision/subdivision1.mp4" type="video/mp4"></video></div>
+      <h2>The <code>Div</code> Class</h2>
+      <p>To represent each division (or div) in our system, we're going to need a class. This class will contain the div's properties along with methods to render and iterate the system. To
+        visualize a div, we'll draw a rectange defined by two x-y coordinates.
+      </p>
+      <pre><code class="java">class Div {
+  // Coordinates defining rectangle
+  float x1;
+  float y1;
+  float x2;
+  float y2;
+
+  Div(float x1, float y1, float x2, float y2) {
+    // Constructor for first div
+    this.x1 = x1;
+    this.y1 = y1;
+    this.x2 = x2;
+    this.y2 = y2;
+  }
+
+  void iterate() {
+    // Do something
+  }
+
+  void render() {
+    // Draw rectangle
+    rect(x1, y1, x2-x1, y2-y1);
+  }
+}     </code></pre>
+      <p>Back in our main file, we can use the following code to define and draw our first div:</p>
+      <pre><code class="java">float border = 50;  // border between main div and frame edge
+Div div1;  // intialize first div
+
+void setup() {
+  size(800, 800, P2D);
+  // construct first div
+  div1 = new Div(border, border, height-border, width-border);
+}
+
+void draw() {
+  background(200);
+  stroke(0);
+  strokeWeight(2);
+  fill(255);
+  
+  div1.render();  // render div
+}</code></pre>
+      <p>Which leads to this very interesting result:</p>
+      <div class="img-container"><img src="../Assets/Subdivision/subdivision2.png" style="width: 40%;"></div>
+      <h2>Self-Reference</h2>
+      <p>To iterate our system, we are going to split our first div into smaller divs. In other words, our parent div is going to split into multiple child divs. To implement this relationship, 
+        we first need to cover the idea of <b>self-reference</b>. Within object-oriented programming, a self-referential object is an object that contains a reference to an object of the same 
+        class. In simpler and more familiar terms, each div is going to contain references to its child divs and its parent div. The implementation of this in our class is 
+        shown below: (omitting unchanged methods/ constructors)</p>
+      <pre><code class="java">import java.util.ArrayList;
+
+class Div {
+  // Coordinates defining rectangle
+  float x1;
+  float y1;
+  float x2;
+  float y2;
+
+  Div parent;  // parent Div object
+  ArrayList&lt;Div> children = new ArrayList&lt;Div>();  // list of child Divs
+  int childID;  // ID of this div in it's parents children list
+
+  Div(float x1, float y1, float x2, float y2, Div parent, int childID) {
+    // Constructor for subsequent divs
+    this.x1 = x1;
+    this.y1 = y1;
+    this.x2 = x2;
+    this.y2 = y2;
+    this.parent = parent;
+    this.childID = childID;
+  }
+}</code></pre>
+      <h2>The <code>split()</code> Method</h2>
+      <p> To implement the subdivision of our div, we're going to add a <code>split()</code> method. This method should have two arguments: (1) the number of pieces we want to evenly split our div into and 
+        (2) the axis (x or y) that we are splitting along. We will call these inputs <code>nPieces</code> and <code>splitAxis</code>, respectively. To perform the split, we will create a list 
+        of floats, <code>splitRatios</code>, that represent the ratios/percents that we are splitting at. For example, if we are splitting our div into four pieces along the x-axis, this list 
+        would be <code>[0, 0.25, 0.5, 0.75, 1]</code>. These ratios can also be seen as representing the locations of the lines drawn in the direction of the y-axis, as shown in the figure below:</p>
+      <div class="img-container"><img src="../Assets/Subdivision/subdivision3.png" style="width: 50%;"></div>
+      <p>And to calculate these ratios, the following code is used:</p>
+      <pre><code class="java">splitRatios = new float[nPieces + 1]; 
+for (int i = 0; i <= nPieces; i++) {
+  // split evenly into nPieces
+  splitRatios[i] = (float)i/nPieces;  // avoid integer division
+}</code></pre>
+      <p>To then convert these ratios into coordinates, we use the equation shown above, where <code>0.5</code> is replaced by the desired ratio. If we are splitting along the y-axis, <code>x1</code> and
+      <code>x2</code> are replaced with <code>y1</code> and <code>y2</code>. The coordinates along the opposite axis are held constant in either case. Thus, we can construct all <code>i</code> children 
+      using the lines:</p>
+      <pre><code class="java">if (splitAxis) {  // x-axis
+  // add new subdivisions as children
+  for (int i = 0; i < nPieces; i++) {
+    Div newChild = new Div(x1 + splitRatios[i]*(x2-x1), y1, 
+                            x1 + splitRatios[i+1]*(x2-x1), y2, 
+                            this, i);
+    children.add(newChild);
+  }
+} else {  // y-axis
+  for (int i = 0; i < nPieces; i++) {
+    Div newChild = new Div(x1, y1 + splitRatios[i]*(y2-y1),
+                            x2, y1 + splitRatios[i+1]*(y2-y1), 
+                            this, i);
+    children.add(newChild);
+  }
+}</code></pre>
+<p>Pieces these two parts together, we get our complete <code>split()</code> method:</p>
+      <pre><code class="java">void split(int nPieces) {
+  // Splits this div into nPieces, stored as child divs
+
+  splitRatios = new float[nPieces + 1]; 
+  for (int i = 0; i <= nPieces; i++) {
+    // split evenly into nPieces
+    splitRatios[i] = (float)i/nPieces;  // avoid integer division
+  }
+
+  if (splitAxis) {  // x-axis
+    // add new subdivisions as children
+    for (int i = 0; i < nPieces; i++) {
+      Div newChild = new Div(x1 + splitRatios[i]*(x2-x1), y1, 
+                             x1 + splitRatios[i+1]*(x2-x1), y2, 
+                             this, i);
+      children.add(newChild);
+    }
+  } else {  // similar but for y-axis
+    for (int i = 0; i < nPieces; i++) {
+      Div newChild = new Div(x1, y1 + splitRatios[i]*(y2-y1),
+                             x2, y1 + splitRatios[i+1]*(y2-y1), 
+                             this, i);
+      children.add(newChild);
+    }
+  }
+}</code></pre>
+      <p>Now, you may wonder why <code>splitAxis</code> was not listed as an argument within the method. This is because we want to split our div in the opposite direction of our parent div. 
+      While it is possile to split along the same axis, it quickly results in odd-looking divs with extremely large aspect ratios. To avoid this, we will store <code>splitAxis</code> as a
+      class property. When constructing a child div, we will set <code>splitAxis</code> to be the opposite of the parent's <code>splitAxis</code> value. For our initial div, we will randomly
+      set <code>splitAxis</code>. The implementation of this is shown below:</p>
+      <pre><code class="java">class Div {
+  ...
+  float[] splitRatios;  // ratios representing the location of children
+  boolean splitAxis;  // axis on which this div will split
+  // True = x-axis, axis False = y-axis
+
+  Div(float x1, float y1, float x2, float y2) {
+    // Constructor for first div
+    ...
+    splitAxis = (random(0,1) < 0.5);  // randomly set
+  }
+
+  Div(float x1, float y1, float x2, float y2, Div parent, int childID) {
+    // Constructor for subsequent divs
+    ...
+    splitAxis = !parent.splitAxis;  // opposite of parent
+  }
+}</code></pre>
+  <h2><code>render()</code> Recursion</h2>
+      <p>Now to test our method! Let's go back to our main function and split our initial div and some of its children:</p>
+      <pre><code class="java">void setup() {
+  size(800, 800, P2D);
+  // construct first div
+  div1 = new Div(border, border, height-border, width-border);
+  div1.split(3);  // split initial div into three
+  div1.children.get(0).split(4);  // split first child into four
+  // split that div's first child into five
+  div1.children.get(0).children.get(0).split(5);  
+}</code></pre>
+      <p>Now let's hit run, and... huh.</p>
+      <div class="img-container"><img src="../Assets/Subdivision/subdivision2.png" style="width: 40%;"></div>
+      <p>What happened here is that we only rendered our initial div. Instead, we should now be rendering <u>every div that doesn't have children</u>. If a div has children, we do not
+        need to draw it, as the renderings of the children will cover it completely. To implement this, we need to use <b>recursion</b>. Returning to our <code>render()</code> method, 
+        we can add just a few seemingly simple lines:</p>
+        <pre><code class="java">void render() {
+  // Draw rectangle
+  if (children.size() != 0) {  // if has children, iterate recursively
+    for (Div child : children) {  // for each child
+      child.render();  // call this method
+    }
+  } else {  // if no children, draw
+    rect(x1, y1, x2-x1, y2-y1);
+  }
+}</code></pre>
+      <p>What's happening here is essentially a queue. When <code>render()</code> is called on a div with children, it adds all of its children to the front of the render queue. If any 
+        of those children have children, they will then add them to the front of the queue. Once a div without children is rendered, it is removed from the queue. The queue is only clear 
+        once all divs without children have been rendered. If we run our main file again, we now get the expected result!</p>
+      <div class="img-container"><img src="../Assets/Subdivision/subdivision4.png" style="width: 40%;"></div>
+      <h2>The <code>iterate()</code> Method</h2>
+      <p>Now that we have our methods for splitting and rendering, we need to create a method to generate/split our system for us. That's where the <code>iterate()</code> method mentioned
+        earlier comes in. The iterate method will decide both when to split a div, and how many pieces to split it into. There are a wide range of approaches to this step, and I encourage
+        you to try your own. For the chance to split a div, I arbitrarily came up with the equation:</p>
+      <div class="equation"><p>$$P(split)=0.5^{layer}$$</p></div>
+      <p>Where <code>layer</code> is the depth of the current div. The change to split is set to 0 if layer is greater than a class property named <code>maxLayers</code> (which I set 
+        arbitrarily to 6). For the number of splits, I arbitrarily came up with the equation:</p>
+      <div class="equation"><p>$$nPieces=\lfloor 5\cdot(1-\sqrt{x})+2 \rfloor$$</p></div>
+      <p>Where x is generated via <code>random(0,1)</code> (the weird square brackets represent <code>floor()</code>). We can then use recursion to run <code>iterate()</code> on all divs 
+        without children:</p>
+      <pre><code class="java">class Div {
+  ...
+  float layer;
+  int maxLayers = 6;
+
+  Div(float x1, float y1, float x2, float y2) {
+    // Constructor for first div
+    ...
+    layer = 0;
+  }
+
+  Div(float x1, float y1, float x2, float y2, Div parent, int childID) {
+    // Constructor for subsequent divs
+    ...
+    layer = parent.layer + 1;
+  }
+               
+  void iterate() {
+    // Give each div that doesn't have children a chance to split
+    if (children.size() != 0) {  // if has children, repeat recursively
+      for (Div child : children) {
+        child.iterate();
+      }
+    } else if (layer < maxLayers) {  // if no children and not at max depth
+      // chance to split, decreases with depth
+      float splitChance = pow(0.5, layer);
+
+      if (random(0, 1) < splitChance) {  // if rolls chance to split
+        int nPieces = floor(5*(1-sqrt(random(0,1)))+2);  
+        // more likely to have less splits (2 min, 6 max)
+        this.split(nPieces);
+      }
+    }
+  }
+}</code></pre>
+      <p>Now going back to our main script, we can run <code>iterate()</code> a few times instead of manually splitting our divs:</p>
+      <pre><code class="java">void setup() {
+  size(800, 800, P2D);
+  // construct first div
+  div1 = new Div(border, border, height-border, width-border);
+
+  for (int i = 0; i < 20; i++) {
+    div1.iterate();  // iterate div
+  }
+}</code></pre>
+      <div class="img-container"><img src="../Assets/Subdivision/subdivision5.png" style="width: 40%;"></div>
+      <p>Looks great! Now to add some dynamic movement.</p>
+      <h2>Movement</h2>
+      <p>To add movement, we need to adjust the <code>splitRatios</code> of each div with children, then update the position of each div recursively. To adjust <code>splitRatios</code>
+        we can add a method <code>adjustRatios()</code>. This method will take the original splitRatios for a given div, and adjust them slightly. We have to be careful, however, since
+        <code>splitRatios[0]</code> and <code>splitRatios[end]</code> must remain 0 and 1, respectively. Also, we must prevent consecutive <code>splitRatios[i]</code> values from 
+        overlapping. For a given splitRatio value (excluding [0] and [end]), I came up with the equation,</p>
+      <div class="equation"><p>$$newRatio[i] = ogRatio[i] + \frac{\sin{(2\pi\cdot ogRatio[i] + 2\pi t)}}{10}$$</p></div>
+      <p>which varies the ratios back and forth slightly with time. <code>sin()</code> and <code>2*PI*t</code> are used so that the ratios are returned to their original position at 
+        <code>t=1</code>, achieving a loop. This method is implemented in the following code:</p>
+      <pre><code class="java">class Div {
+  ...
+  float[] ogSplitRatios;  // originally created splitRatios
+
+  void split(int nPieces) {
+    ...
+    ogSplitRatios = splitRatios.clone();
+  }
+
+  void adjustRatios() {
+    // Adjust childRatios using sin function
+    // First and last values must remain 0 and 1
+    // Inner values must not overlap nor cross 0,1
+    if (children.size() != 0) {  // if has children
+      for (int i = 1; i < ogSplitRatios.length-1; i++) {
+        splitRatios[i] = ogSplitRatios[i] + 
+                         sin(2*PI*ogSplitRatios[i] + 2*PI*t)/10;
+      }
+    }
+  }
+}</code></pre>
+      <p>Note that in our <code>split()</code> method, we must clone <code>splitRatios</code> to record the original values (before we change them with <code>adjustRatios()</code>). Now we
+        need to write one final method, <code>updatePosition()</code>. This method will be used to recursively adjust and update the positions of our divs. For a given div, we will (1)
+        call <code>adjustRatios()</code>, (2) update its position using the coordinates and splitRatios of its parent, and (3) call <code>updatePosition()</code> for its children. This method
+        is implemented below:</p>
+      <pre><code class="java">void updatePosition() {
+  // Updates position of all divs dynamically
+
+  adjustRatios();  // adjust child ratios
+
+  // update position based on location and ratios recorded in parent
+  if (layer != 0) { // if not first layer
+    if (!splitAxis) {  // parent split along x
+      x1 = parent.x1 + parent.splitRatios[childID]*(parent.x2 parent.x1);
+      x2 = parent.x1 + parent.splitRatios[childID+1]*(parent.x2-parent.x1);
+      y1 = parent.y1;
+      y2 = parent.y2;
+    } else {  // parent split along y
+      x1 = parent.x1;
+      x2 = parent.x2;
+      y1 = parent.y1 + parent.splitRatios[childID]*(parent.y2-parent.y1);
+      y2 = parent.y1 + parent.splitRatios[childID+1]*(parent.y2-parent.y1);
+    }
+  }
+
+  for (Div child : children) {  // iterate recursively
+    child.updatePosition();
+  }
+}</code></pre>
+      <p>Now we can update our main script to add in the time variable and a <code>updatePosition()</code> call, and run!</p>
+      <pre><code class="java">float border = 50;  // border between main div and frame edge
+Div div1;  // intialize first div
+
+int nFrames = 200;  // number of animation frames
+float t;  // global time variable
+
+void setup() {
+  size(800, 800, P2D);
+  // construct first div
+  div1 = new Div(border, border, height-border, width-border);
+
+  for (int i = 0; i < 20; i++) {
+    div1.iterate();  // iterate div
+  }
+}
+
+void draw() {
+  // update time with frameCount
+  t = float(frameCount-1)/nFrames;
+
+  background(200);
+  stroke(0);
+  strokeWeight(2);
+  fill(255);
+
+  div1.updatePosition();  // update div positions
+  div1.render();  // render div
+}</code></pre>
+      <div class="video-container"><video class="video" autoplay muted loop><source src="../Assets/Subdivision/subdivision6.mp4" type="video/mp4"></video></div>
+      <p>Looks good, albeit a bit plain. Let's add some color to fix that.</p>
+      <h2>Finishing Touches</h2>
+      <p>To add color, we can add a couple class properties to store a color list and select a random color. You can select the colors on your own, or grab a pallete online. Then we'll add a
+        <code>fill()</code> call to our <code>render()</code> method.
+      </p>
+      <pre><code class="java">class Div {
+  ...
+  // list of possibile fill colors
+  int[][] colorList = {{185, 225, 220},
+                        {243, 129, 129},
+                        {117, 108, 131}};
+  // select random color
+  int[] divColor = colorList[int(random(0,colorList.length))]; 
+
+  void render() {
+    // Draw rectangle
+    if (children.size() != 0) {  // if has children, iterate recursively
+      for (Div child : children) {  // for each child
+        child.render();  // call this method
+      }
+    } else {  // if no children, draw
+      fill(divColor[0],divColor[1],divColor[2]);  // fill with divColor
+      rect(x1, y1, x2-x1, y2-y1);
+    }
+  }
+}</code></pre>
+      <div class="video-container"><video class="video" autoplay muted loop style="border: 0.2em solid grey;"><source src="../Assets/Subdivision/subdivision7.mp4" type="video/mp4"></video></div>
+      <p>and we're done!</p>
+      <h2>Wrap Up</h2>
+      <p>Wow, that ended up being a lot longer than I originally expected. Props to you if you made it all the way through. Hope you learned something! A file with the complete, final code can be
+        found at <a href="https://gist.github.com/nsbalbi/4f891597fb9ac2f4ba7c24ecd005b539" target="_blank">this GitHub gist</a>.</p>
+      <p>There's many ways this code could be augmented and added to. Here's a few ideas that I've had/implemented:</p>
+      <ul>
+        <li>Add motion blur</li>
+        <li>Extrude into 3D by adding a height value (see <a href="https://twitter.com/nsbalbi/status/1545815132596539392" target="_blank">this Tweet</a>)</li>
+        <li>Dynamically change the <code>strokeWeight()</code> value depending on the layer</li>
+        <li>Vary the functions used in the <code>iterate()</code> method and the <code>adjustRatios()</code> method</li>
+        <li>Change div colors based on their parent's color</li>
+        <li>Use shapes other than squares/rectangles</li>
+      </ul>
+    </div>
+  </div>
+</body>
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' integrity='sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==' crossorigin='anonymous'></script>
+<script src="../JS/blog.js" type="text/javascript"></script>
+
+</html>

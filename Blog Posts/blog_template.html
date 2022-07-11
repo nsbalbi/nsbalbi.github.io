@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="ISO-8859-1">
+  <title>Subdivisions - Nicholas Sbalbi</title>
+  <link href="../CSS/blog.css" rel="stylesheet" type="text/css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/stackoverflow-light.min.css">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+</head>
+
+<body id="body">
+  <div class="arrow-container" id="home-button">
+    <span class="arrow-left" id="home-arrow"></span>
+  </div>
+  <div class="main" id="main">
+    <div class="title">
+      <h1>Subdivisions</h1>
+      <h3>Posted: 7/9/2022, Updated: 7/9/2022</h3>
+      <img class="badge" src="https://img.shields.io/badge/Made%20with-Processing-blue"><img class="badge" src="https://img.shields.io/badge/Made%20with-Java-orange">
+    </div>
+    <div class="content">
+      <p class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut consequat sagittis mollis. Vestibulum fermentum elementum iaculis. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Etiam accumsan felis nibh, sed pulvinar nibh auctor sit amet. Vestibulum feugiat tempor tortor, a pellentesque leo maximus in. Morbi ultrices vel nunc eget commodo. Morbi elementum dolor tellus, dictum consectetur erat auctor non. In rutrum eu augue vel imperdiet. Duis tincidunt felis justo, ut feugiat libero aliquam eu. Cras euismod nunc ex, vel dictum neque feugiat id. Pellentesque viverra, sem vel ultricies porttitor, arcu sem placerat eros, vitae feugiat enim orci sed enim. Donec bibendum odio eget odio venenatis, sit amet euismod velit efficitur. Proin congue sapien vel venenatis egestas. Duis et quam porta, iaculis metus ac, tempor enim.</p>
+      <p class="text">Cras in ipsum sed massa finibus venenatis. Curabitur gravida, ipsum a imperdiet volutpat, justo mi egestas lorem, eu dignissim nulla massa eu dolor. Nulla porta sagittis ante eu viverra. Integer tempor ante et metus bibendum, et dignissim nibh condimentum. Integer ultricies massa ut viverra bibendum. Aenean varius eros quis ante lacinia aliquam. Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec ac sapien lobortis, rhoncus mi non, hendrerit purus. Sed maximus lectus quis rutrum commodo. Duis congue leo eget orci dapibus commodo a sed diam. Nulla semper eros ipsum, finibus sollicitudin purus vulputate et.</p>
+      <pre><code class="java">void split(boolean axis, int nSplits) {
+  // axis True = x-axis, False = y-axis
+  // nSplits self explainatory (2 splits is in half)
+
+  percents = new float[nSplits + 1];  
+  // list of percents at which children will be generated
+  
+  // generate child heights
+  childHeights = new float[nSplits];
+  for (int i = 0; i < nSplits; i++) {
+    childHeights[i] = scale/20*i * 1.0/(layer+1);
+  }
+
+  if (axis) { // x-axis
+
+    float[] newXs = new float[nSplits + 1];
+    // generate new coordinates
+    for (int i = 0; i <= nSplits; i++) {
+      // split evenly into nSplit pieces
+      newXs[i] = x1 + (float)i/nSplits*(x2-x1);  
+      percents[i] = (float)i/nSplits;
+    }
+
+    // add new subdivisions
+    for (int i = 0; i < nSplits; i++) {
+      Div newChild = new Div(newXs[i], y1, newXs[i+1], y2,
+       layer + 1, this, true, i, height + childHeights[i]);
+      children.add(newChild);
+    }
+
+  } else {
+
+    float[] newYs = new float[nSplits + 1];
+    // generate new coordinates
+    for (int i = 0; i <= nSplits; i++) {
+      newYs[i] = y1 + (float)i/nSplits*(y2-y1);
+      percents[i] = (float)i/nSplits;
+    }
+
+    // add new subdivisions
+    for (int i = 0; i < nSplits; i++) {
+      Div newChild = new Div(x1, newYs[i], x2, newYs[i+1], 
+       layer + 1, this, false, i, height + childHeights[i]);
+      children.add(newChild);
+    }
+
+  }
+
+  ogPercents = percents.clone();  
+  // clone (not reference) percents to record
+  ogChildHeights = childHeights.clone();
+
+}</code></pre>
+      <h2>Heading</h2>
+      <p class="text">Cras in ipsum sed massa finibus venenatis. Curabitur gravida, ipsum a imperdiet volutpat, justo mi egestas lorem, eu dignissim nulla massa eu dolor. Nulla porta sagittis ante eu viverra. Integer tempor ante et metus bibendum, et dignissim nibh condimentum. Integer ultricies massa ut viverra bibendum. Aenean varius eros quis ante lacinia aliquam. Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec ac sapien lobortis, rhoncus mi non, hendrerit purus. Sed maximus lectus quis rutrum commodo. Duis congue leo eget orci dapibus commodo a sed diam. Nulla semper eros ipsum, finibus sollicitudin purus vulputate et.</p>
+      <div class="img-container">
+        <img src="../Assets/Subdivision/subdivision.png">
+      </div>
+    </div>
+  </div>
+</body>
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' integrity='sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==' crossorigin='anonymous'></script>
+<script src="../JS/blog.js" type="text/javascript"></script>
+
+</html>
