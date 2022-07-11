@@ -118,7 +118,11 @@ mjx-container[display="true"] {
 
 @media only screen and (orientation: portrait) {
   .main {
-    padding: 3.5em 5vw 2em 5vw;
+    padding: 3.5em 8vw 2em 8vw;
+  }
+
+  .arrow-container {
+    padding: 0.5em 0 0 0.75em;
   }
 
   @keyframes in_from_right {
@@ -130,5 +134,14 @@ mjx-container[display="true"] {
     0% {transform: translateX(0)}
     75% {transform: translateX(100vw)}
     100% {transform: translateX(100vw)}
+  }
+}
+
+@media only screen and (min-device-width: 480px) 
+                   and (max-device-width: 640px) 
+                   and (orientation: landscape) {
+
+  p, li, code {
+    font-size: 0.8em;
   }
 }

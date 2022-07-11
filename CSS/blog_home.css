@@ -62,7 +62,6 @@ h1 {
   transform: scale(0.95);
 }
 
-
 .entry-image {
   width: 14em;
   border-radius: 3em;
@@ -112,4 +111,12 @@ h1 {
   .gallery {
     justify-content: center;
   }  
+}
+
+@media only screen 
+     and (min-device-width: 320px) 
+     and (max-device-width: 479px) {
+  .entry-image {
+    width: 22em;
+  }
 }

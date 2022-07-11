@@ -36,7 +36,7 @@
       <p>For this inaugural post, we'll be taking a look at <b>subdivisions</b>. The name is pretty self-explainatory; we'll be taking an object (in this case a square) and dividing it into 
         multiple pieces. Of course to make things more interesting, we'll then be dividing those pieces into more pieces, and so on. I chose this topic since it covers a number of concepts including
         self-referential classes, looping techniques, and the dreaded <i>recursion</i>. Let's get started! Oh and FYI, we'll end up with something like this:
-      <div class="video-container"><video class="video" autoplay muted loop><source src="../Assets/Subdivision/subdivision1.mp4" type="video/mp4"></video></div>
+      <div class="video-container"><video class="video" playsinline autoplay muted loop><source src="../Assets/Subdivision/subdivision1.mp4" type="video/mp4"></video></div>
       <h2>The <code>Div</code> Class</h2>
       <p>To represent each division (or div) in our system, we're going to need a class. This class will contain the div's properties along with methods to render and iterate the system. To
         visualize a div, we'll draw a rectange defined by two x-y coordinates.
@@ -366,7 +366,7 @@ void draw() {
   div1.updatePosition();  // update div positions
   div1.render();  // render div
 }</code></pre>
-      <div class="video-container"><video class="video" autoplay muted loop><source src="../Assets/Subdivision/subdivision6.mp4" type="video/mp4"></video></div>
+      <div class="video-container"><video class="video" playsinline autoplay muted loop><source src="../Assets/Subdivision/subdivision6.mp4" type="video/mp4"></video></div>
       <p>Looks good, albeit a bit plain. Let's add some color to fix that.</p>
       <h2>Finishing Touches</h2>
       <p>To add color, we can add a couple class properties to store a color list and select a random color. You can select the colors on your own, or grab a pallete online. Then we'll add a
@@ -393,7 +393,7 @@ void draw() {
     }
   }
 }</code></pre>
-      <div class="video-container"><video class="video" autoplay muted loop style="border: 0.2em solid grey;"><source src="../Assets/Subdivision/subdivision7.mp4" type="video/mp4"></video></div>
+      <div class="video-container"><video class="video" playsinline autoplay muted loop style="border: 0.2em solid grey;"><source src="../Assets/Subdivision/subdivision7.mp4" type="video/mp4"></video></div>
       <p>and we're done!</p>
       <h2>Wrap Up</h2>
       <p>Wow, that ended up being a lot longer than I originally expected. Props to you if you made it all the way through. Hope you learned something! A file with the complete, final code can be
