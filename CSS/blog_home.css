@@ -112,25 +112,3 @@ h1 {
     justify-content: center;
   }
 }
-
-@media only screen 
-     and (min-device-width: 320px) 
-     and (max-device-width: 479px) {
-  .entry-image {
-    width: 22em;
-  }
-  .entry-title {
-    font-size: 2em;
-  }
-}
-
-@media only screen and (min-device-width: 480px) 
-                   and (max-device-width: 640px) 
-                   and (orientation: landscape) {
-  .entry-image {
-    width: 14em;
-  }
-  .entry-title {
-    font-size: 1em;
-  }
-}
