@@ -117,6 +117,6 @@ h1 {
                    and (max-device-width: 1200px) 
                    and (orientation: landscape) {
   .entry-image {
-    width: 50%;
+    width: 25%;
   }
 }
