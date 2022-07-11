@@ -141,6 +141,9 @@ mjx-container[display="true"] {
                    and (max-device-width: 640px) 
                    and (orientation: landscape) {
 
+  .main {
+    padding: 3.5em 12vw 2em 12vw;
+  }
   p, li, code {
     font-size: 0.8em;
   }
