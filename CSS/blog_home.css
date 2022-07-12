@@ -107,16 +107,18 @@ h1 {
   100% {background-color: white; color: black;}
 }
 
-@media only screen and (orientation: portrait) {
+@media (max-width: 1200px) {
   .gallery {
     justify-content: center;
   }
-}
 
-@media only screen and (min-device-width: 480px) 
-                   and (max-device-width: 1200px) 
-                   and (orientation: landscape) {
   .entry-image {
-    width: 14em;
+    width: 24em;
+    border-radius: 5em;
+  }
+
+  .entry-title {
+    font-size: 1.5em;
   }
 }
+

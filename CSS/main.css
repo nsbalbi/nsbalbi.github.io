@@ -29,7 +29,7 @@ body {
 
 #about-square {
     background-color: #E11444;
-    transform: translate(-156.0660%,-85.356%) rotate(45deg) scale(0.95);
+    transform: translate(-156.0660%,-85.356%) rotate(45deg) scale(0.92);
     top: -100%;
     animation: in_from_top 2s ease 0s forwards;
     transition: transform 1s ease;
@@ -39,33 +39,33 @@ body {
 }
 #science-square {
     background-color: #048B67;
-    transform: translate(-85.356%,-14.655%) rotate(45deg) scale(0.95);
+    transform: translate(-85.356%,-14.655%) rotate(45deg) scale(0.92);
     top: 200%;
     animation: in_from_bottom 2s ease 0.3s forwards;
     transition: transform 1s ease;
 }
 #science-square:hover {
-    transform: translate(-85.356%,-14.655%) rotate(45deg) scale(0.90);
+    transform: translate(-85.356%,-14.655%) rotate(45deg) scale(0.86);
 }
 #art-square {
     background-color: #FFD166;
-    transform: translate(-14.655%,-85.356%) rotate(45deg) scale(0.95);
+    transform: translate(-14.655%,-85.356%) rotate(45deg) scale(0.92);
     top: -100%;
     animation: in_from_top 2s ease 0.6s forwards;
     transition: transform 1s ease;
 }
 #art-square:hover {
-    transform: translate(-14.655%,-85.356%) rotate(45deg) scale(0.90);
+    transform: translate(-14.655%,-85.356%) rotate(45deg) scale(0.86);
 }
 #code-square {
     background-color: #118AB2;
-    transform: translate(56.066%,-14.655%) rotate(45deg) scale(0.95);
+    transform: translate(56.066%,-14.655%) rotate(45deg) scale(0.92);
     top: 200%;
     animation: in_from_bottom 2s ease 0.9s forwards;
     transition: transform 1s ease;
 }
 #code-square:hover {
-    transform: translate(56.066%,-14.655%) rotate(45deg) scale(0.90);
+    transform: translate(56.066%,-14.655%) rotate(45deg) scale(0.86);
 }
 
 @keyframes in_from_top {
@@ -163,7 +163,7 @@ body {
     #about-square {
         top: 50%;
         left: -100%;
-        transform: translate(-85.356%,-156.057%) rotate(45deg) scale(0.95);
+        transform: translate(-85.356%,-156.057%) rotate(45deg) scale(0.92);
         animation: in_from_left 2s ease 0s forwards;
         transition: transform 1s ease;
     }
@@ -173,32 +173,32 @@ body {
     #science-square {
         top: 50%;
         left: 200%;
-        transform: translate(-14.655%,-85.356%) rotate(45deg) scale(0.95);
+        transform: translate(-14.655%,-85.356%) rotate(45deg) scale(0.92);
         animation: in_from_right 2s ease 0.3s forwards;
         transition: transform 1s ease;
     }
     #science-square:hover {
-        transform: translate(-14.655%,-85.356%) rotate(45deg) scale(0.90);
+        transform: translate(-14.655%,-85.356%) rotate(45deg) scale(0.86);
     }
     #art-square {
         top: 50%;
         left: -100%;
-        transform: translate(-85.356%,-14.655%) rotate(45deg) scale(0.95);
+        transform: translate(-85.356%,-14.655%) rotate(45deg) scale(0.92);
         animation: in_from_left 2s ease 0.6s forwards;
         transition: transform 1s ease;
     }
     #art-square:hover {
-        transform: translate(-85.356%,-14.655%) rotate(45deg) scale(0.90);
+        transform: translate(-85.356%,-14.655%) rotate(45deg) scale(0.86);
     }
     #code-square {
         top: 50%;
         left: 200%;
-        transform: translate(-14.655%,56.046%) rotate(45deg) scale(0.95);
+        transform: translate(-14.655%,56.046%) rotate(45deg) scale(0.92);
         animation: in_from_right 2s ease 0.9s forwards;
         transition: transform 1s ease;
     }
     #code-square:hover {
-        transform: translate(-14.655%,56.046%) rotate(45deg) scale(0.90);
+        transform: translate(-14.655%,56.046%) rotate(45deg) scale(0.86);
     }
 
     .square-content h1 {

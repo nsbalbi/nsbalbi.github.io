@@ -116,7 +116,7 @@ mjx-container[display="true"] {
   100% {background-color: black; color: white;}
 }
 
-@media only screen and (orientation: portrait) {
+@media (max-width: 1200px) {
   .main {
     padding: 3.5em 8vw 2em 8vw;
   }
@@ -134,13 +134,5 @@ mjx-container[display="true"] {
     0% {transform: translateX(0)}
     75% {transform: translateX(100vw)}
     100% {transform: translateX(100vw)}
-  }
-}
-
-@media only screen and (min-device-width: 480px) 
-                   and (max-device-width: 1200px) 
-                   and (orientation: landscape) {
-  p, li, code {
-    font-size: 0.5em;
   }
 }
