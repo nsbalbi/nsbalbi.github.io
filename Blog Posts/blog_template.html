@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="ISO-8859-1">
-  <title>Subdivisions - Nicholas Sbalbi</title>
+  <title>Topic - Nicholas Sbalbi</title>
   <link href="../CSS/blog.css" rel="stylesheet" type="text/css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,6 +13,9 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
   <script>hljs.highlightAll();</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 
 <body id="body">
@@ -21,71 +24,56 @@
   </div>
   <div class="main" id="main">
     <div class="title">
-      <h1>Subdivisions</h1>
+      <h1>Title</h1>
       <h3>Posted: 7/9/2022, Updated: 7/9/2022</h3>
-      <img class="badge" src="https://img.shields.io/badge/Made%20with-Processing-blue"><img class="badge" src="https://img.shields.io/badge/Made%20with-Java-orange">
+      <img class="badge" src="https://img.shields.io/badge/Made%20with-Processing-blue"><img class="badge" src="https://img.shields.io/badge/Made%20with-Java-orange"><img class="badge" src="https://img.shields.io/badge/Complexity-%E2%98%85%E2%98%85%E2%98%85%E2%98%85%E2%98%86-brightgreen">
     </div>
     <div class="content">
-      <p class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut consequat sagittis mollis. Vestibulum fermentum elementum iaculis. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Etiam accumsan felis nibh, sed pulvinar nibh auctor sit amet. Vestibulum feugiat tempor tortor, a pellentesque leo maximus in. Morbi ultrices vel nunc eget commodo. Morbi elementum dolor tellus, dictum consectetur erat auctor non. In rutrum eu augue vel imperdiet. Duis tincidunt felis justo, ut feugiat libero aliquam eu. Cras euismod nunc ex, vel dictum neque feugiat id. Pellentesque viverra, sem vel ultricies porttitor, arcu sem placerat eros, vitae feugiat enim orci sed enim. Donec bibendum odio eget odio venenatis, sit amet euismod velit efficitur. Proin congue sapien vel venenatis egestas. Duis et quam porta, iaculis metus ac, tempor enim.</p>
-      <p class="text">Cras in ipsum sed massa finibus venenatis. Curabitur gravida, ipsum a imperdiet volutpat, justo mi egestas lorem, eu dignissim nulla massa eu dolor. Nulla porta sagittis ante eu viverra. Integer tempor ante et metus bibendum, et dignissim nibh condimentum. Integer ultricies massa ut viverra bibendum. Aenean varius eros quis ante lacinia aliquam. Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec ac sapien lobortis, rhoncus mi non, hendrerit purus. Sed maximus lectus quis rutrum commodo. Duis congue leo eget orci dapibus commodo a sed diam. Nulla semper eros ipsum, finibus sollicitudin purus vulputate et.</p>
-      <pre><code class="java">void split(boolean axis, int nSplits) {
-  // axis True = x-axis, False = y-axis
-  // nSplits self explainatory (2 splits is in half)
+      <p>I've always wanted to get around to making some blog posts/tutorials. It was <a href="https://bleuje.github.io/about/" target="_blank">Etienne Jacob's tutorials</a> that introduced me to
+        Processing (I previously used HTML Canvas) and inspired me to start posting on Twitter. Now with a few years of Processing under my belt, I seems a good a time as any to give it a shot!</p> 
+      <div class="video-container"><video class="video" playsinline autoplay muted loop><source src="../Assets/Subdivision/subdivision1.mp4" type="video/mp4"></video></div>
+      <h2>The <code>Div</code> Class</h2>
+      <p>To represent each division (or div) in our system, we're going to need a class. This class will contain the div's properties along with methods to render and iterate the system. To
+        visualize a div, we'll draw a rectange defined by two x-y coordinates.
+      </p>
+      <pre><code class="java">class Div {
+  // Coordinates defining rectangle
+  float x1;
+  float y1;
+  float x2;
+  float y2;
 
-  percents = new float[nSplits + 1];  
-  // list of percents at which children will be generated
-  
-  // generate child heights
-  childHeights = new float[nSplits];
-  for (int i = 0; i < nSplits; i++) {
-    childHeights[i] = scale/20*i * 1.0/(layer+1);
+  Div(float x1, float y1, float x2, float y2) {
+    // Constructor for first div
+    this.x1 = x1;
+    this.y1 = y1;
+    this.x2 = x2;
+    this.y2 = y2;
   }
 
-  if (axis) { // x-axis
-
-    float[] newXs = new float[nSplits + 1];
-    // generate new coordinates
-    for (int i = 0; i <= nSplits; i++) {
-      // split evenly into nSplit pieces
-      newXs[i] = x1 + (float)i/nSplits*(x2-x1);  
-      percents[i] = (float)i/nSplits;
-    }
-
-    // add new subdivisions
-    for (int i = 0; i < nSplits; i++) {
-      Div newChild = new Div(newXs[i], y1, newXs[i+1], y2,
-       layer + 1, this, true, i, height + childHeights[i]);
-      children.add(newChild);
-    }
-
-  } else {
-
-    float[] newYs = new float[nSplits + 1];
-    // generate new coordinates
-    for (int i = 0; i <= nSplits; i++) {
-      newYs[i] = y1 + (float)i/nSplits*(y2-y1);
-      percents[i] = (float)i/nSplits;
-    }
-
-    // add new subdivisions
-    for (int i = 0; i < nSplits; i++) {
-      Div newChild = new Div(x1, newYs[i], x2, newYs[i+1], 
-       layer + 1, this, false, i, height + childHeights[i]);
-      children.add(newChild);
-    }
-
+  void iterate() {
+    // Do something
   }
 
-  ogPercents = percents.clone();  
-  // clone (not reference) percents to record
-  ogChildHeights = childHeights.clone();
-
-}</code></pre>
-      <h2>Heading</h2>
-      <p class="text">Cras in ipsum sed massa finibus venenatis. Curabitur gravida, ipsum a imperdiet volutpat, justo mi egestas lorem, eu dignissim nulla massa eu dolor. Nulla porta sagittis ante eu viverra. Integer tempor ante et metus bibendum, et dignissim nibh condimentum. Integer ultricies massa ut viverra bibendum. Aenean varius eros quis ante lacinia aliquam. Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec ac sapien lobortis, rhoncus mi non, hendrerit purus. Sed maximus lectus quis rutrum commodo. Duis congue leo eget orci dapibus commodo a sed diam. Nulla semper eros ipsum, finibus sollicitudin purus vulputate et.</p>
-      <div class="img-container">
-        <img src="../Assets/Subdivision/subdivision.png">
-      </div>
+  void render() {
+    // Draw rectangle
+    rect(x1, y1, x2-x1, y2-y1);
+  }
+}     </code></pre>
+      <div class="img-container"><img src="../Assets/Subdivision/subdivision2.png" style="width: 40%;"></div>
+      <p>To represent each division (or div) in our system, we're going to need a class. This class will contain the div's properties along with methods to render and iterate the system. To
+        visualize a div, we'll draw a</p>
+      <div class="equation"><p>$$newRatio[i] = ogRatio[i] + \frac{\sin{(2\pi\cdot ogRatio[i] + 2\pi t)}}{10}$$</p></div>
+      <p>To represent each division (or div) in our system, we're going to need a class. This class will contain the div's properties along with methods to render and iterate the system. To
+        visualize a div, we'll draw a</p>
+      <ul>
+        <li>Add motion blur</li>
+        <li>Extrude into 3D by adding a height value (see <a href="https://twitter.com/nsbalbi/status/1545815132596539392" target="_blank">this Tweet</a>)</li>
+        <li>Dynamically change the <code>strokeWeight()</code> value depending on the layer</li>
+        <li>Vary the functions used in the <code>iterate()</code> method and the <code>adjustRatios()</code> method</li>
+        <li>Change div colors based on their parent's color</li>
+        <li>Use shapes other than squares/rectangles</li>
+      </ul>
     </div>
   </div>
 </body>
