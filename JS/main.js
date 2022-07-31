@@ -1,13 +1,11 @@
 
-const [entry] = performance.getEntriesByType("navigation");
-
-// Show it in a nice table in the developer console
-console.table(entry.toJSON());
-
-if (entry["type"] === "back_forward")
-    location.reload();
-
-    
+(function () {
+  window.onpageshow = function(event) {
+      if (event.persisted) {
+          window.location.reload();
+      }
+  };
+})();
 
 setTimeout(function(){
   $("#body").css("pointer-events", "auto");
