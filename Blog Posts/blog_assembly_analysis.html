@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Assembly Analysis - Nicholas Sbalbi</title>
+  <link href="../CSS/blog.css" rel="stylesheet" type="text/css">
+  <!--Font-->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+  <!--Highlight JS-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/stackoverflow-light.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <!--MathJax-->
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body id="body">
+  <div class="arrow-container" id="home-button">
+    <span class="arrow-left" id="home-arrow"></span>
+  </div>
+  <div class="main" id="main">
+    <div class="title">
+      <h1><u>Article</u>: Assembly Analysis</h1>
+      <h3>Posted: 7/28/2022, Updated: 7/29/2022</h3>
+    </div>
+    <div class="content">
+      <p>Outside of art, I've also utilized some of my coding skills to create data analysis tools for scientific research. Instead of walking through the code with
+        a tutorial, I thought it might be better to just introduce some of the concepts that are utilized. That way, even if the specific project isn't relevant
+        to you, the concepts might pique your interest.</p>
+      <p>This first article will go over the topics used in a tool I developed for <a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=HSFykcoAAAAJ&citation_for_view=HSFykcoAAAAJ:u5HHmVD_uO8C" target="_blank">this paper</a>, 
+        with the purpose to analyze and quantify the ordering of particle assemblies. In simpler terms, given an
+        input image of an ordered array of objects, this script outputs figures and numbers that describe how "well ordered" the assembly is. For an example, in the
+        figure below the input image is an EM (electron microscopy) image of an array of polystyrene particles. The output image highlights areas of order, with a
+        square pattern being shown in blue and a hexagonal pattern shown in red. These orderings are described as having 4-fold symmetry and 6-fold symmetry, respectively.</p>
+      <div class="img-container"><img src="../Assets/Assembly Analysis/assembly_analysis1.png" style="width: 90%;"></div>
+      <p>By the way, the diameter of the particles imaged above is around 900 nm. For comparison, that's around 30 times smaller than that of a human skin cell!</p>
+      <p>In the script, two main steps occur. First, the input image is processing using image analysis techniques to identify particle center coordinates. Then, a 
+        bunch of math is performed to quantify ordering using those coordinates.</p>
+      <h2>Image Analysis</h2>
+      <p>Since you could take a whole course on image analysis, I'm only going to cover a few basic things. The first of which is image binarization. A binarized image 
+        is represented by an array of 1s and 0s, with each number representing a pixel. To get to this state from a colored image, you first convert to grayscale. Generally,
+        in a grayscale image each pixel is represented by a value between 0 and 255. We can then choose a threshold value (say, 100), and convert all pixels above the
+        threshold to 1, and all those below to 0. Now we've successfully binarized our image. You can do other fancy things like adjust your threshold across your image
+        based on local brightness to get a more accurate binarization. An example of binarization is shown below,</p>
+      <div class="img-container"><img src="../Assets/Assembly Analysis/assembly_analysis2.png" style="width: 90%;"></div>
+      <p>The next step is to clean up the binarized image, which is done using something called morphological operations. I won't explain in depth here, but they can be
+        used to eliminate gaps or islands caused by noise. If you're interested, <a href="https://www.mathworks.com/help/images/morphological-dilation-and-erosion.html#:~:text=Morphological%20operations%20apply%20a%20structuring,input%20image%20with%20its%20neighbors." target="_blank">this page</a> 
+        goes over the topic in more detail, and if you are <i>really</i> interested, <a href="https://www.youtube.com/watch?v=IcBzsP-fvPo" target="_blank">this lecture</a>
+        provides a great overview. With the correct choice of operations, we can clean up our image as shown in the figure below,</p>
+      <div class="img-container"><img src="../Assets/Assembly Analysis/assembly_analysis3.png" style="width: 50%;"></div>
+      <p>Now that each object is isolated, we can individually pick out the region that defines each, as shown in (b) of the figure below. Then, we can find the
+        center, or centroid, of each area by calculating the average of the pixel locations/coordinates that make up the area. The resulting centers are shown in (c)
+        below,</p>
+      <div class="img-container"><img src="../Assets/Assembly Analysis/assembly_analysis4.png" style="width: 80%;"></div>
+      <p>With these coordinate centers, we can now perform some math to quantify their ordering.</p>
+      <p>Oh, and the steps above can only really be used when the objects have reasonable spacing between them. If the objects are closely packed together (like in
+        the first figure of this article), we have to perform some extra steps. For the pros out there, I (1) perform a grayscale image opening with a disk, (2) binarize
+        the image, (3) perform a distance transformation coupled with a Watershed transformation, and (4) mask the Watershed transform with the binarized image from (2).</p>
+      <h2>Math Stuff</h2>
+      <p>In order to perform most of the math, we need to identify each particle's neighbors. This may seem easy by eye, as obviously a particle's neighbors are those
+        that are closest. However, the question comes down to how many neighbors a particle has. You could choose the closest four particles, or the closest six, etc.
+        To perform this association quantitatively, we use a technique called a <a href="https://en.wikipedia.org/wiki/Delaunay_triangulation" target="_blank">Delaunay triangulation</a>.
+        I won't go into detail on how this works, but you end up with something like the result shown in (b) below. The Delaunay triangulation can also be used to
+        generate something called a <a href="https://en.wikipedia.org/wiki/Voronoi_diagram" target="_blank">Voronoi diagram</a>, shown in (c). Within a Voronoi diagram,
+        the cell around each point contains all of the area in which that point is the closest.</p>
+      <div class="img-container"><img src="../Assets/Assembly Analysis/assembly_analysis5.png" style="width: 90%;"></div>
+      <p>Now that we have each point's neighbors, we can calculate a bunch of parameters including the number of neighbors and the distance to the nearest neighbor. 
+        One parameter I want to go over is called the local bond orientation order. It is calculated for a given point using the equation,</p>
+      <div class="equation"><p>$$\Psi_s=\left|\frac{1}{N}\sum_{j=1}^N e^{i s \theta_j}\right|$$</p></div>
+      <p>Where s is either 4 for square packing or 6 for hexagonal packing, N is the number of neighbors, and θ_j is the angle between a reference axis and the line between the
+       point of interest and neighbor j. i represents the imaginary unit. While I won't go into how this equation is calculated, I'll attempt to explain what it's calculating and how
+        it works.</p>
+      <p>In simplest terms, Ψ_s represents how close a point is to having s-fold symmetry, varying from 0 to 1. For example, a point with perfect hexagonal symmetry
+       with its neighbors would have a Ψ_6 value of 1. The equation can be visualized as taking each neighboring point, and multiplying the angle between it and the reference
+       axis by s. An animation of this is shown below, with the reference axis being the positive x-axis, shown in blue.</p>
+      <div class="video-container"><video class="video" playsinline muted controls="true" style="width: 50%;"><source src="../Assets/Assembly Analysis/S6NN6.mp4" type="video/mp4"></video></div>
+      <p>Since each point is 1/6th of a rotation away from each other, when rotated they end up all stacked on top of each other. The circle in red represents the average
+        location of each neighboring point. Once the rotation is completed, the distance of this red circle to the center is equal to Ψ_s. Thus, in the figure above, Ψ_6
+        ends at it's maximum value of 1. If we slightly offset the neighbors from perfect 6-fold order, we end up with Ψ_6 values slightly below 1, such as in the figure below.</p>
+      <div class="video-container"><video class="video" playsinline muted controls="true" style="width: 50%;"><source src="../Assets/Assembly Analysis/S6NN6 Noise.mp4" type="video/mp4"></video></div>
+      <p>If we then choose an arbitrary threshold for identifying a point as having s-fold order, say 0.8, we can now color code a Voronoi diagram of our input image to
+        highlight regions of 4-fold and 6-fold order. In the figure below, blue represents points that have Ψ_4 > 0.8, red for Ψ_6 > 0.8, purple for both, and white for neither.</p>
+      <div class="img-container"><img src="../Assets/Assembly Analysis/assembly_analysis1.png" style="width: 90%;"></div>
+      <p>Now, you may be wondering what the φ value represents. This is called the "phase angle", and in our visualization represents the angle between the red circle and
+        the reference axis. In the context of our input images, this represents the orientation of the hexagonal or square lattice. For example, if we offset our visualization by 𝜋/6, we 
+        end up with a φ value of 180° as opposed to the 360° (or 0°) we got before,</p>
+      <div class="video-container"><video class="video" playsinline muted controls="true" style="width: 50%;"><source src="../Assets/Assembly Analysis/S6NN6 Offset.mp4" type="video/mp4"></video></div>
+      <p>If we color our Voronoi diagram based on the φ value for each point, we end up with a really interesting (and pretty) result. Note this is a zoomed-out version of the figure shown earlier.</p>
+      <div class="img-container"><img src="../Assets/Assembly Analysis/assembly_analysis6.png" style="width: 90%;"></div>
+      <p>If we compare this to the input image, we can see that each color corresponds to a region with a lattice in a distinct orientation,</p>
+      <div class="img-container"><img src="../Assets/Assembly Analysis/assembly_analysis7.png" style="width: 90%;"></div>
+      <p>Surprisingly, the rainbow coloring serves an additional purpose as opposed to just making the images look nicer. Since a φ value of 0° is only one degree apart from a value of 359°,
+        this color scheme allows us to wrap between the two values, with red being on both ends of the spectrum. Another interesting property to note is the relationship between φ and θ.
+        For 6-fold order, φ ranges from 0° to 360° while θ ranges from 0° to 60°, since a hexagon rotated by 60° remains the same. Likewise for 4-fold order, φ ranges from 0° to 360° while θ ranges from 0° to 90°.</p>
+      <h2>Wrap Up</h2>
+      <p>As usual, props to you if you made it through the whole thing. While this specific project is unlikely to be useful to you, I hope a few concepts stuck with you. Image analysis is a
+        really powerful tool, and I've seen a few art pieces making really good use of Voronoi diagrams and Delaunay triangulations. Additionally, the Ψ_s equation and its visualization are very similar to that for the 
+        Fourier transform, which <a href="https://www.youtube.com/watch?v=spUNpyF58BY" target="_blank">3Blue1Brown has a great video on</a>.</p>
+      <p>I'm not going to post the code for this one (mostly because it was written in MATLAB), but there are many libraries and scripts out there in pretty much any language for both
+        image analysis and Voronoi/Delaunay calculations. If you're curious as to what this code is useful for, it was used in the <a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=HSFykcoAAAAJ&citation_for_view=HSFykcoAAAAJ:u5HHmVD_uO8C" target="_blank">journal article</a>
+        I mentioned earlier, where it was used to asses the long range positional and orientational order of some particle assemblies. For use in many applications, it is desired that particle
+        assemblies are ordered over large length scales, and the values calculated using this script were used to prove that our assemblies could remain ordered at pretty much any size.</p>
+    </div>
+  </div>
+</body>
+
+<!--JQuery-->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js' integrity='sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==' crossorigin='anonymous'></script>
+<script src="../JS/blog.js" type="text/javascript"></script>
+
+</html>

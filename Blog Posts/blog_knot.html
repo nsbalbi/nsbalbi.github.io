@@ -24,7 +24,7 @@
   </div>
   <div class="main" id="main">
     <div class="title">
-      <h1>Knot</h1>
+      <h1><u>Tutorial</u>: Knot</h1>
       <h3>Posted: 7/10/2022, Updated: 7/13/2022</h3>
       <img class="badge" src="https://img.shields.io/badge/Made%20with-Processing-blue"><img class="badge" src="https://img.shields.io/badge/Made%20with-Java-orange"><img class="badge" src="https://img.shields.io/badge/Complexity-%E2%98%85%E2%98%85%E2%98%85%E2%98%86%E2%98%86-brightgreen">
     </div>
@@ -178,7 +178,7 @@ void draw_() {
               .add(binormal.mult(r*sin(theta)));
 }</code></pre>
       <p>There is one weird thing we do here. When going over the math, I mentioned that any arbitrary vector can be used to cross with the tangent vector to get the normal vector (in the 
-      equation I used (1,0,0). However, if this arbirary vector is approximately perpendicular to the tangent vector, we get visual bugs in our results. To prevent this, we randomize the crossing
+      equation I used (1,0,0). However, if this arbitrary vector is approximately perpendicular to the tangent vector, we get visual bugs in our results. To prevent this, we randomize the crossing
       vector along the path, using trial and error until the visual bugs are gone. If you can think of a way to avoid this, let me know!</p>
       <p>Now, we need to draw our surface using our <code>pipe()</code> function. Similar to how we split <code>s</code> into pieces to draw the path earlier, we'll now split both <code>s</code>
       and <code>theta</code> into pieces. We'll then get the coordinates at those pieces, and stitch them together using triangles to create our surface.</p>
@@ -212,7 +212,7 @@ void draw_() {
     endShape();  // end shape
   }
 }</code></pre>
-      <p>I'd also like to shoutout <a href="https://bleuje.github.io/" target="_blank">Etienne Jacob</a> here for publicaly sharing code on which I based this draw function. Now let's call 
+      <p>I'd also like to shoutout <a href="https://bleuje.github.io/" target="_blank">Etienne Jacob</a> here for publicly sharing code on which I based this draw function. Now let's call 
       <code>drawSurface()</code> instead of <code>drawPath()</code> in our draw function and see what we get:</p>
       <div class="video-container"><video class="video" playsinline autoplay muted loop style="border-radius:3em; width:50%;"><source src="../Assets/Knot/knot5.mp4" type="video/mp4"></video></div>
       <p>Now let's add some moving pieces to make it more visually interesting.</p>

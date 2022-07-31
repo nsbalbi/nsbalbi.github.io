@@ -26,6 +26,17 @@ $(function() {
 });
 
 $(function() {
+  $("#science-square-container")
+    .on("click", function(){
+      $(this).addClass('square-animation-zoom');
+      $(this).parent().css('z-index',99);
+   })
+  .on("animationend", function(){
+    window.location.href = "https://scholar.google.com/citations?user=HSFykcoAAAAJ&hl=en&oi=sra";
+  });
+});
+
+$(function() {
   $("#about-square-container")
     .on("click", function(){
       // Disable clicking

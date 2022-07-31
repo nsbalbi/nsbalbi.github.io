@@ -24,7 +24,7 @@
   </div>
   <div class="main" id="main">
     <div class="title">
-      <h1>Subdivisions</h1>
+      <h1><u>Tutorial</u>: Subdivisions</h1>
       <h3>Posted: 7/9/2022, Updated: 7/13/2022</h3>
       <img class="badge" src="https://img.shields.io/badge/Made%20with-Processing-blue"><img class="badge" src="https://img.shields.io/badge/Made%20with-Java-orange"><img class="badge" src="https://img.shields.io/badge/Complexity-%E2%98%85%E2%98%85%E2%98%85%E2%98%85%E2%98%86-brightgreen">
     </div>
@@ -32,14 +32,14 @@
       <p>I've always wanted to get around to making some blog posts/tutorials. It was <a href="https://bleuje.github.io/about/" target="_blank">Etienne Jacob's tutorials</a> that introduced me to
         Processing (I previously used HTML Canvas) and inspired me to start posting on Twitter. Now with a few years of Processing under my belt, I seems a good a time as any to give it a shot!</p> 
       <p>My main goal with these posts is not necessarily to provide instructions, but to introduce a range of topics across math, science, and coding. Through these introductions, I hope to 
-        arouse curiousity, provide inspiration, and maybe even teach you a thing or two.</p>
-      <p>For this inaugural post, we'll be taking a look at <b>subdivisions</b>. The name is pretty self-explainatory; we'll be taking an object (in this case a square) and dividing it into 
+        arouse curiosity, provide inspiration, and maybe even teach you a thing or two.</p>
+      <p>For this inaugural post, we'll be taking a look at <b>subdivisions</b>. The name is pretty self-explanatory; we'll be taking an object (in this case a square) and dividing it into 
         multiple pieces. Of course to make things more interesting, we'll then be dividing those pieces into more pieces, and so on. I chose this topic since it covers a number of concepts including
         self-referential classes, looping techniques, and the dreaded <i>recursion</i>. Let's get started! Oh and FYI, we'll end up with something like this:
       <div class="video-container"><video class="video" playsinline autoplay muted loop><source src="../Assets/Subdivision/subdivision1.mp4" type="video/mp4"></video></div>
       <h2>The <code>Div</code> Class</h2>
       <p>To represent each division (or div) in our system, we're going to need a class. This class will contain the div's properties along with methods to render and iterate the system. To
-        visualize a div, we'll draw a rectange defined by two x-y coordinates.
+        visualize a div, we'll draw a rectangle defined by two x-y coordinates.
       </p>
       <pre><code class="java">class Div {
   // Coordinates defining rectangle
@@ -67,7 +67,7 @@
 }     </code></pre>
       <p>Back in our main file, we can use the following code to define and draw our first div:</p>
       <pre><code class="java">float border = 50;  // border between main div and frame edge
-Div div1;  // intialize first div
+Div div1;  // initialize first div
 
 void setup() {
   size(800, 800, P2D);
@@ -172,7 +172,7 @@ for (int i = 0; i <= nPieces; i++) {
   }
 }</code></pre>
       <p>Now, you may wonder why <code>splitAxis</code> was not listed as an argument within the method. This is because we want to split our div in the opposite direction of our parent div. 
-      While it is possile to split along the same axis, it quickly results in odd-looking divs with extremely large aspect ratios. To avoid this, we will store <code>splitAxis</code> as a
+      While it is possibe to split along the same axis, it quickly results in odd-looking divs with extremely large aspect ratios. To avoid this, we will store <code>splitAxis</code> as a
       class property. When constructing a child div, we will set <code>splitAxis</code> to be the opposite of the parent's <code>splitAxis</code> value. For our initial div, we will randomly
       set <code>splitAxis</code>. The implementation of this is shown below:</p>
       <pre><code class="java">class Div {
@@ -339,7 +339,7 @@ for (int i = 0; i <= nPieces; i++) {
 }</code></pre>
       <p>Now we can update our main script to add in the time variable and a <code>updatePosition()</code> call, and run!</p>
       <pre><code class="java">float border = 50;  // border between main div and frame edge
-Div div1;  // intialize first div
+Div div1;  // initialize first div
 
 int nFrames = 200;  // number of animation frames
 float t;  // global time variable
@@ -369,12 +369,12 @@ void draw() {
       <div class="video-container"><video class="video" playsinline autoplay muted loop><source src="../Assets/Subdivision/subdivision6.mp4" type="video/mp4"></video></div>
       <p>Looks good, albeit a bit plain. Let's add some color to fix that.</p>
       <h2>Finishing Touches</h2>
-      <p>To add color, we can add a couple class properties to store a color list and select a random color. You can select the colors on your own, or grab a pallete online. Then we'll add a
+      <p>To add color, we can add a couple class properties to store a color list and select a random color. You can select the colors on your own, or grab a palette online. Then we'll add a
         <code>fill()</code> call to our <code>render()</code> method.
       </p>
       <pre><code class="java">class Div {
   ...
-  // list of possibile fill colors
+  // list of possible fill colors
   int[][] colorList = {{185, 225, 220},
                         {243, 129, 129},
                         {117, 108, 131}};
