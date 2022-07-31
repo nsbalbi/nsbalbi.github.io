@@ -11,6 +11,7 @@ $(function() {
    })
   .on("animationend", function(){
     window.location.href = "https://github.com/nsbalbi";
+    $(this).removeClass('square-animation-zoom');
   });
 });
 
@@ -22,6 +23,7 @@ $(function() {
    })
   .on("animationend", function(){
     window.location.href = "https://twitter.com/nsbalbi";
+    $(this).removeClass('square-animation-zoom');
   });
 });
 
@@ -33,6 +35,7 @@ $(function() {
    })
   .on("animationend", function(){
     window.location.href = "https://scholar.google.com/citations?user=HSFykcoAAAAJ&hl=en&oi=sra";
+    $(this).removeClass('square-animation-zoom');
   });
 });
 
