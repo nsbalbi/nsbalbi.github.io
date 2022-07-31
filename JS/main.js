@@ -11,9 +11,8 @@ $(function() {
    })
   .on("animationend", function(){
     window.location.href = "https://github.com/nsbalbi";
-    setTimeout(function(){
-      $(this).removeClass('square-animation-zoom');
-    },10);
+    $(this).removeClass('square-animation-zoom');
+    $(this).parent().css('z-index',0);
   });
 });
 
@@ -25,9 +24,8 @@ $(function() {
    })
   .on("animationend", function(){
     window.location.href = "https://twitter.com/nsbalbi";
-    setTimeout(function(){
-      $(this).removeClass('square-animation-zoom');
-    },10); 
+    $(this).removeClass('square-animation-zoom');
+    $(this).parent().css('z-index',0);
   });
 });
 
@@ -39,9 +37,8 @@ $(function() {
    })
   .on("animationend", function(){
     window.location.href = "https://scholar.google.com/citations?user=HSFykcoAAAAJ&hl=en&oi=sra";
-    setTimeout(function(){
-      $(this).removeClass('square-animation-zoom');
-    },10);
+    $(this).removeClass('square-animation-zoom');
+    $(this).parent().css('z-index',0);
   });
 });
 
