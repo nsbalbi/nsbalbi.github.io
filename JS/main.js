@@ -1,12 +1,4 @@
 
-(function () {
-  window.onpageshow = function(event) {
-      if (event.persisted) {
-          window.location.reload();
-      }
-  };
-})();
-
 setTimeout(function(){
   $("#body").css("pointer-events", "auto");
 },1900);
