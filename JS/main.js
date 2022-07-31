@@ -1,10 +1,4 @@
 
-$(function(){
-  $("#code-square-container").removeClass('square-animation-zoom');
-  $("#art-square-container").removeClass('square-animation-zoom');
-  $("#science-square-container").removeClass('square-animation-zoom');
-});
-
 setTimeout(function(){
   $("#body").css("pointer-events", "auto");
 },1900);
@@ -17,6 +11,9 @@ $(function() {
    })
   .on("animationend", function(){
     window.location.href = "https://github.com/nsbalbi";
+    setTimeout(function(){
+      $(this).removeClass('square-animation-zoom');
+    },10);
   });
 });
 
@@ -28,6 +25,9 @@ $(function() {
    })
   .on("animationend", function(){
     window.location.href = "https://twitter.com/nsbalbi";
+    setTimeout(function(){
+      $(this).removeClass('square-animation-zoom');
+    },10); 
   });
 });
 
@@ -39,6 +39,9 @@ $(function() {
    })
   .on("animationend", function(){
     window.location.href = "https://scholar.google.com/citations?user=HSFykcoAAAAJ&hl=en&oi=sra";
+    setTimeout(function(){
+      $(this).removeClass('square-animation-zoom');
+    },10);
   });
 });
 
