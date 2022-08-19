@@ -5,6 +5,24 @@ body {
   overflow-x: hidden;
 }
 
+.arrow-up {
+  display: none;
+  position: fixed;
+  left: 4vh;
+  bottom: 4vh;
+  z-index: 99;
+  border: solid rgb(100, 100, 100);
+  border-width: 0 0.5em 0.5em 0;
+  padding: 0.5em;
+  transform: translateY(50%) rotate(-135deg);
+  -webkit-transform: translateY(50%) rotate(-135deg);
+  cursor: pointer;
+}
+.arrow-up:hover {
+  border: solid black;
+  border-width: 0 0.5em 0.5em 0;
+}
+
 .main {
   padding: 3.5em 25vw 2em 25vw;
 }
@@ -71,6 +89,31 @@ code {
   margin: 0;
 }
 
+sub {
+  vertical-align: bottom;
+  font-size: 0.7em;
+}
+sup {
+  vertical-align: top;
+  font-size: 0.7em;
+}
+
+::-webkit-scrollbar {
+  width: 1.5em;
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(100, 100, 100);
+  border-radius: 1em;
+  border: 0.3em solid white;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(80, 80, 80);
+}
+::-webkit-scrollbar-thumb:active { 
+  background-color: rgb(0, 0, 0);
+}  
+
 mjx-container[display="true"] {
   margin: .3em 0 ! important
 }
@@ -81,6 +124,6 @@ mjx-container[display="true"] {
   }
 
   .arrow-container {
-    padding: 0.5em 0 0 0.75em;
+    display: none;
   }
 }

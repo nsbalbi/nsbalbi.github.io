@@ -23,6 +23,7 @@
 </head>
 
 <body id="body" onunload="">
+  <i class="arrow-up" id="top-arrow"></i>
   <div class="main" id="main">
     <div class="title">
       <h1><u>Article</u>: Assembly Analysis</h1>
@@ -72,19 +73,19 @@
       <p>Now that we have each point's neighbors, we can calculate a bunch of parameters including the number of neighbors and the distance to the nearest neighbor. 
         One parameter I want to go over is called the local bond orientation order. It is calculated for a given point using the equation,</p>
       <div class="equation"><p>$$\Psi_s=\left|\frac{1}{N}\sum_{j=1}^N e^{i s \theta_j}\right|$$</p></div>
-      <p>Where s is either 4 for square packing or 6 for hexagonal packing, N is the number of neighbors, and θ_j is the angle between a reference axis and the line between the
+      <p>Where s is either 4 for square packing or 6 for hexagonal packing, N is the number of neighbors, and θ<sub>j</sub> is the angle between a reference axis and the line between the
        point of interest and neighbor j. i represents the imaginary unit. While I won't go into how this equation is calculated, I'll attempt to explain what it's calculating and how
         it works.</p>
-      <p>In simplest terms, Ψ_s represents how close a point is to having s-fold symmetry, varying from 0 to 1. For example, a point with perfect hexagonal symmetry
-       with its neighbors would have a Ψ_6 value of 1. The equation can be visualized as taking each neighboring point, and multiplying the angle between it and the reference
+      <p>In simplest terms, Ψ<sub>s</sub> represents how close a point is to having s-fold symmetry, varying from 0 to 1. For example, a point with perfect hexagonal symmetry
+       with its neighbors would have a Ψ<sub>6</sub> value of 1. The equation can be visualized as taking each neighboring point, and multiplying the angle between it and the reference
        axis by s. An animation of this is shown below, with the reference axis being the positive x-axis, shown in blue.</p>
       <div class="video-container"><video class="video" playsinline muted controls="true" style="width: 50%;"><source src="../Assets/Assembly Analysis/S6NN6.mp4" type="video/mp4"></video></div>
       <p>Since each point is 1/6th of a rotation away from each other, when rotated they end up all stacked on top of each other. The circle in red represents the average
-        location of each neighboring point. Once the rotation is completed, the distance of this red circle to the center is equal to Ψ_s. Thus, in the figure above, Ψ_6
-        ends at it's maximum value of 1. If we slightly offset the neighbors from perfect 6-fold order, we end up with Ψ_6 values slightly below 1, such as in the figure below.</p>
+        location of each neighboring point. Once the rotation is completed, the distance of this red circle to the center is equal to Ψ<sub>s</sub>. Thus, in the figure above, Ψ<sub>6</sub>
+        ends at it's maximum value of 1. If we slightly offset the neighbors from perfect 6-fold order, we end up with Ψ<sub>6</sub> values slightly below 1, such as in the figure below.</p>
       <div class="video-container"><video class="video" playsinline muted controls="true" style="width: 50%;"><source src="../Assets/Assembly Analysis/S6NN6 Noise.mp4" type="video/mp4"></video></div>
       <p>If we then choose an arbitrary threshold for identifying a point as having s-fold order, say 0.8, we can now color code a Voronoi diagram of our input image to
-        highlight regions of 4-fold and 6-fold order. In the figure below, blue represents points that have Ψ_4 > 0.8, red for Ψ_6 > 0.8, purple for both, and white for neither.</p>
+        highlight regions of 4-fold and 6-fold order. In the figure below, blue represents points that have Ψ<sub>4</sub> > 0.8, red for Ψ<sub>6</sub> > 0.8, purple for both, and white for neither.</p>
       <div class="img-container"><img src="../Assets/Assembly Analysis/assembly_analysis1.png" style="width: 90%;"></div>
       <p>Now, you may be wondering what the φ value represents. This is called the "phase angle", and in our visualization represents the angle between the red circle and
         the reference axis. In the context of our input images, this represents the orientation of the hexagonal or square lattice. For example, if we offset our visualization by 𝜋/6, we 
@@ -99,7 +100,7 @@
         For 6-fold order, φ ranges from 0° to 360° while θ ranges from 0° to 60°, since a hexagon rotated by 60° remains the same. Likewise for 4-fold order, φ ranges from 0° to 360° while θ ranges from 0° to 90°.</p>
       <h2>Wrap Up</h2>
       <p>As usual, props to you if you made it through the whole thing. While this specific project is unlikely to be useful to you, I hope a few concepts stuck with you. Image analysis is a
-        really powerful tool, and I've seen a few art pieces making really good use of Voronoi diagrams and Delaunay triangulations. Additionally, the Ψ_s equation and its visualization are very similar to that for the 
+        really powerful tool, and I've seen a few art pieces making really good use of Voronoi diagrams and Delaunay triangulations. Additionally, the Ψ<sub>s</sub> equation and its visualization are very similar to that for the 
         Fourier transform, which <a href="https://www.youtube.com/watch?v=spUNpyF58BY" target="_blank">3Blue1Brown has a great video on</a>.</p>
       <p>I'm not going to post the code for this one (mostly because it was written in MATLAB), but there are many libraries and scripts out there in pretty much any language for both
         image analysis and Voronoi/Delaunay calculations. If you're curious as to what this code is useful for, it was used in the <a href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=HSFykcoAAAAJ&citation_for_view=HSFykcoAAAAJ:u5HHmVD_uO8C" target="_blank">journal article</a>
