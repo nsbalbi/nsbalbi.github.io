@@ -3,35 +3,10 @@ body {
   height: 100%;
   font-family: Roboto, Helvetica, sans-serif;
   overflow-x: hidden;
-  pointer-events: none;
-}
-
-.arrow-container {
-  position: fixed;
-  padding: 0.5em 0 0 0.5em;
-  animation: in_from_top 2s ease;
-}
-
-.arrow-left {
-  height: 2vh;
-  width: 2vh;
-  top: 0.15em;
-  left: 0.15em;
-  border-style: solid;
-  border-color: black;
-  border-width: 0 0.25em 0.25em 0;
-  content: '';
-  display: inline-block;
-  vertical-align: top;
-  transform: rotate(45deg);
-  transition: transform 0.5s ease;
-  border-width: 0 0 0.25em 0.25em; 
-  cursor: pointer;
 }
 
 .main {
   padding: 3.5em 25vw 2em 25vw;
-  animation: in_from_right 2s ease;
 }
 
 h1 {
@@ -100,22 +75,6 @@ mjx-container[display="true"] {
   margin: .3em 0 ! important
 }
 
-@keyframes in_from_right {
-  0% {transform: translateX(75vw);}
-  100% {transform: translateX(0);}
-}
-
-@keyframes main_to_gallery {
-  0% {transform: translateX(0)}
-  75% {transform: translateX(75vw)}
-  100% {transform: translateX(75vw)}
-}
-
-@keyframes body_to_gallery {
-  75% {background-color: white; color: black;}
-  100% {background-color: black; color: white;}
-}
-
 @media (max-width: 1200px) {
   .main {
     padding: 3.5em 8vw 2em 8vw;
@@ -123,16 +82,5 @@ mjx-container[display="true"] {
 
   .arrow-container {
     padding: 0.5em 0 0 0.75em;
-  }
-
-  @keyframes in_from_right {
-    0% {transform: translateX(100vw);}
-    100% {transform: translateX(0);}
-  }
-  
-  @keyframes main_to_gallery {
-    0% {transform: translateX(0)}
-    75% {transform: translateX(100vw)}
-    100% {transform: translateX(100vw)}
   }
 }

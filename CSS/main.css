@@ -3,205 +3,136 @@
     padding: 0;
     border: 0;
     font-size: 100%;
+    --science-color: #FFD166;
+    --art-color: #E11444;
+    --code-color: #118AB2;
 }
 
 body {
-	background-color: #000000;
-	color: black;
+	background-color: black;
+	color: white;
 	text-align: center;
 	margin: 0;
 	height: 100%;
-    font-family: Verdana, Tahoma, sans-serif;
-    overflow: hidden;
-    pointer-events: none;
+    font-family: 'Lato', sans-serif;
+    overflow-y: scroll;
 }
 
-.square {
-    width: 20vw;
-    height: 20vw;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    opacity: 1;
-    cursor: pointer;
-    border-radius: 0;
-}
-
-#about-square {
-    background-color: #E11444;
-    transform: translate(-156.0660%,-85.356%) rotate(45deg) scale(0.92);
-    top: -100%;
-    animation: in_from_top 2s ease 0s forwards;
-    transition: transform 1s ease;
-}
-#about-square:hover {
-    transform: translate(-156.0660%,-85.356%) rotate(45deg) scale(0.9);
-}
-#science-square {
-    background-color: #048B67;
-    transform: translate(-85.356%,-14.655%) rotate(45deg) scale(0.92);
-    top: 200%;
-    animation: in_from_bottom 2s ease 0.3s forwards;
-    transition: transform 1s ease;
-}
-#science-square:hover {
-    transform: translate(-85.356%,-14.655%) rotate(45deg) scale(0.86);
-}
-#art-square {
-    background-color: #FFD166;
-    transform: translate(-14.655%,-85.356%) rotate(45deg) scale(0.92);
-    top: -100%;
-    animation: in_from_top 2s ease 0.6s forwards;
-    transition: transform 1s ease;
-}
-#art-square:hover {
-    transform: translate(-14.655%,-85.356%) rotate(45deg) scale(0.86);
-}
-#code-square {
-    background-color: #118AB2;
-    transform: translate(56.066%,-14.655%) rotate(45deg) scale(0.92);
-    top: 200%;
-    animation: in_from_bottom 2s ease 0.9s forwards;
-    transition: transform 1s ease;
-}
-#code-square:hover {
-    transform: translate(56.066%,-14.655%) rotate(45deg) scale(0.86);
-}
-
-@keyframes in_from_top {
-    from {top: -100%;}
-    to {top: 50%;}
-}
-
-@keyframes out_to_top {
-    from {top: 50%;}
-    to {top: -100%;}
-}
-
-@keyframes in_from_bottom {
-    from {top: 200%;}
-    to {top: 50%;}
-}
-
-@keyframes out_to_bottom {
-    from {top: 50%;}
-    to {top: 200%;}
-}
-
-@keyframes in_from_left {
-    from {left: -100%;}
-    to {left: 50%;}
-}
-
-@keyframes out_to_left {
-    from {left: 50%;}
-    to {left: -100%;}
-}
-
-@keyframes in_from_right {
-    from {left: 200%;}
-    to {left: 50%;}
-}
-
-@keyframes out_to_right {
-    from {left: 50%;}
-    to {left: 200%;}
-}
-
-.square-container {
-    position: absolute;
-    width: 100%;
-    height: 100%;
+.main-container {
+    width: 60vw;
+    max-width: 600px;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: inherit;
-    opacity: 1;
-    z-index: 1;
-}
-
-.square-animation-zoom {
-    animation: square_click 2s forwards;
-}
-
-.square-content {
-    position: absolute;
-    width: 70%;
-    height: 70%;
-    transform: rotate(-45deg);
+    flex-direction: column;
     margin: auto;
+    padding: 2em 0;
+}
+
+h1 {
+    font-size: 2.5em;
+    font-weight: normal;
+}
+h2 {
+    font-size: 1.5em;
+    font-weight: normal;
+}
+
+.header {
+    text-align: left;
+}
+
+.sub-header {
+    display: flex;
+    column-gap: 1em;
+}
+
+.content-section {
+    text-align: left;
+    padding: 1em 0;
+}
+
+.content-container {
+    display: flex;
+    justify-content: flex-start;
+    padding-top: 1em;
+    flex-wrap: wrap;
+    gap: 1.2em;
+}
+
+.link-box, .article-box {
+    width: 30%;
+    aspect-ratio: 1 / 1;
+    border-radius: 15%;
+    transition: transform 1s ease;
+    cursor: pointer;
+    text-decoration: none;
+    min-width: 150px;
+}
+
+.link-box {
+    background-color: white;
+    color: black;
+    text-align: center;
     display: flex;
     align-items: center;
     justify-content: center;
-    opacity: 1;
+}
+.link-box:hover {
+    transform: scale(0.95);
+}
+.link-box h2 {
+    padding: 0.5em;
+    font-weight: bold;
 }
 
-@keyframes square_click {
-    10% {
-        transform: scale(1);
-        color: rgba(0,0,0,0);
-        border-radius: 0;
-    }
-    100% {
-        transform: scale(12);
-        color: rgba(0,0,0,0);
-        border-radius: 200%;
+.article-box {
+    background-color: black;
+    box-sizing: border-box;
+    border: 4px solid white;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+    background-size: contain;
+}
+.article-box:hover {
+    transform: scale(0.95);
+}
+
+.article-title {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 0.5em 0;
+    width: 100%;
+    text-align: center;
+    font-size: 0.9em;
+    font-weight: normal;
+}
+
+::-webkit-scrollbar {
+    width: 1.5em;
+}
+::-webkit-scrollbar-thumb {
+    background: rgb(230, 230, 230);
+    border-radius: 1em;
+    border: 0.3em solid black;
+    background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(177, 177, 177);
+}
+::-webkit-scrollbar-thumb:active { 
+    background-color: rgb(128, 128, 128);
+}  
+
+@media (max-width: 1200px) {
+    .main-container {
+        width: 90vw;
+        max-width: 600px;
     }
 }
 
-.square-content h1 {
-    font-size: 3vw;
-    user-select: none;
-}
-
-@media only screen and (orientation: portrait) {
-    .square {
-        width: 20vh;
-        height: 20vh;
-    }
-
-    #about-square {
-        top: 50%;
-        left: -100%;
-        transform: translate(-85.356%,-156.057%) rotate(45deg) scale(0.92);
-        animation: in_from_left 2s ease 0s forwards;
-        transition: transform 1s ease;
-    }
-    #about-square:hover {
-        transform: translate(-85.356%,-156.057%) rotate(45deg) scale(0.9);
-    }
-    #science-square {
-        top: 50%;
-        left: 200%;
-        transform: translate(-14.655%,-85.356%) rotate(45deg) scale(0.92);
-        animation: in_from_right 2s ease 0.3s forwards;
-        transition: transform 1s ease;
-    }
-    #science-square:hover {
-        transform: translate(-14.655%,-85.356%) rotate(45deg) scale(0.86);
-    }
-    #art-square {
-        top: 50%;
-        left: -100%;
-        transform: translate(-85.356%,-14.655%) rotate(45deg) scale(0.92);
-        animation: in_from_left 2s ease 0.6s forwards;
-        transition: transform 1s ease;
-    }
-    #art-square:hover {
-        transform: translate(-85.356%,-14.655%) rotate(45deg) scale(0.86);
-    }
-    #code-square {
-        top: 50%;
-        left: 200%;
-        transform: translate(-14.655%,56.046%) rotate(45deg) scale(0.92);
-        animation: in_from_right 2s ease 0.9s forwards;
-        transition: transform 1s ease;
-    }
-    #code-square:hover {
-        transform: translate(-14.655%,56.046%) rotate(45deg) scale(0.86);
-    }
-
-    .square-content h1 {
-        font-size: 3vh;
+@media (max-width: 550px) {
+    .content-container {
+        justify-content: center;
     }
 }
+
