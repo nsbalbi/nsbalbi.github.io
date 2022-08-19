@@ -1,7 +1,7 @@
 
 // Scroll to top arrow - via copeden from @rdallaire
 $(window).scroll(function() {
-  if ($(this).scrollTop() >= 50 && !window.matchMedia('(max-width: 1200px)').matches) {      
+  if ($(this).scrollTop() >= 50 && $(window).width() > 1200) {      
       $('#top-arrow').fadeIn(200);  
   } else {
       $('#top-arrow').fadeOut(200);  
