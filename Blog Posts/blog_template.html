@@ -23,7 +23,8 @@
 </head>
 
 <body id="body" onunload="">
-  <i class="arrow-up" id="top-arrow"></i>
+  <a href="../index.html" class="arrow left" id="home-arrow"></a>
+  <i class="arrow up" id="top-arrow"></i>
   <div class="main" id="main">
     <div class="title">
       <h1>Title</h1>
@@ -33,7 +34,10 @@
     <div class="content">
       <p>I've<sub>1</sub> always<sup>2</sup> wanted to get around to making some blog posts/tutorials. It was <a href="https://bleuje.github.io/about/" target="_blank">Etienne Jacob's tutorials</a> that introduced me to
         Processing (I previously used HTML Canvas) and inspired me to start posting on Twitter. Now with a few years of Processing under my belt, I seems a good a time as any to give it a shot!</p> 
-      <div class="video-container"><video class="video" playsinline autoplay muted loop><source src="../Assets/Subdivision/subdivision1.mp4" type="video/mp4"></video></div>
+      <div class="video-container">
+        <video class="video" playsinline autoplay muted loop><source src="../Assets/Subdivision/subdivision1.mp4" type="video/mp4"></video>
+        <p>Sample video caption</p>
+      </div>
       <h2>The <code>Div</code> Class</h2>
       <p>To represent each division (or div) in our system, we're going to need a class. This class will contain the div's properties along with methods to render and iterate the system. To
         visualize a div, we'll draw a rectange defined by two x-y coordinates.
@@ -62,7 +66,10 @@
     rect(x1, y1, x2-x1, y2-y1);
   }
 }     </code></pre>
-      <div class="img-container"><img src="../Assets/Subdivision/subdivision2.png" style="width: 40%;"></div>
+      <div class="img-container">
+        <img src="../Assets/Subdivision/subdivision2.png" style="width: 40%;">
+        <p>Sample image caption</p>
+      </div>
       <p>To represent each division (or div) in our system, we're going to need a class. This class will contain the div's properties along with methods to render and iterate the system. To
         visualize a div, we'll draw a</p>
       <div class="equation"><p>$$newRatio[i] = ogRatio[i] + \frac{\sin{(2\pi\cdot ogRatio[i] + 2\pi t)}}{10}$$</p></div>

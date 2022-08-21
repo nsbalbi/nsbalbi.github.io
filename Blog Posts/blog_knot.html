@@ -24,7 +24,8 @@
 </head>
 
 <body id="body" onunload="">
-  <i class="arrow-up" id="top-arrow"></i>
+  <a href="../index.html" class="arrow left" id="home-arrow"></a>
+  <i class="arrow up" id="top-arrow"></i>
   <div class="main" id="main">
     <div class="title">
       <h1><u>Tutorial</u>: Knot</h1>
@@ -297,7 +298,7 @@ void draw_() {
       <p>Oh motion blur... Once you've tried it once, you can never go back. It makes any drawing with moving parts look a million times smoother and appealing. Since it uses some nasty bitwise
       operations I know nothing about, we'll be using a template developed by the amazing <a href="https://twitter.com/beesandbombs" target="_blank">@beesandbombs</a>. In short, the template works
       by averaging each pixel value over small time segments. This way, pixels that change in value quickly (i.e. those who include fast-moving objects) get blurred. Here's the template implemented, </p>
-      <pre><code>...
+      <pre><code class="java">...
 int[][] result;
 // Motion blur parameters
 // number of drawings used to render each final frame with motion blur

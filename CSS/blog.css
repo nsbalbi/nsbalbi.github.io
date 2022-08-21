@@ -5,22 +5,38 @@ body {
   overflow-x: hidden;
 }
 
-.arrow-up {
-  display: none;
+.arrow {
   position: fixed;
-  left: 4vh;
-  bottom: 4vh;
   z-index: 99;
   border: solid rgb(100, 100, 100);
   border-width: 0 0.5em 0.5em 0;
   padding: 0.5em;
-  transform: translateY(50%) rotate(-135deg);
-  -webkit-transform: translateY(50%) rotate(-135deg);
   cursor: pointer;
 }
-.arrow-up:hover {
+.arrow:hover {
   border: solid black;
   border-width: 0 0.5em 0.5em 0;
+}
+
+.up {
+  transform: translateY(50%) rotate(-135deg);
+  -webkit-transform: translateY(50%) rotate(-135deg);
+}
+
+.left {
+  transform: rotate(135deg);
+  -webkit-transform: rotate(135deg);
+}
+
+#top-arrow {
+  display: none;
+  left: 4vh;
+  bottom: 4vh;
+}
+
+#home-arrow {
+  left: 4vh;
+  top: 4vh;
 }
 
 .main {
@@ -53,14 +69,14 @@ li {
   font-size: 1.1em;
 }
 
-.img-container {
+.img-container, .video-container {
   display: flex;
   justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
-
-.video-container {
-  display: flex;
-  justify-content: center;
+.video-container p, .img-container p {
+  font-size: 1.0em;
 }
 
 video {
@@ -123,7 +139,8 @@ mjx-container[display="true"] {
     padding: 3.5em 8vw 2em 8vw;
   }
 
-  .arrow-up {
-    display: none;
+  #home-arrow {
+    left: 2vh;
+    top: 2vh;
   }
 }
