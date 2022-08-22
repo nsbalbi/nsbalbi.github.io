@@ -76,7 +76,10 @@ li {
   align-items: center;
 }
 .video-container p, .img-container p {
-  font-size: 1.0em;
+  font-size: 0.9em;
+  padding-left: 1.0em;
+  padding-right: 1.0em;
+  margin-bottom: 0;
 }
 
 video {
@@ -118,13 +121,13 @@ sup {
   width: 1.5em;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgb(100, 100, 100);
+  background-color: rgb(100, 100, 100);
   border-radius: 1em;
-  border: 0.3em solid white;
+  border: 0.3em solid rgba(255, 255, 255, 0);
   background-clip: padding-box;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgb(80, 80, 80);
+  background-color: rgb(80, 80, 80);
 }
 ::-webkit-scrollbar-thumb:active { 
   background-color: rgb(0, 0, 0);
