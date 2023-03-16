@@ -1,9 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<!--
+/*
 MIT License
 
 Copyright (c) 2019 Viresh Ratnakar
@@ -28,89 +23,7 @@ SOFTWARE.
 
 The latest code and documentation for Exolve can be found at:
 https://github.com/viresh-ratnakar/exolve
--->
-
-<title>Exolve: An Easily Configurable Interactive Crossword Solver</title>
-
-<script>
-const puzzleText = `
-
-exolve-begin
-  exolve-id: cheese02222023
-  exolve-title: Cheese!
-
-  exolve-setter: Nicholas Sbalbi
-  //exolve-copyright: 2022 Comma-separated-copyright-holders (delete or replace)
-
-  exolve-width: 10
-  exolve-height: 11
-
-  # You can provide solution letters instead of zeroes in the grid, which
-  # will create control buttons for revealing and checking entered letters.
-  exolve-grid:
-    AILS...ABC
-    TRAUMA.PAR
-    WISDOM.PRO
-    ASS.LIELOW
-    RHODA.SEND
-    ...AREA...
-    SEAL.QUEST
-    MALIBU.LIE
-    ARI.CANINE
-    LLC.CLOSET
-    LYE...MESH
-
-  exolve-across:
-    1 Pains (4)
-    5 123 companion (3)
-    8 Lasting damage (6)
-    11 Net-zero score (3)
-    12 *Trait often developed later in life (6)
-    13 Supporting (3)
-    14 Vulgar animal? (3)
-    15 Wait until the heat dies down (6)
-    17 Hit 1970s sitcom (5)
-    19 Pass on a message (4)
-    20 Length squared (4)
-    22 Emblem, often waxen (4)   
-    25 A knight's journey (5)
-    29 2017 Miley Cyrus hit (6)
-    31 37 Across homophone, debatably detectable (3)
-    32 R&B singer Lennox (3)
-    33 *Police homophone (6)
-    35 Potential business name ending (3)
-    36 Walk-in, if wealthy (6)
-    37 31 Across homophone, alkaline chemical (3)
-    38 Netting structure (4)
-
-  exolve-down:
-    1 In conflict, nationally
-    2 Inisherin nationality
-    3 Cow-catcher
-    4 Bubble
-    5 Common alphabet book leader
-    6 Industrialist title
-    7 Agoraphobia fear
-    9 *Concentration units
-    10 French friend
-    16 Biblical twin
-    18 Artist best known for his Memory?
-    21 Artificial sweetener brand
-    22 Trivial
-    23 Bird or riser precursor
-    24 Wonderland visitor
-    26 Name found in famous Beethoven piece
-    27 Curvy math functions
-    28 Target of puzzle title, or what the starred clues have in common
-    30 Conceal recipients acronym
-    34 Eating sound
-
-  # The Exolve format has lots of additional features. See details in the
-  # documentation at:
-  #   https://github.com/viresh-ratnakar/exolve/blob/master/README.md
-exolve-end
-
-`;
+*/
 
 /**
  * The Exolve code creates only the following names at global scope:
@@ -147,7 +60,7 @@ var exolvePuzzles;
  *     all the pages on the page). If containerId is empty and there is no
  *     element with id "exolve", the puzzle is created at the end of the
  *     web page.
- * customized is an optional function that will get called after the puzzle
+ * customizer is an optional function that will get called after the puzzle
  *     is set up. The Exolve object will be passed to the function.
  * provideStateUrl should be set to true if you also want to provide a URL
  *     that includes the current state and can be bookmarked or shared. Note
@@ -171,7 +84,7 @@ function Exolve(puzzleSpec,
                 visTop=0,
                 maxDim=0,
                 notTemp=true) {
-  this.VERSION = 'Exolve v1.47 December 19, 2022';
+  this.VERSION = 'Exolve v1.48 March 7, 2023';
   this.id = '';
 
   this.puzzleText = puzzleSpec;
@@ -419,8 +332,9 @@ function Exolve(puzzleSpec,
          <li><b>Arrow keys:</b>
              Move to the nearest light square in that direction.</li>
          <li><b>Ctrl-q:</b> Clear this, <b>Ctrl-Q:</b> Clear All!,
-             <b>Ctrl-B:</b> Print crossword, <b>Ctrl-/:</b> Jump to notes,
-             <b>Ctrl-*:</b> Mark clue as fave in notes, adding a * prefix.</li>
+             <b>Ctrl-B:</b> Print crossword, <b>Ctrl-/:</b> Jump to/back-from
+             notes, <b>Ctrl-*:</b> Mark clue as fave in notes, adding a *
+             prefix.</li>
          <li><b>Spacebar:</b>
              Place/clear block in the current square if it's diagramless.</li>
        </ul>
@@ -436,9 +350,9 @@ function Exolve(puzzleSpec,
     'notes': 'Notes',
     'notes.hover': 'Show/hide notes panel.',
     'notes-help': '<li>Ctrl-/ takes you to the current clue\'s notes ' +
-        '(or overall notes).</li><li>Ctrl-* adds a * prefix to the current ' +
-        'clue\'s notes.</li><li>Hovering over a clue\'s notes shows the ' +
-        'clue as a tooltip.</li>',
+        '(or overall notes) and back (if already there).</li><li>Ctrl-* ' +
+        'adds a * prefix to the current clue\'s notes.</li><li>Hovering ' +
+        'over a clue\'s notes shows the clue as a tooltip.</li>',
     'maker-info': 'Exolve-maker info',
     'manage-storage': 'Manage local storage',
     'manage-storage.hover': 'View puzzle Ids for which state has been saved. ' +
@@ -516,6 +430,7 @@ function Exolve(puzzleSpec,
     'print-page.hover': 'Print the whole page (Ctrl-p or Cmd-p).',
     'print-page-wysiwyg': 'Print wysiwyg',
     'print-page-wysiwyg.hover': 'Print the whole page without reformatting the crossword.',
+    'print-questions': 'Print questions:',
     'show-notes-seq': 'Show clue-solving sequence:',
     'show-notes-entries': 'Show entered solutions:',
     'show-notes-times': 'Show clue-solving times:',
@@ -552,7 +467,6 @@ function Exolve(puzzleSpec,
   this.languageScript = '';
   this.langMaxCharCodes = 1;
   this.columnarLayout = false;
-  this.cluesToRight = false;
   this.ignoreUnclued = false;
   this.ignoreEnumMismatch = false;
   this.showCellLevelButtons = false;
@@ -766,6 +680,12 @@ Exolve.prototype.init = function() {
                     <input class="xlv-input" id="${this.prefix}-page-margin"
                       name="${this.prefix}-page-margin" size="5" value="0.5">
                     </input>
+                    <span id="${this.prefix}-print-questions-span">
+                      ${this.textLabels['print-questions']}
+                      <input id="${this.prefix}-print-questions"
+                        checked=true type="checkbox">
+                      </input>
+                    </span>
                   </div>
                   <div>
                     <button id="${this.prefix}-print-crossword"
@@ -1012,6 +932,10 @@ Exolve.prototype.init = function() {
   this.printFontInput = document.getElementById(this.prefix + '-print-font-inp');
   this.printFontInput.addEventListener(
       'change', this.setPrintFont.bind(this, false));
+  if (this.questionTexts.length == 0) {
+    const pq = document.getElementById(this.prefix + '-print-questions-span');
+    pq.style.display = 'none';
+  }
 
   this.webifiButton = document.getElementById(this.prefix + '-webifi');
   this.webifiButton.style.display = 'none';
@@ -1444,132 +1368,143 @@ Exolve.prototype.parseSubmit = function(s) {
 }
 
 Exolve.prototype.parseOption = function(s) {
-  let sparts = s.split(' ')
+  let sparts = s.split(' ');
   for (let spart of sparts) {
-    spart = spart.trim().toLowerCase()
+    spart = spart.trim();
     if (spart == "show-cell-level-buttons") {
-      this.showCellLevelButtons = true
-      continue
+      this.showCellLevelButtons = true;
+      continue;
     }
     if (spart == "hide-inferred-numbers") {
-      this.hideInferredNumbers = true
-      continue
+      this.hideInferredNumbers = true;
+      continue;
     }
     if (spart == "hide-copy-placeholder-buttons") {
-      this.hideCopyPlaceholders = true
-      continue
+      this.hideCopyPlaceholders = true;
+      continue;
     }
     if (spart == "no-auto-solution-in-anno") {
-      this.addSolutionToAnno = false
-      continue
+      this.addSolutionToAnno = false;
+      continue;
     }
     if (spart == "columnar-layout") {
-      this.columnarLayout = true
-      continue
+      this.columnarLayout = true;
+      continue;
     }
     if (spart == "clues-at-right-in-two-columns") {
-      this.cluesToRight = true
-      continue
+      /* Deprecated, we always try to position clues to the right now. */
+      continue;
     }
     if (spart == "print-incomplete-2cols") {
       this.printIncomplete2Cols = true;
-      continue
+      continue;
     }
     if (spart == "print-completed-3cols") {
       this.printCompleted3Cols = true;
-      continue
+      continue;
     }
     if (spart == "ignore-unclued") {
-      this.ignoreUnclued = true
-      continue
+      this.ignoreUnclued = true;
+      continue;
     }
     if (spart == "ignore-enum-mismatch") {
-      this.ignoreEnumMismatch = true
-      continue
+      this.ignoreEnumMismatch = true;
+      continue;
     }
     if (spart == "no-nina-button" || spart == "no-ninas-button") {
-      this.noNinaButton = true
-      continue
+      this.noNinaButton = true;
+      continue;
     }
     if (spart == "webifi") {
-      this.useWebifi = true
-      continue
+      this.useWebifi = true;
+      continue;
     }
     if (spart == "allow-digits") {
-      spart = 'allow-chars:0123456789'
+      spart = 'allow-chars:0123456789';
       // Fall through to the allow-chars code.
     }
-    const colon = spart.indexOf(':')
+    const colon = spart.indexOf(':');
     if (colon < 0) {
-      this.throwErr('Expected exolve-option: key:value, got: ' + spart)
+      this.throwErr('Expected exolve-option: key:value, got: ' + spart);
     }
-    const kv = [spart.substr(0, colon).trim(), spart.substr(colon + 1).trim()]
+    const kv = [spart.substr(0, colon).trim(), spart.substr(colon + 1).trim()];
     if (kv[0] == 'clues-panel-lines') {
-      this.cluesPanelLines = parseInt(kv[1])
+      this.cluesPanelLines = parseInt(kv[1]);
       if (isNaN(this.cluesPanelLines)) {
         this.throwErr('Unexpected val in exolve-option: clue-panel-lines: ' +
-                      kv[1])
+                      kv[1]);
       }
-      this.cluesToRight = true
-      continue
+      continue;
     }
     if (kv[0] == 'highlight-overwritten-seconds') {
-      const secs = parseFloat(kv[1])
+      const secs = parseFloat(kv[1]);
       if (isNaN(secs) || secs < 0) {
-        this.throwErr('Unexpected val in exolve-option: highlight-overwritten-seconds: ' + kv[1])
+        this.throwErr('Unexpected val in exolve-option: highlight-overwritten-seconds: ' + kv[1]);
       }
       this.hltOverwrittenMillis = secs * 1000;
       continue;
     }
     if (kv[0] == 'offset-left') {
-      this.offsetLeft = parseInt(kv[1])
+      this.offsetLeft = parseInt(kv[1]);
       if (isNaN(this.offsetLeft)) {
-        this.throwErr('Unexpected val in exolve-option: offset-left: ' + kv[1])
+        this.throwErr('Unexpected val in exolve-option: offset-left: ' + kv[1]);
       }
-      continue
+      continue;
     }
     if (kv[0] == 'offset-top') {
-      this.offsetTop = parseInt(kv[1])
+      this.offsetTop = parseInt(kv[1]);
       if (isNaN(this.offsetTop)) {
-        this.throwErr('Unexpected val in exolve-option: offset-top: ' + kv[1])
+        this.throwErr('Unexpected val in exolve-option: offset-top: ' + kv[1]);
       }
-      continue
+      continue;
     }
     if (kv[0] == 'grid-background') {
-      this.colorScheme['background'] = kv[1]
-      continue
+      this.colorScheme['background'] = kv[1];
+      continue;
     }
     if (kv[0] == 'font-family') {
-      this.fontFamily = kv[1]
-      continue
+      this.fontFamily = kv[1];
+      continue;
     }
     if (kv[0] == 'font-size') {
-      this.fontSize = kv[1]
-      continue
+      this.fontSize = kv[1];
+      continue;
     }
     if (kv[0].substr(0, 6) == 'color-' || kv[0].substr(0, 7) == 'colour-') {
       let key = kv[0].substr(kv[0].indexOf('-') + 1);
       if (!this.colorScheme[key]) {
-        this.throwErr('Unsupported coloring option: ' + kv[0])
+        this.throwErr('Unsupported coloring option: ' + kv[0]);
       }
       if (!this.isColour(kv[1])) {
-        this.throwErr('Invalid colour for ' + key + ': ' + kv[1])
+        this.throwErr('Invalid colour for ' + key + ': ' + kv[1]);
       }
-      this.colorScheme[key] = kv[1]
-      continue
+      this.colorScheme[key] = kv[1];
+      continue;
+    }
+    if (kv[0].substr(0, 16) == 'override-number-') {
+      const key = kv[0].substr(16);
+      if (!this.hasOwnProperty(key)) {
+        this.throwErr('Invalid Exolve property: ' + key);
+      }
+      if (typeof this[key] !== 'number') {
+        this.throwErr('Non-numeric Exolve property: ' + key);
+      }
+      const val = parseFloat(kv[1]);
+      this[key] = val;
+      continue;
     }
     if (kv[0] == 'allow-chars') {
       if (!this.allowChars) this.allowChars = {};
       for (c of kv[1]) {
         if (/\s/.test(c)) continue;
-        this.allowChars[c] = true
+        this.allowChars[c] = true;
         if (this.SPECIAL_STATE_CHARS.hasOwnProperty(c)) {
-          this.allowChars[this.SPECIAL_STATE_CHARS[c]] = true
+          this.allowChars[this.SPECIAL_STATE_CHARS[c]] = true;
         }
       }
-      continue
+      continue;
     }
-    this.throwErr('Unexpected exolve-option: ' + spart)
+    this.throwErr('Unexpected exolve-option: ' + spart);
   }
 }
 
@@ -4184,15 +4119,6 @@ Exolve.prototype.displayClues = function() {
     document.getElementById(this.prefix + '-nodir-label').
       insertAdjacentHTML('beforeend', this.nodirHeading);
   }
-  const cbs = document.getElementsByClassName('xlv-clues-box')
-  this.cluesBoxWidth = 0;
-  for (let x = 0; x < cbs.length; x++) {
-    const e = cbs[x]
-    if (e.offsetWidth > this.cluesBoxWidth) {
-      this.cluesBoxWidth = e.offsetWidth;
-    }
-  }
-  this.equalizeClueWidths(this.cluesBoxWidth);
 }
 
 Exolve.prototype.equalizeClueWidths = function(w) {
@@ -4258,16 +4184,35 @@ Exolve.prototype.computeGridSize = function(maxDim) {
 }
 
 Exolve.prototype.setColumnLayout = function() {
+  const frameBox = this.frame.getBoundingClientRect();
+  const xStart = Math.max(frameBox.left, 0);
+  const vpWidth = this.getViewportWidth();
+  const xEnd = frameBox.right > 0 ? Math.min(frameBox.right, vpWidth) : vpWidth;
+  const portWidth = xEnd - xStart;
+  const gpWidth = this.gridPanel.offsetWidth || 481;
+  /**
+   * 12 = rt margin of grid panel, 8 = rt margin of clues panel; subtract 20.
+   */
+  const availWidth = portWidth - gpWidth - 20;
+  if (availWidth < 400) {
+    /* Clues in a single column, under grid */
+    this.cluesBoxWidth = gpWidth;
+  } else if (availWidth < 984 && !this.columnarLayout) {
+    /* Clues in two columns to the right of the grid */
+    this.cluesBoxWidth = Math.floor(availWidth / 2) - 12;
+  } else {
+    this.cluesBoxWidth = 480;
+  }
+  console.assert(this.cluesBoxWidth > 0, this.cluesBoxWidth);
+  this.equalizeClueWidths(this.cluesBoxWidth);
+  this.cluesContainer.style.maxWidth = (2 * (this.cluesBoxWidth + 12)) + 'px';
   if (!this.columnarLayout) {
     this.cluesContainer.className = 'xlv-clues xlv-clues-flex'
     this.gridcluesContainer.className = 'xlv-grid-and-clues-flex'
-    if (this.cluesToRight) {
-      this.cluesContainer.classList.add('xlv-clues-to-right');
-    }
     return;
   }
-  const numColumns = Math.floor(this.getViewportWidth() /
-    (15 + Math.max(this.cluesBoxWidth, this.gridPanel.offsetWidth)));
+  const numColumns = Math.floor(
+      vpWidth / (15 + Math.max(this.cluesBoxWidth, gpWidth)));
   if (numColumns == 2) {
     this.cluesContainer.className = 'xlv-clues xlv-clues-columnar'
     this.gridcluesContainer.className = 'xlv-grid-and-clues-2-columnar'
@@ -5514,6 +5459,20 @@ Exolve.prototype.handleKeyUp = function(e) {
   this.handleKeyUpInner(key)
 }
 
+Exolve.prototype.muzzleEvent = function(e) {
+  e.stopPropagation();
+  e.preventDefault();
+}
+
+Exolve.prototype.fromNotesToGrid = function() {
+  if (this.savedRow == this.currRow && this.savedCol == this.currCol) {
+    /* Firefox (etc.?) do not scroll back correctly */
+    window.scrollTo(this.savedScrollX || 0, this.savedScrollY || 0);
+  }
+  this.activateCell(this.currRow, this.currCol);
+  this.refocus();
+}
+
 // For tab/shift-tab, ctrl-q, ctrl-Q, ctrl-B, ctrl-e
 Exolve.prototype.handleKeyDown = function(e) {
   let key = e.which || e.keyCode
@@ -5523,26 +5482,26 @@ Exolve.prototype.handleKeyDown = function(e) {
       e.preventDefault()
     }
   } else if (e.ctrlKey && (e.key == 'q' || e.key == 'Q')) {
-    e.stopPropagation();
-    e.preventDefault();
+    this.muzzleEvent(e);
     if (e.key == 'Q') {
       this.clearAll();
     } else {
       this.clearCurr();
     }
   } else if (e.ctrlKey && e.key == 'B') {
-    e.stopPropagation();
-    e.preventDefault();
+    this.muzzleEvent(e);
     this.printNow('crossword');
   } else if (e.ctrlKey && e.key == '/') {
-    if (this.focusOnNotes()) {
-      e.stopPropagation();
-      e.preventDefault();
+    if (this.notesPanel.contains(e.target) &&
+        this.currCellIsValid()) {
+      this.muzzleEvent(e);
+      this.fromNotesToGrid();
+    } else if (this.focusOnNotes()) {
+      this.muzzleEvent(e);
     }
   } else if (e.ctrlKey && e.key == '*') {
     if (this.markAsFave()) {
-      e.stopPropagation();
-      e.preventDefault();
+      this.muzzleEvent(e);
     }
   }
 }
@@ -6977,6 +6936,10 @@ Exolve.prototype.focusOnNotes = function() {
   if (!elt) {
     return false;
   }
+  this.savedScrollX = window.pageXOffset;
+  this.savedScrollY = window.pageYOffset;
+  this.savedRow = this.currRow;
+  this.savedCol = this.currCol;
   elt.focus();
   return true;
 }
@@ -7052,7 +7015,13 @@ Exolve.prototype.copyNotes = function() {
     return;
   }
   const type = "text/html";
+
+  /** Temporarily remove the notebook background */
+  const cls = 'xlv-overall-notes';
+  this.notesInput.classList.remove(cls);
   const blob = new Blob([this.notesContents.innerHTML], {type});
+  this.notesInput.classList.add(cls);
+
   const data = [new ClipboardItem({[type]: blob})];
   navigator.clipboard.write(data).then(
       this.copyNotesSuccess.bind(this),
@@ -7339,7 +7308,6 @@ Exolve.prototype.handleAfterPrint = function() {
       }
     }
     this.setColumnLayout();
-    this.equalizeClueWidths(this.cluesBoxWidth);
     this.recolourCells();
     this.redisplayNinas();
 
@@ -7408,6 +7376,7 @@ Exolve.prototype.getPrintSettings = function() {
                    ((page == 'ledger') ? 17.0 : 11.0))))))));
   const font = (this.printFontInput ? this.printFontInput.value : '18px') || '18px';
 
+  const pq = document.getElementById(this.prefix + '-print-questions');
   const onlyCrossword = this.printOnlyCrossword || false;
   return {
     page: page,
@@ -7416,6 +7385,7 @@ Exolve.prototype.getPrintSettings = function() {
     pageMarginIn: marginIn,
     pageWidthIn: widthIn,
     pageHeightIn: heightIn,
+    printQuestions: (this.questionTexts.length > 0) && pq.checked,
   };
 }
 
@@ -7510,6 +7480,11 @@ Exolve.prototype.handleBeforePrint = function() {
   this.columnarLayout = false;
   this.setColumnLayout();
 
+  // Hide questions if requested.
+  const maybeHideQuestions = settings.printQuestions ? '' : `
+    .xlv-questions,
+  `;
+
   const customStyles = document.createElement('style');
   customStyles.innerHTML = `
   @page {
@@ -7544,6 +7519,7 @@ Exolve.prototype.handleBeforePrint = function() {
     .xlv-saving,
     .xlv-small-button,
     .xlv-small-print,
+    .xlv-submit,${maybeHideQuestions}
     .xlv-status {
       display: none;
     }
@@ -8115,528 +8091,3 @@ function createExolve(puzzleText, containerId="",
 function createPuzzle() {
   return createExolve(puzzleText, "");
 }
-</script>
-
-<style>
-@media (max-width: 500px) {
-  body {
-    margin: 4px;
-  }
-}
-.xlv-frame {
-  font-size: 16px;
-  font-family: serif;
-  font-weight: 400;
-  line-height: normal;
-  box-sizing: border-box;
-}
-.xlv-anno-text,
-.xlv-status,
-.xlv-saving,
-.xlv-solution,
-.xlv-answer,
-.xlv-input,
-.xlv-incluefill,
-.xlv-scratchpad,
-.xlv-shuffle {
-  font-size: 12px !important;
-  line-height: normal !important;
-  font-family: monospace !important;
-}
-.xlv-small-print,
-.xlv-small-print *,
-.xlv-metadata,
-.xlv-saving {
-  font-size: x-small !important;
-  line-height: normal !important;
-  font-family: monospace;
-}
-.xlv-grid-panel {
-  margin: 0;
-}
-.xlv-clues-panel {
-  margin: 0 0 8px 0;
-}
-
-@media (max-width: 325px) {
-  .xlv-wide-box {
-    width: 100%;
-    max-width: 325px;
-  }
-  .xlv-clues-box {
-    width: 100%;
-    max-width: 325px;
-  }
-  .xlv-button {
-    font-size: 9px;
-    padding: 4px;
-    border-radius: 4px;
-  }
-  .xlv-anno-text,
-  .xlv-small-print,
-  .xlv-status,
-  .xlv-saving,
-  .xlv-solution,
-  .xlv-answer,
-  .xlv-input,
-  .xlv-incluefill,
-  .xlv-scratchpad,
-  .xlv-shuffle {
-    font-size: 8px !important;
-  }
-  .xlv-saving {
-    font-size: 6px !important;
-  }
-  .xlv-preamble {
-    margin: 8px 0 0;
-  }
-}
-
-@media (min-width: 326px) and (max-width: 500px) {
-  .xlv-wide-box {
-    width: 100%;
-    max-width: 480px;
-  }
-  .xlv-clues-box {
-    width: 100%;
-    max-width: 480px;
-  }
-  .xlv-button {
-    font-size: 11px;
-    padding: 5px;
-    border-radius: 8px;
-  }
-  .xlv-preamble {
-    margin: 8px 0 0;
-  }
-}
-
-@media (min-width: 501px) {
-  .xlv-wide-box {
-    width: 480px;
-  }
-  .xlv-clues-box {
-    width: 480px;
-  }
-  .xlv-button {
-    font-size: 14px;
-    padding: 8px;
-    border-radius: 12px;
-  }
-  .xlv-grid-panel {
-    margin: 0 12px 0 0;
-  }
-  .xlv-clues-panel {
-    margin: 0 12px 8px 0;
-  }
-  .xlv-preamble {
-    margin: 8px 20px 0;
-  }
-}
-
-.xlv-clues {
-  max-width: 984px;
-}
-.xlv-clues-to-right {
-  max-width: 492px;
-}
-@media (min-width: 1500px) {
-  .xlv-clues-to-right {
-    max-width: 984px;
-  }
-}
-
-.xlv-cell-num {
-  font-family: sans-serif;
-}
-.xlv-cell-text {
-  font-family: sans-serif;
-  cursor: text;
-}
-.xlv-cell-circle {
-  fill: rgba(0,0,0,0.0);
-}
-.xlv-frame .xlv-clues table {
-  border: none;
-  border-collapse: collapse;
-  border-spacing: 0;
-  margin: inherit;
-}
-.xlv-frame .xlv-clues tr {
-  border: none;
-  break-inside: avoid;
-}
-.xlv-frame .xlv-clues td {
-  border: none;
-  padding: 0 6px 4px 0;
-  vertical-align: top;
-}
-.xlv-frame .xlv-clues td:first-child:not(.xlv-filler) {
-  box-sizing: content-box;
-  font-weight: bold;
-  max-width: 2ch;
-  overflow: visible;
-  text-align: right;
-  word-break: normal;
-  word-wrap: normal;
-  white-space: nowrap;
-}
-.xlv-invisible {
-  color: transparent;
-  font-weight: bold;
-  text-align: right;
-  word-break: normal;
-  word-wrap: normal;
-}
-.xlv-clue-indent {
-  text-indent: -2ch;
-}
-.xlv-clickable:hover {
-  cursor: pointer;
-}
-.xlv-clues-flex,
-.xlv-grid-and-clues-flex {
-  display: flex;
-  flex-flow: row wrap;
-  align-items: flex-start;
-  justify-content: space-around;
-}
-.xlv-clues-columnar,
-.xlv-grid-and-clues-2-columnar,
-.xlv-grid-and-clues-3-columnar {
-  display: block;
-}
-.xlv-grid-and-clues-2-columnar {
-  column-count: 2;
-}
-.xlv-grid-and-clues-3-columnar {
-  column-count: 3;
-}
-.xlv-grid-panel {
-  break-inside: avoid;
-}
-.xlv-flex-col {
-  display: flex;
-  flex-flow: column wrap;
-}
-.xlv-title {
-  text-align: center;
-  font-weight: bold;
-  font-size: 1.5em;
-  margin: 2px 6px 4px;
-}
-.xlv-setter {
-  text-align: center;
-  margin: 4px 0 8px 0;
-}
-.xlv-preamble {
-  padding: 0;
-}
-.xlv-small-print {
-  margin: 4px 0 6px 0 !important;
-}
-.xlv-small-print > * {
-  padding: 4px 4px 0 0 !important;
-}
-.xlv-credit {
-  margin: 4px 0 4px 0;
-}
-.xlv-questions,
-.xlv-submit {
-  margin: 4px 0 2px 0;
-}
-.xlv-explanations {
-  padding: 10px 0 2px 0;
-}
-.xlv-metadata {
-  padding: 0 0 4px 0;
-}
-.xlv-errors {
-  font-weight: bold;
-  color: red;
-}
-.xlv-warnings-label {
-  font-weight: normal;
-  font-style: italic;
-  color: blue;
-  margin: 16px 0 0 0;
-}
-.xlv-warnings {
-  margin: 10px 0;
-}
-.xlv-clear-area {
-  width: 100%;
-  height: 56px;
-}
-.xlv-curr-clue-label {
-  margin: 0 0 0 4px;
-}
-.xlv-curr-clue {
-  font-weight: bold;
-  margin: 0;
-  overflow-y: auto;
-  padding: 2px 0 8px 0 !important;
-  position: sticky;
-  position: -webkit-sticky;
-  text-align: left;
-  word-wrap: break-word;
-  z-index: 2;
-}
-.xlv-curr-orphan,
-.xlv-curr-clue-label {
-  display: inline;
-  padding: 0;
-  line-height: 0.8;
-}
-.xlv-nobr {
-  white-space: nowrap;
-}
-.xlv-grid-parent-centerer {
-  text-align: center;
-}
-.xlv-grid-parent {
-  position: relative;
-  display: inline-block;
-}
-.xlv-frame .xlv-grid-input-wrapper {
-  position: absolute;
-  border: none;
-  border-width: 0;
-  margin: 0;
-  padding: 0;
-  z-index: 1;
-}
-.xlv-grid-input-rarr {
-  position: absolute;
-  right: 0;
-  top: 20%;
-}
-.xlv-grid-input-larr {
-  position: absolute;
-  left: 0;
-  top: 20%;
-}
-.xlv-grid-input-darr {
-  position: absolute;
-  left: 40%;
-  top: 65%;
-}
-.xlv-grid-input-uarr {
-  position: absolute;
-  left: 40%;
-  top: -20%;
-}
-.xlv-frame .xlv-grid-input,
-.xlv-frame .xlv-grid-input:focus {
-  background: rgba(0,0,0,0.0);
-  border: none;
-  color: rgba(0,0,0,0.0);
-  font-weight: normal;
-  height: 100%;
-  line-height: normal;
-  outline: none;
-  padding: 2px 0 0 0;
-  text-align: center;
-  text-anchor: middle;
-  width: 100%;
-}
-.xlv-controls-etc {
-  padding: 0 0 2px 0;
-}
-.xlv-controls-row {
-  margin: 6px 0 6px 0 !important;
-}
-.xlv-clues-box {
-  overflow-y: auto;
-  box-sizing: border-box;
-  margin: 0;
-}
-.xlv-clues-label {
-  font-weight: bold;
-  padding: 0 0 4px 0;
-  break-inside: avoid;
-  break-after: avoid;
-}
-.xlv-nextprev {
-  vertical-align: text-top;
-}
-.xlv-frame hr {
-  margin: 0 0 4px 0;
-}
-.xlv-frame .xlv-button {
-  border: none;
-  display: inline-block;
-  font-family: monospace;
-  line-height: normal;
-  outline: none;
-  text-align: center;
-  text-decoration: none;
-}
-.xlv-frame:focus {
-  border: none;
-  outline: none;
-}
-.xlv-button:hover {
-  cursor: pointer;
-}
-.xlv-button:disabled {
-  cursor: not-allowed;
-}
-.xlv-frame .xlv-small-button {
-  border: 1px solid gray;
-  border-radius: 0;
-  box-shadow: none;
-  display: inline-block;
-  font-family: monospace;
-  font-size: 13px;
-  font-weight: bold;
-  line-height: normal;
-  margin: 0;
-  outline: none;
-  padding: 0 4px 2px 4px;
-  text-align: center;
-  text-decoration: none;
-  text-shadow: none;
-}
-.xlv-small-button:hover {
-  cursor: pointer;
-}
-.xlv-small-print .xlv-small-button,
-.xlv-curr-clue .xlv-small-button {
-  font-size: 10px;
-}
-.xlv-coloured-cell {
-  position: absolute;
-  border: none;
-  border-width: 0;
-  outline: none;
-  opacity: 0.25;
-}
-.xlv-status {
-  margin: 2px 0 !important;
-}
-.xlv-saving {
-  color: gray;
-  margin: 4px 0 2px 0 !important;
-}
-.xlv-solution {
-  font-weight: bold;
-}
-.xlv-question {
-  margin: 12px 0 2px 0 !important;
-}
-.xlv-input,
-.xlv-answer {
-  border: none !important;
-  padding: 0 0 6px 0;
-  outline: none !important;
-  background-image:
-    repeating-linear-gradient(to bottom, transparent, transparent 13px, black 14px);
-}
-.xlv-incluefill {
-  border: none;
-  padding: 0 0 2px 0px;
-  margin: 0 0 0 4px;
-  outline: none;
-  font-weight: bold;
-  border-bottom: solid 2px #c9c9c9;
-  background-color: inherit;
-}
-.xlv-storage-list {
-  outline: solid 1px gray;
-  margin: 6px 1px;
-  padding: 0;
-  max-height: 400px;
-  overflow: auto;
-}
-.xlv-storage-list table {
-  border-collapse: collapse;
-  border-spacing: 0;
-  width: 100%;
-}
-.xlv-storage-list tr {
-  border: solid 1px gray;
-}
-.xlv-scratchpad {
-  border: 1px solid black;
-  padding: 8px;
-  outline: none;
-}
-.xlv-shuffle {
-  cursor: pointer;
-}
-.xlv-postscript {
-  width: 100%;
-}
-.xlv-definition {
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
-  text-underline-offset: 3px;
-  text-decoration-skip-ink: none;
-}
-.xlv-blue {
-  color: blue;
-}
-.xlv-red {
-  color: red;
-}
-.xlv-yellow-bg {
-  background-color: yellow;
-}
-.xlv-pink-bg {
-  background-color: pink;
-}
-.xlv-clues-panel:last-child {
-  margin-bottom: 0;
-}
-.xlv-print-settings div {
-  padding: 4px 0 4px 16px;
-}
-.xlv-toggleable * {
-  background-color: transparent;
-  color: inherit;
-}
-a.xlv-toggler:active,
-a.xlv-toggler:link,
-a.xlv-toggler:visited {
-  outline: none;
-}
-a.xlv-toggler:hover {
-  text-decoration: underline;
-}
-.xlv-toggleable {
-  margin-top: 6px !important;
-  border-top: 1px solid gray;
-}
-.xlv-toggleable p {
-  margin: 4px 0;
-}
-.xlv-active-toggler {
-  border-bottom: 2px solid lightgray;
-}
-.xlv-clue-notes {
-  display: inline-block;
-  min-width: 10ch;
-}
-.xlv-notes-contents {
-  border: 1px dotted gray;
-  max-height: 400px;
-  overflow-y: auto;
-  padding: 4px !important;
-  margin: 4px 0 !important;
-}
-.xlv-notes-header {
-  text-align: right;
-}
-.xlv-notes-help {
-  padding: 0 0 0 16px !important;
-  text-align: left;
-}
-</style>
-</head>
-<body>
-<script>
-  createExolve(puzzleText);
-</script>
-</body>
-</html>

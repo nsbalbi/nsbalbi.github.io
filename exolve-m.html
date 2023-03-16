@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!--
+MIT License
+
+Copyright (c) 2019 Viresh Ratnakar
+
+See the full Exolve license notice in exolve-m.js.
+
+Version: Exolve v1.48 March 7, 2023
+-->
+<link rel="stylesheet" type="text/css" href="CSS/exolve-m.css"/>
+<script src="JS/exolve-m.js"></script>
+<script src="JS/exolve-from-ipuz.js"></script>
+
+<title>Crossword Test</title>
+
+</head>
+<body>
+
+<script>
+
+// createExolve(exolveFromIpuz("Tetrads.ipuz"));
+let ipuz = {
+  "solution": [
+    [
+      "E",
+      "G",
+      "G",
+      "O",
+      "S",
+      "#",
+      "B",
+      "A",
+      "M",
+      "B",
+      "I",
+      "#",
+      "W",
+      "A",
+      "S"
+    ],
+    [
+      "M",
+      "O",
+      "I",
+      "S",
+      "T",
+      "#",
+      "R",
+      "I",
+      "P",
+      "E",
+      "N",
+      "#",
+      "N",
+      "Y",
+      "T"
+    ],
+    [
+      "A",
+      "L",
+      "A",
+      "L",
+      "A",
+      "L",
+      "A",
+      "L",
+      "A",
+      "N",
+      "D",
+      "#",
+      "B",
+      "E",
+      "A"
+    ],
+    [
+      "I",
+      "G",
+      "N",
+      "O",
+      "R",
+      "E",
+      "#",
+      "S",
+      "A",
+      "N",
+      "I",
+      "T",
+      "A",
+      "R",
+      "Y"
+    ],
+    [
+      "L",
+      "I",
+      "T",
+      "#",
+      "L",
+      "E",
+      "G",
+      "#",
+      "#",
+      "E",
+      "G",
+      "O",
+      "T",
+      "#",
+      "#"
+    ],
+    [
+      "#",
+      "#",
+      "#",
+      "T",
+      "O",
+      "T",
+      "O",
+      "T",
+      "O",
+      "T",
+      "O",
+      "P",
+      "E",
+      "K",
+      "A"
+    ],
+    [
+      "O",
+      "S",
+      "C",
+      "A",
+      "R",
+      "#",
+      "T",
+      "W",
+      "A",
+      "T",
+      "#",
+      "#",
+      "A",
+      "N",
+      "S"
+    ],
+    [
+      "V",
+      "I",
+      "A",
+      "N",
+      "D",
+      "#",
+      "C",
+      "O",
+      "T",
+      "#",
+      "T",
+      "O",
+      "M",
+      "E",
+      "I"
+    ],
+    [
+      "A",
+      "L",
+      "T",
+      "#",
+      "#",
+      "A",
+      "H",
+      "A",
+      "B",
+      "#",
+      "E",
+      "L",
+      "S",
+      "E",
+      "S"
+    ],
+    [
+      "L",
+      "L",
+      "A",
+      "M",
+      "A",
+      "M",
+      "A",
+      "M",
+      "A",
+      "M",
+      "A",
+      "D",
+      "#",
+      "#",
+      "#"
+    ],
+    [
+      "#",
+      "#",
+      "C",
+      "U",
+      "R",
+      "B",
+      "#",
+      "#",
+      "R",
+      "U",
+      "B",
+      "#",
+      "D",
+      "I",
+      "P"
+    ],
+    [
+      "H",
+      "O",
+      "L",
+      "D",
+      "T",
+      "R",
+      "U",
+      "E",
+      "#",
+      "D",
+      "R",
+      "O",
+      "I",
+      "D",
+      "S"
+    ],
+    [
+      "T",
+      "H",
+      "Y",
+      "#",
+      "F",
+      "O",
+      "R",
+      "C",
+      "E",
+      "D",
+      "E",
+      "N",
+      "T",
+      "R",
+      "Y"
+    ],
+    [
+      "T",
+      "I",
+      "S",
+      "#",
+      "U",
+      "S",
+      "E",
+      "O",
+      "N",
+      "#",
+      "A",
+      "T",
+      "T",
+      "I",
+      "C"
+    ],
+    [
+      "P",
+      "O",
+      "M",
+      "#",
+      "L",
+      "E",
+      "A",
+      "N",
+      "T",
+      "#",
+      "K",
+      "O",
+      "O",
+      "S",
+      "H"
+    ]
+  ],
+  "kind": ["http://ipuz.org/crossword#1"],
+  "author": "Nicholas Sbalbi",
+  "puzzle": [
+    [
+      1,
+      2,
+      3,
+      4,
+      5,
+      "#",
+      6,
+      7,
+      8,
+      9,
+      10,
+      "#",
+      11,
+      12,
+      13
+    ],
+    [
+      14,
+      0,
+      0,
+      0,
+      0,
+      "#",
+      15,
+      0,
+      0,
+      0,
+      0,
+      "#",
+      16,
+      0,
+      0
+    ],
+    [
+      17,
+      0,
+      0,
+      0,
+      0,
+      18,
+      0,
+      0,
+      0,
+      0,
+      0,
+      "#",
+      19,
+      0,
+      0
+    ],
+    [
+      20,
+      0,
+      0,
+      0,
+      0,
+      0,
+      "#",
+      21,
+      0,
+      0,
+      0,
+      22,
+      0,
+      0,
+      0
+    ],
+    [
+      23,
+      0,
+      0,
+      "#",
+      24,
+      0,
+      25,
+      "#",
+      "#",
+      26,
+      0,
+      0,
+      0,
+      "#",
+      "#"
+    ],
+    [
+      "#",
+      "#",
+      "#",
+      27,
+      0,
+      0,
+      0,
+      28,
+      29,
+      0,
+      0,
+      0,
+      0,
+      30,
+      31
+    ],
+    [
+      32,
+      33,
+      34,
+      0,
+      0,
+      "#",
+      35,
+      0,
+      0,
+      0,
+      "#",
+      "#",
+      36,
+      0,
+      0
+    ],
+    [
+      37,
+      0,
+      0,
+      0,
+      0,
+      "#",
+      38,
+      0,
+      0,
+      "#",
+      39,
+      40,
+      0,
+      0,
+      0
+    ],
+    [
+      41,
+      0,
+      0,
+      "#",
+      "#",
+      42,
+      0,
+      0,
+      0,
+      "#",
+      43,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      44,
+      0,
+      0,
+      45,
+      46,
+      0,
+      0,
+      0,
+      0,
+      47,
+      0,
+      0,
+      "#",
+      "#",
+      "#"
+    ],
+    [
+      "#",
+      "#",
+      48,
+      0,
+      0,
+      0,
+      "#",
+      "#",
+      49,
+      0,
+      0,
+      "#",
+      50,
+      51,
+      52
+    ],
+    [
+      53,
+      54,
+      0,
+      0,
+      0,
+      0,
+      55,
+      56,
+      "#",
+      57,
+      0,
+      58,
+      0,
+      0,
+      0
+    ],
+    [
+      59,
+      0,
+      0,
+      "#",
+      60,
+      0,
+      0,
+      0,
+      61,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      62,
+      0,
+      0,
+      "#",
+      63,
+      0,
+      0,
+      0,
+      0,
+      "#",
+      64,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      65,
+      0,
+      0,
+      "#",
+      66,
+      0,
+      0,
+      0,
+      0,
+      "#",
+      67,
+      0,
+      0,
+      0,
+      0
+    ]
+  ],
+  "origin": "CrossFire encoder v1",
+  "block": "#",
+  "version": "http://ipuz.org/v2",
+  "empty": "0",
+  "dimensions": {
+    "width": 15,
+    "height": 15
+  },
+  "clues": {
+    "Across": [
+      [
+        1,
+        "Frozen breakfast treats"
+      ],
+      [
+        6,
+        "Deer of early animation"
+      ],
+      [
+        11,
+        "Is past?"
+      ],
+      [
+        14,
+        "Word for \"wet\" often found unsettling"
+      ],
+      [
+        15,
+        "Mature, as fruit"
+      ],
+      [
+        16,
+        "Popular crossword vanue"
+      ],
+      [
+        17,
+        "*In the style of a 2016 musical film?"
+      ],
+      [
+        19,
+        "Betty White co-star Arthur"
+      ],
+      [
+        20,
+        "Give the silent treatment"
+      ],
+      [
+        21,
+        "Completely clean"
+      ],
+      [
+        23,
+        "Cool, in modern slang"
+      ],
+      [
+        24,
+        "Part of a race or a body"
+      ],
+      [
+        26,
+        "Award tetrafecta"
+      ],
+      [
+        27,
+        "*Return trip of musical canine to her home state capital?"
+      ],
+      [
+        32,
+        "\"Moon Knight\" actor Isaac"
+      ],
+      [
+        35,
+        "Annoying person, to a Brit"
+      ],
+      [
+        36,
+        "Q&amp;A part"
+      ],
+      [
+        37,
+        "Food item"
+      ],
+      [
+        38,
+        "Reciprocal of 27 D."
+      ],
+      [
+        39,
+        "Aunt May actor Marisa"
+      ],
+      [
+        41,
+        "Keyboard key often followed by tab"
+      ],
+      [
+        42,
+        "\"Moby Dick\" captain"
+      ],
+      [
+        43,
+        "\"If\" partners, in code"
+      ],
+      [
+        44,
+        "*What might happen if you get to close to a cria?"
+      ],
+      [
+        48,
+        "Roadside boundary"
+      ],
+      [
+        49,
+        "Hamlet's \"...there's the ___\""
+      ],
+      [
+        50,
+        "Immerse"
+      ],
+      [
+        53,
+        "Remain steadfast under criticism"
+      ],
+      [
+        57,
+        "BB-8 and R2-D2, as examples"
+      ],
+      [
+        59,
+        "Poetic \"your\""
+      ],
+      [
+        60,
+        "Ram's purpose, or a way to describe each peculiar starred clue?"
+      ],
+      [
+        62,
+        "\"___ the season\""
+      ],
+      [
+        63,
+        "Employ, as a pick up line"
+      ],
+      [
+        64,
+        "Common home storage room"
+      ],
+      [
+        65,
+        "Half of a cheerleader's object?"
+      ],
+      [
+        66,
+        "Inclined"
+      ],
+      [
+        67,
+        "Fuzzy rubber ball popular in the '80s"
+      ]
+    ],
+    "Down": [
+      [
+        1,
+        "The letter's modern replacement"
+      ],
+      [
+        2,
+        "Body found in a cell?"
+      ],
+      [
+        3,
+        "Excessively large"
+      ],
+      [
+        4,
+        "Norwegian capital"
+      ],
+      [
+        5,
+        "Superhero played by Chris Pratt"
+      ],
+      [
+        6,
+        "Cothing item sized by letters"
+      ],
+      [
+        7,
+        "Pains"
+      ],
+      [
+        8,
+        "Film rating org."
+      ],
+      [
+        9,
+        "Singer Tony"
+      ],
+      [
+        10,
+        "Often forgotten color of the rainbow"
+      ],
+      [
+        11,
+        "New York Liberty and Connecticut Sun, to name a few"
+      ],
+      [
+        12,
+        "Yesterday, in Spain"
+      ],
+      [
+        13,
+        "\"Don't go!\""
+      ],
+      [
+        18,
+        "___Code, tech interview prep website"
+      ],
+      [
+        22,
+        "Spinning toy"
+      ],
+      [
+        25,
+        "\"Fooled ya!\""
+      ],
+      [
+        27,
+        "Common trig. function"
+      ],
+      [
+        28,
+        "An ungodly hour"
+      ],
+      [
+        29,
+        "Messy, rectangular snack"
+      ],
+      [
+        30,
+        "Reflex-test target"
+      ],
+      [
+        31,
+        "Unchanged"
+      ],
+      [
+        32,
+        "0 shape"
+      ],
+      [
+        33,
+        "Window ledge"
+      ],
+      [
+        34,
+        "Feline-lead disaster?"
+      ],
+      [
+        39,
+        "Brief respite, often for a Brit"
+      ],
+      [
+        40,
+        "Aged"
+      ],
+      [
+        42,
+        "Union general Burnside"
+      ],
+      [
+        45,
+        "Wet earth"
+      ],
+      [
+        46,
+        "Crafty"
+      ],
+      [
+        47,
+        "\"Blurry\" band Puddle of ___"
+      ],
+      [
+        50,
+        "Mimicing Pokémon, named after a symbol with similar properties"
+      ],
+      [
+        51,
+        "Actor Elba"
+      ],
+      [
+        52,
+        "25 Down synonym"
+      ],
+      [
+        53,
+        "Start of a web address"
+      ],
+      [
+        54,
+        "Midwestern state"
+      ],
+      [
+        55,
+        "Fertilizer nitrogen source"
+      ],
+      [
+        56,
+        "Subject with large and small variants"
+      ],
+      [
+        58,
+        "Aware of"
+      ],
+      [
+        61,
+        "Tree being coined by Tolkien"
+      ]
+    ],
+  }
+}
+createExolve(exolveFromIpuz(ipuz))
+
+</script>
+</body>
+</html>
